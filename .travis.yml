@@ -37,5 +37,5 @@ after_script:
   - git add .
   - git commit -m "TravisCI 自动部署"
 # Github Pages
-  - git push --force --quiet "https://${GH_TOEKN}@github.com/sun6145//blog.git" master:master 
+  - git push --force --quiet "https://${GH_TOEKN}@github.com/sun6145/blog.git" master:master 
 # End: Build LifeCycle
