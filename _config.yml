@@ -78,4 +78,7 @@ theme: landscape
 # Deployment
 ## Docs: https://hexo.io/docs/deployment.html
 deploy:
-  type:
+  type:type: git
+  # 下方的gh_token会被.travis.yml中sed命令替换
+  repo: https://gh_token@github.com/sun6145//blog.git
+  branch: master
