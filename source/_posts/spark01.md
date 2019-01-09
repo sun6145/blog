@@ -1,5 +1,5 @@
 ---
-`title: spark01
+title: spark01
 tags:
   - null
   - null
@@ -99,7 +99,7 @@ top:
 > 运行时环境被重构了。JobTracker被拆分成了通用的
 > 资源调度平台（ResourceManager，简称 RM）、,项目经理(整体资源分配,监控)
 > 节点管理器（NodeManager）、(单台资源的调度)
-> 负责各个计算框架的任务调度模型（ApplicationMaster，简称 AM）。	
+> 负责各个计算框架的任务调度模型（ApplicationMaster，简称 AM）。
 
 > 由于对 HDFS 的频繁操作**（包括计算结果持久化、数据备份、资源下载及 Shuffle 等）导致磁盘 I/O 成为系统性能的瓶颈**，因此只适用于离线数据处理或批处理，而不能支持对迭代式、交互式、流式数据的处理。
 
@@ -248,7 +248,7 @@ top:
 >
 > 弹性:spark的数据在内存中进行存储或计算,当内存存储不了的时候,会将对应的数据外溢到磁盘中进行存储和计算
 
-> rdd的创建方式: 
+> rdd的创建方式:
 >
 > 1. 可以hdfs文件创建
 > 2. 还可以通过并行的scala的集合创建
@@ -290,7 +290,7 @@ top:
 
 3. 将数据进行flatMap之后会生成一个新的rdd
 
-   **数据不会保留,假设原始数据是1G,新的rdd数据也是1G,内存不断的增长** 
+   **数据不会保留,假设原始数据是1G,新的rdd数据也是1G,内存不断的增长**
 
 4. 继续执行操作,转换成新的rdd(key,1)
 
@@ -487,7 +487,7 @@ public class _02WordCountLambada {
         JavaPairRDD<String, Integer> resultRDD = pairRDD.reduceByKey((v1, v2) -> v1 + v2);
 
         resultRDD.foreach(s -> System.out.println(s));
-        
+
         jsc.close();
 
     }
@@ -566,9 +566,9 @@ object _02ScalaSpark {
 
    ```scala
    package com.aura.core
-   
+
    import org.apache.spark.sql.SparkSession
-   
+
    object _03SparkWordCountUpload {
      def main(args: Array[String]): Unit = {
        if(args==null || args.length<1){
@@ -579,26 +579,26 @@ object _02ScalaSpark {
            """.stripMargin)
          System.exit(-1)
        }
-   
+
        var Array(inputPath)=args
-   
+
        val spark = SparkSession.builder()
          .appName(s"${_02ScalaSpark.getClass.getSimpleName}")
          .getOrCreate()
        val sc = spark.sparkContext
-   
+
        val lineRDD = sc.textFile(inputPath)
        val wordsRDD = lineRDD.flatMap(_.split("\\s+"))
          .map((_,1)).reduceByKey(_+_)
          //.collect()//将集群中的rdd对应的partition中的数据,拉取到dirver中,在工作中慎用
          .foreach(println)
-   
-   
+
+
        //关闭
        spark.stop()
      }
    }
-   
+
    ```
 
 2. 上传到虚拟机中
