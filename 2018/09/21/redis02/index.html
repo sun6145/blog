@@ -1,0 +1,1275 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/blog/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/blog/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/blog/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/blog/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/blog/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/blog/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/blog/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Hexo, NexT">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="持久化RDB : Redis database 默认持久化方式,将内存数据隔固定时长存储到窗磁盘文件 Redis默认的方式，redis通过快照来将数据持久化到磁盘中。   持久化文件存储的目录   在redis.conf中可以指定持久化文件存储的目录默认dum.rdb">
+<meta property="og:type" content="article">
+<meta property="og:title" content="redis02">
+<meta property="og:url" content="https://sun6145.github.io/blog/2018/09/21/redis02/index.html">
+<meta property="og:site_name" content="小良博客">
+<meta property="og:description" content="持久化RDB : Redis database 默认持久化方式,将内存数据隔固定时长存储到窗磁盘文件 Redis默认的方式，redis通过快照来将数据持久化到磁盘中。   持久化文件存储的目录   在redis.conf中可以指定持久化文件存储的目录默认dum.rdb">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://raw.githubusercontent.com/sun6145/githubPicture/master/img/%E5%8D%95%E7%82%B9%E6%95%85%E9%9A%9C.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/sun6145/githubPicture/master/img/redis%E5%8F%AF%E4%BB%A5%E5%8D%B3%E6%98%AF%E4%B8%BB%E5%8F%88%E6%98%AF%E4%BB%8E.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/sun6145/githubPicture/master/img/redis%E9%9B%86%E7%BE%A4%E5%9B%BE.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/sun6145/githubPicture/master/img/redis-cluster%E6%8A%95%E7%A5%A8.png">
+<meta property="og:updated_time" content="2019-01-23T16:28:30.201Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="redis02">
+<meta name="twitter:description" content="持久化RDB : Redis database 默认持久化方式,将内存数据隔固定时长存储到窗磁盘文件 Redis默认的方式，redis通过快照来将数据持久化到磁盘中。   持久化文件存储的目录   在redis.conf中可以指定持久化文件存储的目录默认dum.rdb">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/sun6145/githubPicture/master/img/%E5%8D%95%E7%82%B9%E6%95%85%E9%9A%9C.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/blog/',
+    scheme: 'Gemini',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"hide","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://sun6145.github.io/blog/2018/09/21/redis02/">
+
+
+
+
+
+  <title>redis02 | 小良博客</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/blog/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">小良博客</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">小良博客</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/blog/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-writer">
+          <a href="/blog/2018/07/28/目录/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-sitemap"></i> <br>
+            
+            目录
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/blog/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/blog/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/blog/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-messagebook">
+          <a href="/blog/MessageBook" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-book"></i> <br>
+            
+            留言板
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off" placeholder="搜索..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://sun6145.github.io/blog/blog/2018/09/21/redis02/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="小良">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/blog/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="小良博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">redis02</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-09-21T09:01:19+00:00">
+                2018-09-21
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  字
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">
+                  分钟
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="持久化"><a href="#持久化" class="headerlink" title="持久化"></a>持久化</h1><h2 id="RDB-Redis-database"><a href="#RDB-Redis-database" class="headerlink" title="RDB : Redis database"></a>RDB : Redis database</h2><blockquote>
+<p>默认持久化方式,将内存数据隔固定时长存储到窗磁盘文件</p>
+<p>Redis默认的方式，redis通过快照来将数据持久化到磁盘中。</p>
+</blockquote>
+<ul>
+<li>持久化文件存储的目录<br>   在redis.conf中可以指定持久化文件存储的目录默认dum.rdb</li>
+</ul>
+<a id="more"></a>
+<ul>
+<li><p>执行原理:</p>
+<ol>
+<li><p>fork子进程,父进程和子进程</p>
+</li>
+<li><p>父进程处理client连接,子进程将数据库内容存储到磁盘文件</p>
+<blockquote>
+<p>父进程创建snapshot(快照,共享信息),子进程处理的是snapshot的数据,写入到临时文件</p>
+</blockquote>
+<ol start="3">
+<li>当子进程将临时文件写入完成,关闭子进程</li>
+</ol>
+</li>
+</ol>
+<p>持久化策略:设置持久化快照的条件</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">save 900 1     key修改了一次 900秒备份一次</span><br><span class="line">save 300 10		key修改了10次,300秒备份一次</span><br><span class="line">save 60  10000  key修改了10000 60秒备份一次</span><br></pre></td></tr></table></figure>
+<p>缺点:</p>
+<p>​    非法关闭,会丢失最后一次的持久化数据,如果数据不能允许丢失,那么要使用aof的方式</p>
+</li>
+</ul>
+<h2 id="AOF-append-only-file"><a href="#AOF-append-only-file" class="headerlink" title="AOF: append only file"></a>AOF: append only file</h2><blockquote>
+<p>是将每次<strong>写操作</strong>存储到aof持久化文件中,默认是关闭的,仍然会有可能会丢失数据(os也会有缓存),强制每次执行</p>
+</blockquote>
+<blockquote>
+<p>Aof方式的持久化，是操作一次redis数据库，则将操作的记录存储到aof持久化文件中。</p>
+</blockquote>
+<h3 id="第一步：开启aof方式的持久化方案"><a href="#第一步：开启aof方式的持久化方案" class="headerlink" title="第一步：开启aof方式的持久化方案"></a>第一步：开启aof方式的持久化方案</h3><p>将redis.conf中的appendonly改为yes，即开启aof方式的持久化方案。</p>
+<p> 启动: 672行 ;appendonly yes</p>
+<p>Aof文件存储的目录和rdb方式的一样。</p>
+<p>Aof文件存储的名称”<code>appendfilename &quot;apendonly.aof&quot;</code></p>
+<h2 id="结论"><a href="#结论" class="headerlink" title="结论"></a><strong>结论</strong></h2><p>在使用aof和rdb方式时，如果<strong>redis重启</strong>，则数据<strong>从aof文件加载</strong>。</p>
+<h1 id="Redis的主从复制"><a href="#Redis的主从复制" class="headerlink" title="Redis的主从复制"></a>Redis的主从复制</h1><h2 id="1-1-什么是主从复制"><a href="#1-1-什么是主从复制" class="headerlink" title="1.1 什么是主从复制"></a>1.1 <strong>什么是主从复制</strong></h2><p>​    持久化保证了即使redis服务重启也不会丢失数据，因为redis服务重启后会将硬盘上持久化的数据恢复到内存中，但是当redis服务器的硬盘损坏了可能会导致数据丢失，如果<strong>通过redis的主从复制机制就可以避免这种单点故障</strong>，如下图：</p>
+<p><img src="https://raw.githubusercontent.com/sun6145/githubPicture/master/img/%E5%8D%95%E7%82%B9%E6%95%85%E9%9A%9C.png" alt=""></p>
+<p>说明：</p>
+<ol>
+<li><p>主redis中的数据有两个副本（replication）即从redis1和从redis2，即使一台redis服务器宕机其它两台redis服务也可以继续提供服务。</p>
+</li>
+<li><p>主redis中的数据和从redis上的数据保持实时同步，当主redis写入数据时通过主从复制机制会复制到两个从redis服务上。</p>
+</li>
+<li><p>只有一个主redis，可以有多个从redis。</p>
+</li>
+<li><p>主从复制不会阻塞master，在同步数据时，master 可以继续处理client 请求</p>
+</li>
+<li><p>一个redis可以即是主又是从，如下图：</p>
+</li>
+</ol>
+<p><img src="https://raw.githubusercontent.com/sun6145/githubPicture/master/img/redis%E5%8F%AF%E4%BB%A5%E5%8D%B3%E6%98%AF%E4%B8%BB%E5%8F%88%E6%98%AF%E4%BB%8E.png" alt=""></p>
+<h1 id="主从复制设置"><a href="#主从复制设置" class="headerlink" title="主从复制设置"></a>主从复制设置</h1><h2 id="主机配置"><a href="#主机配置" class="headerlink" title="主机配置"></a>主机配置</h2><blockquote>
+<p> 无需配置</p>
+</blockquote>
+<h2 id="从机配置"><a href="#从机配置" class="headerlink" title="从机配置"></a>从机配置</h2><ol>
+<li><p>复制出一个主机</p>
+<blockquote>
+<p>cp  -r 主机  从机</p>
+</blockquote>
+</li>
+<li><p>修该从机的redis.conf</p>
+<blockquote>
+<p>查找slaverof</p>
+<p>添加配置信息:语法:<code>slaveof masterip masterport</code></p>
+<p>slaveof 192.168.2.101 6379</p>
+</blockquote>
+</li>
+<li><p>修改从机的port为6380</p>
+<blockquote>
+<p>在redis.conf文件中修改</p>
+<p>搜索修改即可</p>
+</blockquote>
+</li>
+<li><p>清除主机中的持久化文件  *.rdb;* aof</p>
+</li>
+<li><p>根据从机的配置文件启动从机</p>
+<blockquote>
+<p>./redis-server redis.conf</p>
+</blockquote>
+</li>
+<li><p>启动6380的客户端</p>
+<blockquote>
+<p> ./redis-cli -h 192.168.2.101 -p 6380  </p>
+</blockquote>
+</li>
+</ol>
+<ul>
+<li><p>注意</p>
+<blockquote>
+<p>主机一旦发生增删改操作，那么从机会将数据同步到从机中</p>
+<p>从机不能执行写操作</p>
+</blockquote>
+<figure class="highlight plain"><figcaption><span>set s2 222</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">127.0.0.1:6380&gt; set s2 222</span><br><span class="line">(error) READONLY You can&apos;t write against a read only slave.</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h1 id="Redis集群"><a href="#Redis集群" class="headerlink" title="Redis集群"></a>Redis集群</h1><h2 id="redis-cluster架构图"><a href="#redis-cluster架构图" class="headerlink" title="redis-cluster架构图"></a>redis-cluster架构图</h2><p><img src="https://raw.githubusercontent.com/sun6145/githubPicture/master/img/redis%E9%9B%86%E7%BE%A4%E5%9B%BE.png" alt=""></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">架构细节</span><br><span class="line"></span><br><span class="line">(1) 所有的redis节点彼此互联(PING-PONG机制),内部使用二进制协议优化传输速度和带宽.</span><br><span class="line"></span><br><span class="line">(2)节点的fail是通过集群中 超过半数的节点检测 失效时才生效.</span><br><span class="line"></span><br><span class="line">(3)客户端与redis节点直连,不需要中间proxy层.客户端不需要连接集群所有节点,连接集群中任何一个可用节点即可</span><br><span class="line"></span><br><span class="line">(4)redis-cluster把所有的物理节点映射到[0-16383]slot上,cluster 负责维护node&lt;-&gt;slot&lt;-&gt;value</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>Redis 集群中内置了 16384 个哈希槽，当需要在 Redis 集群中放置一个 key-value 时，redis 先对 key 使用 crc16 算法算出一个结果，然后把结果对 16384 求余数，这样每个 key 都会对应一个编号在 0-16383 之间的哈希槽，redis 会根据节点数量大致均等的将哈希槽映射到不同的节点</p>
+</blockquote>
+<h2 id="redis-cluste-投票-容错"><a href="#redis-cluste-投票-容错" class="headerlink" title="redis-cluste 投票 :容错"></a>redis-cluste 投票 :容错</h2><p><img src="https://raw.githubusercontent.com/sun6145/githubPicture/master/img/redis-cluster%E6%8A%95%E7%A5%A8.png" alt=""></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">(1)集群中所有master参与投票,如果半数以上master节点与其中一个master节点通信超过(cluster-node-timeout),认为该master节点挂掉.</span><br><span class="line"></span><br><span class="line">(2):什么时候整个集群不可用(cluster_state:fail)? </span><br><span class="line">	1. 如果集群任意master挂掉,且当前master没有slave，则集群进入fail状态。也可以理解成集群的[0-16383]slot映射不完全时进入fail状态。</span><br><span class="line"></span><br><span class="line">	2. 如果集群超过半数以上master挂掉，无论是否有slave，集群进入fail状态。</span><br></pre></td></tr></table></figure>
+<h2 id="安装ruby"><a href="#安装ruby" class="headerlink" title="安装ruby"></a>安装ruby</h2><p>集群管理工具:（redis-trib.rb）是使用ruby脚本语言编写的。</p>
+<h3 id="第一步：安装ruby"><a href="#第一步：安装ruby" class="headerlink" title="第一步：安装ruby"></a>第一步：安装ruby</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[root@hdp01 bin2]# yum install ruby</span><br><span class="line"></span><br><span class="line">[root@hdp01 bin2]# yum install rubygems</span><br></pre></td></tr></table></figure>
+<h3 id="第二步：将以下文件上传到linux系统"><a href="#第二步：将以下文件上传到linux系统" class="headerlink" title="第二步：将以下文件上传到linux系统"></a>第二步：将以下文件上传到linux系统</h3><p> redis-3.0.0.gem</p>
+<h3 id="第三步-安装ruby和redis接口"><a href="#第三步-安装ruby和redis接口" class="headerlink" title="第三步,安装ruby和redis接口"></a>第三步,安装ruby和redis接口</h3><p><code>[root@hdp01 ~]# gem install redis-3.0.0.gem</code></p>
+<h3 id="第四步：将redis-3-0-0包下src目录中的以下文件拷贝到redis19-redis-cluster"><a href="#第四步：将redis-3-0-0包下src目录中的以下文件拷贝到redis19-redis-cluster" class="headerlink" title="第四步：将redis-3.0.0包下src目录中的以下文件拷贝到redis19/redis-cluster/"></a>第四步：将redis-3.0.0包下src目录中的以下文件拷贝到redis19/redis-cluster/</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[root@hdp01 src]# cd /usr/local/redis/</span><br><span class="line">[root@hdp01 redis19]# mkdir redis-cluster</span><br><span class="line">[root@hdp01 redis19]# cd /root/redis-3.0.0/src/</span><br><span class="line">[root@hdp01 src]# cp redis-trib.rb  /usr/local/redis1/redis-cluster</span><br></pre></td></tr></table></figure>
+<h2 id="搭建集群"><a href="#搭建集群" class="headerlink" title="搭建集群"></a>搭建集群</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br></pre></td><td class="code"><pre><span class="line">搭建集群最少也得需要3台主机，如果每台主机再配置一台从机的话，则最少需要6台机器。</span><br><span class="line"></span><br><span class="line">端口设计如下：6380-6385</span><br><span class="line"></span><br><span class="line">第一步：复制出一个7001机器</span><br><span class="line">[root@hdp01 redis]# cp bin ./redis-cluster/7001 –r</span><br><span class="line"></span><br><span class="line">第二步：如果存在持久化文件，则删除</span><br><span class="line">[root@hdp01 7001]# rm -rf appendonly.aof dump.rdb</span><br><span class="line"></span><br><span class="line">第三步：设置集群参数</span><br><span class="line"> cluster-enabled yes</span><br><span class="line"></span><br><span class="line">第四步：修改端口</span><br><span class="line"> port 6380</span><br><span class="line"> </span><br><span class="line">第五步：复制出7002-7006机器</span><br><span class="line">[root@hdp01 redis-cluster]# cp 7001/ 7002 -r</span><br><span class="line">[root@hdp01 redis-cluster]# cp 7001/ 7003 -r</span><br><span class="line">[root@hdp01 redis-cluster]# cp 7001/ 7004 -r</span><br><span class="line">[root@hdp01 redis-cluster]# cp 7001/ 7005 -r</span><br><span class="line">[root@hdp01 redis-cluster]# cp 7001/ 7006 –r</span><br><span class="line"></span><br><span class="line">第六步：修改7002-7006机器的端口</span><br><span class="line"></span><br><span class="line">第七步：启动7001-7006这六台机器</span><br><span class="line"></span><br><span class="line">第八步：修改start-all.sh文件的权限</span><br><span class="line">[root@hdp01 redis-cluster]# chmod u+x start-all.sh</span><br><span class="line"></span><br><span class="line">第九步：创建集群</span><br><span class="line">[root@hdp01 redis-cluster]#  ./redis-trib.rb  create --replicas 1 192.168.2.102:6380 192.168.2.102:6381 192.168.2.102:6382 192.168.2.102:6383 192.168.2.102:6384 192.168.2.102:6385</span><br><span class="line">&gt;&gt;&gt; Creating cluster</span><br><span class="line">Connecting to node 192.168.242.137:7001: OK</span><br><span class="line">Connecting to node 192.168.242.137:7002: OK</span><br><span class="line">Connecting to node 192.168.242.137:7003: OK</span><br><span class="line">Connecting to node 192.168.242.137:7004: OK</span><br><span class="line">Connecting to node 192.168.242.137:7005: OK</span><br><span class="line">Connecting to node 192.168.242.137:7006: OK</span><br><span class="line">&gt;&gt;&gt; Performing hash slots allocation on 6 nodes...</span><br><span class="line">Using 3 masters:</span><br><span class="line">192.168.242.137:7001</span><br><span class="line">192.168.242.137:7002</span><br><span class="line">192.168.242.137:7003</span><br><span class="line">Adding replica 192.168.242.137:7004 to 192.168.242.137:7001</span><br><span class="line">Adding replica 192.168.242.137:7005 to 192.168.242.137:7002</span><br><span class="line">Adding replica 192.168.242.137:7006 to 192.168.242.137:7003</span><br><span class="line">M: 8240cd0fe6d6f842faa42b0174fe7c5ddcf7ae24 192.168.242.137:7001</span><br><span class="line">   slots:0-5460 (5461 slots) master</span><br><span class="line">M: 4f52a974f64343fd9f1ee0388490b3c0647a4db7 192.168.242.137:7002</span><br><span class="line">   slots:5461-10922 (5462 slots) master</span><br><span class="line">M: cb7c5def8f61df2016b38972396a8d1f349208c2 192.168.242.137:7003</span><br><span class="line">   slots:10923-16383 (5461 slots) master</span><br><span class="line">S: 66adf006fed43b3b5e499ce2ff1949a756504a16 192.168.242.137:7004</span><br><span class="line">   replicates 8240cd0fe6d6f842faa42b0174fe7c5ddcf7ae24</span><br><span class="line">S: cbb0c9bc4b27dd85511a7ef2d01bec90e692793b 192.168.242.137:7005</span><br><span class="line">   replicates 4f52a974f64343fd9f1ee0388490b3c0647a4db7</span><br><span class="line">S: a908736eadd1cd06e86fdff8b2749a6f46b38c00 192.168.242.137:7006</span><br><span class="line">   replicates cb7c5def8f61df2016b38972396a8d1f349208c2</span><br><span class="line">Can I set the above configuration? (type &apos;yes&apos; to accept): yes</span><br><span class="line">&gt;&gt;&gt; Nodes configuration updated</span><br><span class="line">&gt;&gt;&gt; Assign a different config epoch to each node</span><br><span class="line">&gt;&gt;&gt; Sending CLUSTER MEET messages to join the cluster</span><br><span class="line">Waiting for the cluster to join..</span><br><span class="line">&gt;&gt;&gt; Performing Cluster Check (using node 192.168.242.137:7001)</span><br><span class="line">M: 8240cd0fe6d6f842faa42b0174fe7c5ddcf7ae24 192.168.242.137:7001</span><br><span class="line">   slots:0-5460 (5461 slots) master</span><br><span class="line">M: 4f52a974f64343fd9f1ee0388490b3c0647a4db7 192.168.242.137:7002</span><br><span class="line">   slots:5461-10922 (5462 slots) master</span><br><span class="line">M: cb7c5def8f61df2016b38972396a8d1f349208c2 192.168.242.137:7003</span><br><span class="line">   slots:10923-16383 (5461 slots) master</span><br><span class="line">M: 66adf006fed43b3b5e499ce2ff1949a756504a16 192.168.242.137:7004</span><br><span class="line">   slots: (0 slots) master</span><br><span class="line">   replicates 8240cd0fe6d6f842faa42b0174fe7c5ddcf7ae24</span><br><span class="line">M: cbb0c9bc4b27dd85511a7ef2d01bec90e692793b 192.168.242.137:7005</span><br><span class="line">   slots: (0 slots) master</span><br><span class="line">   replicates 4f52a974f64343fd9f1ee0388490b3c0647a4db7</span><br><span class="line">M: a908736eadd1cd06e86fdff8b2749a6f46b38c00 192.168.242.137:7006</span><br><span class="line">   slots: (0 slots) master</span><br><span class="line">   replicates cb7c5def8f61df2016b38972396a8d1f349208c2</span><br><span class="line">[OK] All nodes agree about slots configuration.</span><br><span class="line">&gt;&gt;&gt; Check for open slots...</span><br><span class="line">&gt;&gt;&gt; Check slots coverage...</span><br><span class="line">[OK] All 16384 slots covered.</span><br><span class="line">[root@hdp01 redis-cluster]#</span><br></pre></td></tr></table></figure>
+<h2 id="连接集群"><a href="#连接集群" class="headerlink" title="连接集群"></a>连接集群</h2><blockquote>
+<p> <code>./redis-cli -h 192.168.2.102 -p 7001 –c</code></p>
+<p><code>-c：指定是集群连接</code></p>
+</blockquote>
+<h2 id="查看集群信息"><a href="#查看集群信息" class="headerlink" title="查看集群信息"></a>查看集群信息</h2><h3 id="查看集群信息-1"><a href="#查看集群信息-1" class="headerlink" title="查看集群信息"></a>查看集群信息</h3><blockquote>
+<p><code>192.168.242.137:7002&gt; cluster info</code></p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">192.168.2.102:6381&gt; cluster info</span><br><span class="line">cluster_state:ok</span><br><span class="line">cluster_slots_assigned:16384</span><br><span class="line">cluster_slots_ok:16384</span><br><span class="line">cluster_slots_pfail:0</span><br><span class="line">cluster_slots_fail:0</span><br><span class="line">cluster_known_nodes:6</span><br><span class="line">cluster_size:3</span><br><span class="line">cluster_current_epoch:6</span><br><span class="line">cluster_my_epoch:2</span><br><span class="line">cluster_stats_messages_sent:1034</span><br><span class="line">cluster_stats_messages_received:1034</span><br><span class="line">192.168.2.102:6381&gt;</span><br></pre></td></tr></table></figure>
+<h3 id="查看节点信息"><a href="#查看节点信息" class="headerlink" title="查看节点信息"></a>查看节点信息</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">192.168.2.102:6381&gt; cluster nodes</span><br><span class="line">46ca0fd9417a2bc172aa2863df2cab0da6617d2d 192.168.2.102:6382 master - 0 1537696177521 3 connected 10923-16383</span><br><span class="line">f53c4df09307ee23d5e06d9a7e936c581ac80b3d 192.168.2.102:6384 slave fed12b118c7d4c6ab95a3c2d3ffe49a71e9b2afa 0 1537696173493 5 connected</span><br><span class="line">ef29970508e820fe2f7b7c2a57befc69e9ed2589 192.168.2.102:6385 slave 46ca0fd9417a2bc172aa2863df2cab0da6617d2d 0 1537696174499 6 connected</span><br><span class="line">781aa9cb4deea53b8dce7405277d33176153fdc3 192.168.2.102:6383 slave d7cad0dd5dd1607eb4ca31e7be5344014d2a4cce 0 1537696176512 4 connected</span><br><span class="line">fed12b118c7d4c6ab95a3c2d3ffe49a71e9b2afa 192.168.2.102:6381 myself,master - 0 0 2 connected 5461-10922</span><br><span class="line">d7cad0dd5dd1607eb4ca31e7be5344014d2a4cce 192.168.2.102:6380 master - 0 1537696175505 1 connected 0-5460</span><br><span class="line">192.168.2.102:6381&gt;</span><br></pre></td></tr></table></figure>
+<h1 id="jedis连接集群"><a href="#jedis连接集群" class="headerlink" title="jedis连接集群"></a>jedis连接集群</h1><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> test;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.util.HashSet;</span><br><span class="line"><span class="keyword">import</span> java.util.Set;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> org.junit.Test;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> redis.clients.jedis.HostAndPort;</span><br><span class="line"><span class="keyword">import</span> redis.clients.jedis.JedisCluster;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * jedis连接redis集群</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@author</span> sun</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">test3</span> </span>&#123;</span><br><span class="line">	<span class="meta">@Test</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">test</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		Set&lt;HostAndPort&gt; nodes = <span class="keyword">new</span> HashSet&lt;&gt;();</span><br><span class="line">		nodes.add(<span class="keyword">new</span> HostAndPort(<span class="string">"192.168.2.102"</span>, <span class="number">6380</span>));</span><br><span class="line">		nodes.add(<span class="keyword">new</span> HostAndPort(<span class="string">"192.168.2.102"</span>, <span class="number">6381</span>));</span><br><span class="line">		nodes.add(<span class="keyword">new</span> HostAndPort(<span class="string">"192.168.2.102"</span>, <span class="number">6382</span>));</span><br><span class="line">		nodes.add(<span class="keyword">new</span> HostAndPort(<span class="string">"192.168.2.102"</span>, <span class="number">6383</span>));</span><br><span class="line">		nodes.add(<span class="keyword">new</span> HostAndPort(<span class="string">"192.168.2.102"</span>, <span class="number">6384</span>));</span><br><span class="line">		nodes.add(<span class="keyword">new</span> HostAndPort(<span class="string">"192.168.2.102"</span>, <span class="number">6385</span>));</span><br><span class="line"></span><br><span class="line">		JedisCluster cluster = <span class="keyword">new</span> JedisCluster(nodes);</span><br><span class="line">		cluster.set(<span class="string">"s4"</span>, <span class="string">"sunfuliang"</span>);</span><br><span class="line"></span><br><span class="line">		String result = cluster.get(<span class="string">"s4"</span>);</span><br><span class="line">		System.out.println(result);</span><br><span class="line">		cluster.close();</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h1 id="Spring-jedis连接redis集群"><a href="#Spring-jedis连接redis集群" class="headerlink" title="Spring jedis连接redis集群"></a>Spring jedis连接redis集群</h1><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> test;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> org.junit.Test;</span><br><span class="line"><span class="keyword">import</span> org.junit.runner.RunWith;</span><br><span class="line"><span class="keyword">import</span> org.springframework.beans.factory.annotation.Autowired;</span><br><span class="line"><span class="keyword">import</span> org.springframework.test.context.ContextConfiguration;</span><br><span class="line"><span class="keyword">import</span> org.springframework.test.context.junit4.SpringJUnit4ClassRunner;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> redis.clients.jedis.JedisCluster;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * jedis通过spring连接redis集群</span></span><br><span class="line"><span class="comment"> * </span></span><br><span class="line"><span class="comment"> * <span class="doctag">@author</span> sun</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="meta">@RunWith</span>(SpringJUnit4ClassRunner.class)</span><br><span class="line"><span class="meta">@ContextConfiguration</span>(locations = <span class="string">"classpath:applicationContext.xml"</span>)</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">test4</span> </span>&#123;</span><br><span class="line">	<span class="comment">// redis集群</span></span><br><span class="line">	<span class="meta">@Autowired</span></span><br><span class="line">	JedisCluster jedisCluster;</span><br><span class="line">	<span class="meta">@Test</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">testJedisCluster</span><span class="params">()</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">		jedisCluster.set(<span class="string">"name"</span>, <span class="string">"zhangsan"</span>);</span><br><span class="line">		String value = jedisCluster.get(<span class="string">"name"</span>);</span><br><span class="line">		System.out.println(value);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h1 id="applicationContext-xml"><a href="#applicationContext-xml" class="headerlink" title="applicationContext.xml"></a>applicationContext.xml</h1><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?xml version="1.0" encoding="UTF-8"?&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">beans</span> <span class="attr">xmlns</span>=<span class="string">"http://www.springframework.org/schema/beans"</span></span></span><br><span class="line"><span class="tag">       <span class="attr">xmlns:xsi</span>=<span class="string">"http://www.w3.org/2001/XMLSchema-instance"</span> <span class="attr">xmlns:context</span>=<span class="string">"http://www.springframework.org/schema/context"</span></span></span><br><span class="line"><span class="tag">       <span class="attr">xmlns:aop</span>=<span class="string">"http://www.springframework.org/schema/aop"</span></span></span><br><span class="line"><span class="tag">       <span class="attr">xsi:schemaLocation</span>=<span class="string">"</span></span></span><br><span class="line"><span class="tag"><span class="string">                           http://www.springframework.org/schema/beans </span></span></span><br><span class="line"><span class="tag"><span class="string">                           http://www.springframework.org/schema/beans/spring-beans.xsd</span></span></span><br><span class="line"><span class="tag"><span class="string">                           http://www.springframework.org/schema/context </span></span></span><br><span class="line"><span class="tag"><span class="string">                           http://www.springframework.org/schema/context/spring-context.xsd</span></span></span><br><span class="line"><span class="tag"><span class="string">                           http://www.springframework.org/schema/aop</span></span></span><br><span class="line"><span class="tag"><span class="string">                           http://www.springframework.org/schema/aop/spring-aop.xsd"</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">&lt;!-- 连接池配置 --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">bean</span> <span class="attr">id</span>=<span class="string">"jedisPoolConfig"</span> <span class="attr">class</span>=<span class="string">"redis.clients.jedis.JedisPoolConfig"</span>&gt;</span></span><br><span class="line">        <span class="comment">&lt;!-- 最大连接数 --&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"maxTotal"</span> <span class="attr">value</span>=<span class="string">"30"</span> /&gt;</span></span><br><span class="line">        <span class="comment">&lt;!-- 最大空闲连接数 --&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"maxIdle"</span> <span class="attr">value</span>=<span class="string">"10"</span> /&gt;</span></span><br><span class="line">        <span class="comment">&lt;!-- 每次释放连接的最大数目 --&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"numTestsPerEvictionRun"</span> <span class="attr">value</span>=<span class="string">"1024"</span> /&gt;</span></span><br><span class="line">        <span class="comment">&lt;!-- 释放连接的扫描间隔（毫秒） --&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"timeBetweenEvictionRunsMillis"</span> <span class="attr">value</span>=<span class="string">"30000"</span> /&gt;</span></span><br><span class="line">        <span class="comment">&lt;!-- 连接最小空闲时间 --&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"minEvictableIdleTimeMillis"</span> <span class="attr">value</span>=<span class="string">"1800000"</span> /&gt;</span></span><br><span class="line">        <span class="comment">&lt;!-- 连接空闲多久后释放, 当空闲时间&gt;该值 且 空闲连接&gt;最大空闲连接数 时直接释放 --&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"softMinEvictableIdleTimeMillis"</span> <span class="attr">value</span>=<span class="string">"10000"</span> /&gt;</span></span><br><span class="line">        <span class="comment">&lt;!-- 获取连接时的最大等待毫秒数,小于零:阻塞不确定的时间,默认-1 --&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"maxWaitMillis"</span> <span class="attr">value</span>=<span class="string">"1500"</span> /&gt;</span></span><br><span class="line">        <span class="comment">&lt;!-- 在获取连接的时候检查有效性, 默认false --&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"testOnBorrow"</span> <span class="attr">value</span>=<span class="string">"false"</span> /&gt;</span></span><br><span class="line">        <span class="comment">&lt;!-- 在空闲时检查有效性, 默认false --&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"testWhileIdle"</span> <span class="attr">value</span>=<span class="string">"true"</span> /&gt;</span></span><br><span class="line">        <span class="comment">&lt;!-- 连接耗尽时是否阻塞, false报异常,ture阻塞直到超时, 默认true --&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"blockWhenExhausted"</span> <span class="attr">value</span>=<span class="string">"false"</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">bean</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">&lt;!-- redis集群 --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">bean</span> <span class="attr">id</span>=<span class="string">"jedisCluster"</span> <span class="attr">class</span>=<span class="string">"redis.clients.jedis.JedisCluster"</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">constructor-arg</span> <span class="attr">index</span>=<span class="string">"0"</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">set</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">bean</span> <span class="attr">class</span>=<span class="string">"redis.clients.jedis.HostAndPort"</span>&gt;</span></span><br><span class="line">                    <span class="tag">&lt;<span class="name">constructor-arg</span> <span class="attr">index</span>=<span class="string">"0"</span> <span class="attr">value</span>=<span class="string">"192.168.2.102"</span>&gt;</span><span class="tag">&lt;/<span class="name">constructor-arg</span>&gt;</span></span><br><span class="line">                    <span class="tag">&lt;<span class="name">constructor-arg</span> <span class="attr">index</span>=<span class="string">"1"</span> <span class="attr">value</span>=<span class="string">"6380"</span>&gt;</span><span class="tag">&lt;/<span class="name">constructor-arg</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;/<span class="name">bean</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">bean</span> <span class="attr">class</span>=<span class="string">"redis.clients.jedis.HostAndPort"</span>&gt;</span></span><br><span class="line">                    <span class="tag">&lt;<span class="name">constructor-arg</span> <span class="attr">index</span>=<span class="string">"0"</span> <span class="attr">value</span>=<span class="string">"192.168.2.102"</span>&gt;</span><span class="tag">&lt;/<span class="name">constructor-arg</span>&gt;</span></span><br><span class="line">                    <span class="tag">&lt;<span class="name">constructor-arg</span> <span class="attr">index</span>=<span class="string">"1"</span> <span class="attr">value</span>=<span class="string">"6381"</span>&gt;</span><span class="tag">&lt;/<span class="name">constructor-arg</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;/<span class="name">bean</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">bean</span> <span class="attr">class</span>=<span class="string">"redis.clients.jedis.HostAndPort"</span>&gt;</span></span><br><span class="line">                    <span class="tag">&lt;<span class="name">constructor-arg</span> <span class="attr">index</span>=<span class="string">"0"</span> <span class="attr">value</span>=<span class="string">"192.168.2.102"</span>&gt;</span><span class="tag">&lt;/<span class="name">constructor-arg</span>&gt;</span></span><br><span class="line">                    <span class="tag">&lt;<span class="name">constructor-arg</span> <span class="attr">index</span>=<span class="string">"1"</span> <span class="attr">value</span>=<span class="string">"6382"</span>&gt;</span><span class="tag">&lt;/<span class="name">constructor-arg</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;/<span class="name">bean</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">bean</span> <span class="attr">class</span>=<span class="string">"redis.clients.jedis.HostAndPort"</span>&gt;</span></span><br><span class="line">                    <span class="tag">&lt;<span class="name">constructor-arg</span> <span class="attr">index</span>=<span class="string">"0"</span> <span class="attr">value</span>=<span class="string">"192.168.2.102"</span>&gt;</span><span class="tag">&lt;/<span class="name">constructor-arg</span>&gt;</span></span><br><span class="line">                    <span class="tag">&lt;<span class="name">constructor-arg</span> <span class="attr">index</span>=<span class="string">"1"</span> <span class="attr">value</span>=<span class="string">"6383"</span>&gt;</span><span class="tag">&lt;/<span class="name">constructor-arg</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;/<span class="name">bean</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">bean</span> <span class="attr">class</span>=<span class="string">"redis.clients.jedis.HostAndPort"</span>&gt;</span></span><br><span class="line">                    <span class="tag">&lt;<span class="name">constructor-arg</span> <span class="attr">index</span>=<span class="string">"0"</span> <span class="attr">value</span>=<span class="string">"192.168.2.102"</span>&gt;</span><span class="tag">&lt;/<span class="name">constructor-arg</span>&gt;</span></span><br><span class="line">                    <span class="tag">&lt;<span class="name">constructor-arg</span> <span class="attr">index</span>=<span class="string">"1"</span> <span class="attr">value</span>=<span class="string">"6384"</span>&gt;</span><span class="tag">&lt;/<span class="name">constructor-arg</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;/<span class="name">bean</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">bean</span> <span class="attr">class</span>=<span class="string">"redis.clients.jedis.HostAndPort"</span>&gt;</span></span><br><span class="line">                    <span class="tag">&lt;<span class="name">constructor-arg</span> <span class="attr">index</span>=<span class="string">"0"</span> <span class="attr">value</span>=<span class="string">"192.168.2.102"</span>&gt;</span><span class="tag">&lt;/<span class="name">constructor-arg</span>&gt;</span></span><br><span class="line">                    <span class="tag">&lt;<span class="name">constructor-arg</span> <span class="attr">index</span>=<span class="string">"1"</span> <span class="attr">value</span>=<span class="string">"6385"</span>&gt;</span><span class="tag">&lt;/<span class="name">constructor-arg</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;/<span class="name">bean</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;/<span class="name">set</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">constructor-arg</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">constructor-arg</span> <span class="attr">index</span>=<span class="string">"1"</span> <span class="attr">ref</span>=<span class="string">"jedisPoolConfig"</span>&gt;</span><span class="tag">&lt;/<span class="name">constructor-arg</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">bean</span>&gt;</span></span><br><span class="line">    <span class="comment">&lt;!-- redis单机 通过连接池</span></span><br><span class="line"><span class="comment"> &lt;bean id="pool" class="redis.clients.jedis.JedisPool"</span></span><br><span class="line"><span class="comment">  destroy-method="close"&gt;</span></span><br><span class="line"><span class="comment">  &lt;constructor-arg name="poolConfig" ref="jedisPoolConfig" /&gt;</span></span><br><span class="line"><span class="comment">  &lt;constructor-arg name="host" value="192.168.2.101" /&gt;</span></span><br><span class="line"><span class="comment">  &lt;constructor-arg name="port" value="6379" /&gt;</span></span><br><span class="line"><span class="comment"> &lt;/bean&gt; --&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">beans</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    
+    
+    
+<div>
+
+<div>
+
+    <div style="text-align:center;color: #ccc;font-size:14px;">-------------本文结束<i class="fa fa-paw"></i>感谢您的阅读-------------</div>
+
+</div>
+
+</div>
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/blog/2018/09/20/redis01/" rel="next" title="redis01">
+                <i class="fa fa-chevron-left"></i> redis01
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/blog/2018/09/25/java增强/" rel="prev" title="java增强">
+                java增强 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+    </div>
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/blog/images/avatar.png" alt="小良">
+            
+              <p class="site-author-name" itemprop="name">小良</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/blog/archives/">
+              
+                  <span class="site-state-item-count">77</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/blog/categories/index.html">
+                  <span class="site-state-item-count">5</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/blog/tags/index.html">
+                  <span class="site-state-item-count">81</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+            <div class="links-of-blogroll motion-element links-of-blogroll-block">
+              <div class="links-of-blogroll-title">
+                <i class="fa  fa-fw fa-link"></i>
+                友情链接
+              </div>
+              <ul class="links-of-blogroll-list">
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://sun__shine.coding.me/blog" title="旧版本" target="_blank">旧版本</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="/sun/2018/07/28/目录/" title="回到目录" target="_blank">回到目录</a>
+                  </li>
+                
+              </ul>
+            </div>
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#持久化"><span class="nav-number">1.</span> <span class="nav-text">持久化</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#RDB-Redis-database"><span class="nav-number">1.1.</span> <span class="nav-text">RDB : Redis database</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#AOF-append-only-file"><span class="nav-number">1.2.</span> <span class="nav-text">AOF: append only file</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#第一步：开启aof方式的持久化方案"><span class="nav-number">1.2.1.</span> <span class="nav-text">第一步：开启aof方式的持久化方案</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#结论"><span class="nav-number">1.3.</span> <span class="nav-text">结论</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Redis的主从复制"><span class="nav-number">2.</span> <span class="nav-text">Redis的主从复制</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-1-什么是主从复制"><span class="nav-number">2.1.</span> <span class="nav-text">1.1 什么是主从复制</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#主从复制设置"><span class="nav-number">3.</span> <span class="nav-text">主从复制设置</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#主机配置"><span class="nav-number">3.1.</span> <span class="nav-text">主机配置</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#从机配置"><span class="nav-number">3.2.</span> <span class="nav-text">从机配置</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Redis集群"><span class="nav-number">4.</span> <span class="nav-text">Redis集群</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#redis-cluster架构图"><span class="nav-number">4.1.</span> <span class="nav-text">redis-cluster架构图</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#redis-cluste-投票-容错"><span class="nav-number">4.2.</span> <span class="nav-text">redis-cluste 投票 :容错</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#安装ruby"><span class="nav-number">4.3.</span> <span class="nav-text">安装ruby</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#第一步：安装ruby"><span class="nav-number">4.3.1.</span> <span class="nav-text">第一步：安装ruby</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#第二步：将以下文件上传到linux系统"><span class="nav-number">4.3.2.</span> <span class="nav-text">第二步：将以下文件上传到linux系统</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#第三步-安装ruby和redis接口"><span class="nav-number">4.3.3.</span> <span class="nav-text">第三步,安装ruby和redis接口</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#第四步：将redis-3-0-0包下src目录中的以下文件拷贝到redis19-redis-cluster"><span class="nav-number">4.3.4.</span> <span class="nav-text">第四步：将redis-3.0.0包下src目录中的以下文件拷贝到redis19/redis-cluster/</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#搭建集群"><span class="nav-number">4.4.</span> <span class="nav-text">搭建集群</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#连接集群"><span class="nav-number">4.5.</span> <span class="nav-text">连接集群</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#查看集群信息"><span class="nav-number">4.6.</span> <span class="nav-text">查看集群信息</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#查看集群信息-1"><span class="nav-number">4.6.1.</span> <span class="nav-text">查看集群信息</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#查看节点信息"><span class="nav-number">4.6.2.</span> <span class="nav-text">查看节点信息</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#jedis连接集群"><span class="nav-number">5.</span> <span class="nav-text">jedis连接集群</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Spring-jedis连接redis集群"><span class="nav-number">6.</span> <span class="nav-text">Spring jedis连接redis集群</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#applicationContext-xml"><span class="nav-number">7.</span> <span class="nav-text">applicationContext.xml</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-heartbeat" aria-hidden="true"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">小良</span>
+
+  
+</div>
+
+<div class="powered-by">
+<i class="fa fa-user-md"></i><span id="busuanzi_container_site_uv">
+  本站访客数:<span id="busuanzi_value_site_uv"></span>
+</span>
+</div>
+
+
+<!--
+
+-->
+<div class="theme-info">
+  <div class="powered-by"></div>
+  <span class="post-count">博客全站共字</span>
+</div>
+
+
+
+<div class="coding-pages">
+  <p>Hosted by <a href="https://pages.coding.me" style="font-weight: bold">Coding Pages</a></p>
+</div>
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/blog/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/blog/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/blog/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/blog/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/blog/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/blog/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/blog/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/blog/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/blog/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/blog/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/blog/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/blog/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/blog/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/blog/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

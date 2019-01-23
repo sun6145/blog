@@ -1,0 +1,1268 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/blog/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/blog/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/blog/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/blog/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/blog/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/blog/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/blog/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="泛型,">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="泛型概述 是一种把明确类型的工作推迟到创建对象或者调用方法的时候才去明确的特殊的类型。">
+<meta name="keywords" content="泛型">
+<meta property="og:type" content="article">
+<meta property="og:title" content="泛型">
+<meta property="og:url" content="https://sun6145.github.io/blog/2018/08/02/泛型/index.html">
+<meta property="og:site_name" content="小良博客">
+<meta property="og:description" content="泛型概述 是一种把明确类型的工作推迟到创建对象或者调用方法的时候才去明确的特殊的类型。">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2019-01-23T16:28:30.201Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="泛型">
+<meta name="twitter:description" content="泛型概述 是一种把明确类型的工作推迟到创建对象或者调用方法的时候才去明确的特殊的类型。">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/blog/',
+    scheme: 'Gemini',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"hide","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://sun6145.github.io/blog/2018/08/02/泛型/">
+
+
+
+
+
+  <title>泛型 | 小良博客</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/blog/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">小良博客</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">小良博客</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/blog/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-writer">
+          <a href="/blog/2018/07/28/目录/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-sitemap"></i> <br>
+            
+            目录
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/blog/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/blog/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/blog/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-messagebook">
+          <a href="/blog/MessageBook" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-book"></i> <br>
+            
+            留言板
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off" placeholder="搜索..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://sun6145.github.io/blog/blog/2018/08/02/泛型/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="小良">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/blog/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="小良博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">泛型</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-08-02T11:27:56+00:00">
+                2018-08-02
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/blog/categories/Java/" itemprop="url" rel="index">
+                    <span itemprop="name">Java</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  字
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">
+                  分钟
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="泛型概述"><a href="#泛型概述" class="headerlink" title="泛型概述"></a>泛型概述</h1><blockquote>
+<p>是一种把明确类型的工作推迟到创建对象或者调用方法的时候才去明确的特殊的类型。</p>
+</blockquote>
+<a id="more"></a>
+<h2 id="为什么会有泛型呢"><a href="#为什么会有泛型呢" class="headerlink" title="为什么会有泛型呢?"></a>为什么会有泛型呢?</h2><h3 id="问题引入"><a href="#问题引入" class="headerlink" title="问题引入"></a>问题引入</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">// 创建集合</span><br><span class="line">ArrayList array = new ArrayList();</span><br><span class="line"></span><br><span class="line">// 添加元素</span><br><span class="line">array.add(&quot;hello&quot;);</span><br><span class="line">array.add(&quot;world&quot;);</span><br><span class="line">array.add(&quot;java&quot;);</span><br><span class="line">array.add(10); // JDK5以后的自动装箱</span><br><span class="line">// 等价于：array.add(Integer.valueOf(10));</span><br><span class="line"></span><br><span class="line">// 遍历</span><br><span class="line">Iterator&lt;String&gt; it = array.iterator();</span><br><span class="line">while (it.hasNext()) &#123;</span><br><span class="line">	// ClassCastException</span><br><span class="line">	// String s = (String) it.next();</span><br><span class="line">	String s = it.next();</span><br><span class="line">	System.out.println(s);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="解释"><a href="#解释" class="headerlink" title="解释"></a>解释</h3><p>因为我们开始存储的时候，存储了String和Integer两种类型的数据。<br>在遍历的时候，我们把他们都当做String类型处理，所以报错<br>但是呢，它在编译期间却没有告诉我们。<br>集合也模仿着数组的这种做法，在创建对象的时候明确元素的数据类型。这样就不会在有问题了。<br>而这种技术被称为：泛型。    </p>
+<p>存在的问题有两个：</p>
+<ul>
+<li>向集合中添加对象元素的时候，没有对元素的类型进行检查，也就是说，我们往集合中添加任意对象，编译器都不会报错。    </li>
+<li>当我们从集合中获取一个值的时候，我们不能都使用Object类型，需要进行强制类型转换。而这个转换过程由于在添加元素的时候没有作任何的类型的限制跟检查，所以容易出错。例如上面代码中的：<code>String s = (String) it.next();</code></li>
+</ul>
+<h3 id="泛型的好处"><a href="#泛型的好处" class="headerlink" title="泛型的好处"></a>泛型的好处</h3><p>格式：</p>
+<ul>
+<li>&lt;数据类型&gt;<ul>
+<li>此处的数据类型只能是引用类型。</li>
+</ul>
+</li>
+</ul>
+<p>好处：</p>
+<ul>
+<li>A:把运行时期的问题提前到了编译期间</li>
+<li>B:避免了强制类型转换</li>
+<li>C:优化了程序设计，解决了黄色警告线</li>
+</ul>
+<h2 id="泛型使用位置"><a href="#泛型使用位置" class="headerlink" title="泛型使用位置"></a>泛型使用位置</h2><pre><code>看API，如果类，接口，抽象类后面跟的有&lt;E&gt;就说要使用泛型。一般来说就是在集合中使用。
+</code></pre><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">// 用ArrayList存储字符串元素，并遍历。用泛型改进代码</span><br><span class="line">ArrayList&lt;String&gt; array = new ArrayList&lt;String&gt;();</span><br><span class="line">//添加</span><br><span class="line">array.add(&quot;hello&quot;);</span><br><span class="line">array.add(&quot;world&quot;)&apos;</span><br><span class="line">//遍历</span><br><span class="line">Iterator&lt;String&gt; it = array.iterator();</span><br><span class="line">while(it.hasNext())&#123;</span><br><span class="line">	String s = it.next();</span><br><span class="line">	System.out.println(s);</span><br><span class="line">&#125;</span><br><span class="line">System.out.println(&quot;-----------------&quot;);</span><br><span class="line">for (int x = 0; x &lt; array.size(); x++) &#123;</span><br><span class="line">	String s = array.get(x);</span><br><span class="line">	System.out.println(s);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="泛型推断-JDK7的新特性"><a href="#泛型推断-JDK7的新特性" class="headerlink" title="泛型推断:JDK7的新特性"></a>泛型推断:JDK7的新特性</h2><blockquote>
+<p>ArrayList<student> array = new ArrayList&lt;&gt;();<br>但是不建议这样使用。<br>    <code>ArrayList&lt;Student&gt; array = new ArrayList&lt;Student&gt;();</code>(推荐)</student></p>
+</blockquote>
+<p>存储自定义对象<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">// 创建元素对象</span><br><span class="line">ArrayList&lt;Student&gt; array = new ArrayList&lt;Student&gt;();</span><br><span class="line"></span><br><span class="line">Student s1 = new Student(&quot;曹操&quot;, 40); // 后知后觉</span><br><span class="line">Student s2 = new Student(&quot;蒋干&quot;, 30); // 不知不觉</span><br><span class="line">Student s3 = new Student(&quot;诸葛亮&quot;, 26);// 先知先觉</span><br><span class="line"></span><br><span class="line">// 添加元素</span><br><span class="line">array.add(s1);</span><br><span class="line">array.add(s2);</span><br><span class="line">array.add(s3);</span><br><span class="line"></span><br><span class="line">// 遍历</span><br><span class="line">Iterator&lt;Student&gt; it = array.iterator();</span><br><span class="line">while (it.hasNext()) &#123;</span><br><span class="line">	Student s = it.next();</span><br><span class="line">	System.out.println(s.getName() + &quot;---&quot; + s.getAge());</span><br><span class="line">&#125;</span><br><span class="line">System.out.println(&quot;------------------&quot;);</span><br><span class="line"></span><br><span class="line">for (int x = 0; x &lt; array.size(); x++) &#123;</span><br><span class="line">	Student s = array.get(x);</span><br><span class="line">	System.out.println(s.getName() + &quot;---&quot; + s.getAge());</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h1 id="不用泛型之前"><a href="#不用泛型之前" class="headerlink" title="不用泛型之前"></a>不用泛型之前</h1><blockquote>
+<p>早期的时候，我们使用Object来代表任意的类型。<br> 向上转型是没有任何问题的，但是在向下转型的时候其实隐含了类型转换的问题。<br> 也就是说这样的程序其实并不是安全的。所以Java在JDK5后引入了泛型，提高程序的安全性。</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line">定义类：</span><br><span class="line">public class ObjectTool &#123;</span><br><span class="line">	private Object obj;</span><br><span class="line"></span><br><span class="line">	public Object getObj() &#123;</span><br><span class="line">		return obj;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	public void setObj(Object obj) &#123; // Object obj = new Integer(30);要传入基本数据</span><br><span class="line">		this.obj = obj;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">===========================================================================================</span><br><span class="line"></span><br><span class="line">使用：</span><br><span class="line">// 正常使用</span><br><span class="line">ObjectTool ot = new ObjectTool();</span><br><span class="line"></span><br><span class="line">ot.setObj(new Integer(27));</span><br><span class="line">Integer i = (Integer) ot.getObj();</span><br><span class="line">System.out.println(&quot;年龄是：&quot; + i);		//年龄是：27</span><br><span class="line"></span><br><span class="line">ot.setObj(new String(&quot;上官柳丝&quot;));</span><br><span class="line">String s = (String) ot.getObj();</span><br><span class="line">System.out.println(&quot;姓名是：&quot; + s);		//姓名是：上官柳丝</span><br><span class="line"></span><br><span class="line">ot.setObj(new Integer(30));</span><br><span class="line">// ClassCastException</span><br><span class="line">String ss = (String) ot.getObj();</span><br><span class="line">System.out.println(&quot;姓名是：&quot; + ss);		// ClassCastException</span><br></pre></td></tr></table></figure>
+<h1 id="使用泛型"><a href="#使用泛型" class="headerlink" title="使用泛型"></a>使用泛型</h1><h2 id="泛型类"><a href="#泛型类" class="headerlink" title="泛型类"></a>泛型类</h2><blockquote>
+<p>把泛型定义在类上<br>格式:public class 类名&lt;泛型类型1,…&gt;<br>注意:泛型类型必须是引用类型</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">//定义泛型类</span><br><span class="line">public class ObjectTool&lt;T&gt; &#123;</span><br><span class="line">	private T obj;</span><br><span class="line"></span><br><span class="line">	public T getObj() &#123;</span><br><span class="line">		return obj;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	public void setObj(T obj) &#123;</span><br><span class="line">		this.obj = obj;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">====================================================</span><br><span class="line">// 创建泛型类对象</span><br><span class="line">ObjectTool&lt;String&gt; ot = new ObjectTool&lt;String&gt;();</span><br><span class="line"></span><br><span class="line">// ot.setObj(new Integer(27))	//报错。编译期间就过不去</span><br><span class="line"></span><br><span class="line">ot.setObj(new String(&quot;上官柳丝&quot;));</span><br><span class="line">String s = ot.getObj();</span><br><span class="line">System.out.println(&quot;姓名是：&quot; + s);	//姓名是：上官柳丝</span><br><span class="line"></span><br><span class="line">-------------------------------------------------------</span><br><span class="line"></span><br><span class="line">ObjectTool&lt;Integer&gt; ot2 = new ObjectTool&lt;Integer&gt;();</span><br><span class="line">//ot2.setObj(new String(&quot;上官柳丝&quot;));//这个时候编译期间就过不去</span><br><span class="line">ot2.setObj(new Integer(27));</span><br><span class="line">Integer i = ot2.getObj();</span><br><span class="line">System.out.println(&quot;年龄是：&quot;+ i);	//年龄是：27</span><br></pre></td></tr></table></figure>
+<h2 id="泛型方法"><a href="#泛型方法" class="headerlink" title="泛型方法"></a>泛型方法</h2><blockquote>
+<p>　把泛型定义在方法上<br>　格式:public &lt;泛型类型&gt; 返回类型 方法名(泛型类型 .)<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">我们如果定义为泛型类，想要输出不同格式：要创建不同的对象</span><br><span class="line">ObjectTool&lt;String&gt; ot = new ObjectTool&lt;String&gt;();</span><br><span class="line">ot.show(&quot;hello&quot;);</span><br><span class="line"></span><br><span class="line">ObjectTool&lt;Integer&gt; ot2 = new ObjectTool&lt;Integer&gt;();</span><br><span class="line">ot2.show(100);</span><br><span class="line"></span><br><span class="line">ObjectTool&lt;Boolean&gt; ot3 = new ObjectTool&lt;Boolean&gt;();</span><br><span class="line">ot3.show(true);</span><br><span class="line"></span><br><span class="line">我们可以将泛型定义在方法上面</span><br><span class="line">-----------------------------------------------------------</span><br><span class="line">public class ObjectTool()&#123;</span><br><span class="line">	public &lt;T&gt; void show(T t)&#123;</span><br><span class="line">		System.out.println(t);</span><br><span class="line">	｝</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">=======================================</span><br><span class="line"></span><br><span class="line">使用：</span><br><span class="line">ObjectTool ot = new ObjectTool();</span><br><span class="line">ot.show(&quot;hello&quot;);</span><br><span class="line">ot.show(100);</span><br><span class="line">ot.show(true);</span><br><span class="line"></span><br><span class="line">结果：</span><br><span class="line">	hello</span><br><span class="line">	100</span><br><span class="line">	true</span><br></pre></td></tr></table></figure></p>
+</blockquote>
+<h2 id="泛型接口"><a href="#泛型接口" class="headerlink" title="泛型接口"></a>泛型接口</h2><blockquote>
+<p>把泛型定义在接口上<br> 格式:public  interface 接口名&lt;泛型类型1…&gt;</p>
+</blockquote>
+<p>接口的实现</p>
+<ul>
+<li>public class InterImpl implements Inter<string>｛｝</string></li>
+<li>public class <code>InterImpl&lt;T&gt;</code> implements <code>Inter&lt;T&gt;</code>{}<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line">public interface Inter&lt;T&gt; &#123;</span><br><span class="line">	public abstract void show(T t);</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">// 测试</span><br><span class="line">Inter&lt;String&gt; i = new InterImpl();</span><br><span class="line">i.show(&quot;hello&quot;);			//hello</span><br><span class="line"></span><br><span class="line">==================================================</span><br><span class="line"></span><br><span class="line">//实现接口</span><br><span class="line"></span><br><span class="line">//方式一：知道是什么类型</span><br><span class="line">public class InterImpl implements Inter&lt;String&gt;&#123;</span><br><span class="line"></span><br><span class="line">	@Override</span><br><span class="line">	public void show(String t) &#123;</span><br><span class="line">		// TODO Auto-generated method stub</span><br><span class="line">		System.out.println(t);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">=======================================================</span><br><span class="line">//方式二：不知道是什么类型</span><br><span class="line">public class InterImpl&lt;T&gt; implements Inter&lt;T&gt;&#123;</span><br><span class="line"></span><br><span class="line">	@Override</span><br><span class="line">	public void show(T t) &#123;</span><br><span class="line">		System.out.println(t);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">//测试</span><br><span class="line">Inter&lt;Stirng&gt; i = new InterImpl&lt;String&gt;();</span><br><span class="line">i.show(&quot;hello&quot;);	//hello</span><br><span class="line">i.show(100);		//编译期间报错</span><br><span class="line"></span><br><span class="line">Inter&lt;Integer&gt; ii = new InterImpl&lt;Integer&gt;();</span><br><span class="line">ii.show(&quot;hello&quot;);	//编译期间报错</span><br><span class="line">ii.show(100);		//100</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h1 id="泛型高级-通配符"><a href="#泛型高级-通配符" class="headerlink" title="泛型高级(通配符)"></a>泛型高级(通配符)</h1><h2 id="泛型通配符-lt-gt"><a href="#泛型通配符-lt-gt" class="headerlink" title="泛型通配符&lt;?&gt;"></a>泛型通配符&lt;?&gt;</h2><blockquote>
+<p>任意类型 如果没有明确 ，那么就是Object以及任意的Java类</p>
+</blockquote>
+<h2 id="extends-E"><a href="#extends-E" class="headerlink" title="? extends E"></a>? extends E</h2><blockquote>
+<p>向下限定， E 及其子类</p>
+</blockquote>
+<h2 id="super-E"><a href="#super-E" class="headerlink" title="? super E"></a>? super E</h2><blockquote>
+<p>向上限定 E 及其父类</p>
+</blockquote>
+<pre><code>Collection&lt;Object&gt; c1 = new ArrayList&lt;Object&gt;();
+
+// 泛型如果明确的写的时候，前后必须一致
+Collection&lt;Object&gt; c2 = new ArrayList&lt;Animal&gt;();
+Collection&lt;Object&gt; c3 = new ArrayList&lt;Dog&gt;();
+Collection&lt;Object&gt; c4 = new ArrayList&lt;Cat&gt;();
+
+// ?表示任意的类型都是可以的
+Collection&lt;?&gt; c5 = new ArrayList&lt;Object&gt;();        
+Collection&lt;?&gt; c6 = new ArrayList&lt;Animal&gt;();
+Collection&lt;?&gt; c7 = new ArrayList&lt;Dog&gt;();
+Collection&lt;?&gt; c8 = new ArrayList&lt;Cat&gt;();
+
+// ? extends E:向下限定，E及其子类
+// Collection&lt;? extends Animal&gt; c9 = new ArrayList&lt;Object&gt;();    //报错,Object不是Animal的子类
+Collection&lt;? extends Animal&gt; c10 = new ArrayList&lt;Animal&gt;();
+Collection&lt;? extends Animal&gt; c11 = new ArrayList&lt;Dog&gt;();
+Collection&lt;? extends Animal&gt; c12 = new ArrayList&lt;Cat&gt;();
+
+// ? super E:向上限定，E极其父类
+Collection&lt;? super Animal&gt; c13 = new ArrayList&lt;Object&gt;();
+Collection&lt;? super Animal&gt; c14 = new ArrayList&lt;Animal&gt;();
+// Collection&lt;? super Animal&gt; c15 = new ArrayList&lt;Dog&gt;();        //报错,Dog是Animal子类
+// Collection&lt;? super Animal&gt; c16 = new ArrayList&lt;Cat&gt;();        //报错,Animal是Animal子类
+
+
+class Animal {
+}
+
+class Dog extends Animal {
+}
+
+class Cat extends Animal {
+}
+</code></pre>
+      
+    </div>
+    
+    
+    
+<div>
+
+<div>
+
+    <div style="text-align:center;color: #ccc;font-size:14px;">-------------本文结束<i class="fa fa-paw"></i>感谢您的阅读-------------</div>
+
+</div>
+
+</div>
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/blog/tags/泛型/" rel="tag"># 泛型</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/blog/2018/08/02/List集合练习/" rel="next" title="List集合练习">
+                <i class="fa fa-chevron-left"></i> List集合练习
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/blog/2018/08/03/java基础day06/" rel="prev" title="java基础day06">
+                java基础day06 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+    </div>
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/blog/images/avatar.png" alt="小良">
+            
+              <p class="site-author-name" itemprop="name">小良</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/blog/archives/">
+              
+                  <span class="site-state-item-count">77</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/blog/categories/index.html">
+                  <span class="site-state-item-count">5</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/blog/tags/index.html">
+                  <span class="site-state-item-count">81</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+            <div class="links-of-blogroll motion-element links-of-blogroll-block">
+              <div class="links-of-blogroll-title">
+                <i class="fa  fa-fw fa-link"></i>
+                友情链接
+              </div>
+              <ul class="links-of-blogroll-list">
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://sun__shine.coding.me/blog" title="旧版本" target="_blank">旧版本</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="/sun/2018/07/28/目录/" title="回到目录" target="_blank">回到目录</a>
+                  </li>
+                
+              </ul>
+            </div>
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#泛型概述"><span class="nav-number">1.</span> <span class="nav-text">泛型概述</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#为什么会有泛型呢"><span class="nav-number">1.1.</span> <span class="nav-text">为什么会有泛型呢?</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#问题引入"><span class="nav-number">1.1.1.</span> <span class="nav-text">问题引入</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#解释"><span class="nav-number">1.1.2.</span> <span class="nav-text">解释</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#泛型的好处"><span class="nav-number">1.1.3.</span> <span class="nav-text">泛型的好处</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#泛型使用位置"><span class="nav-number">1.2.</span> <span class="nav-text">泛型使用位置</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#泛型推断-JDK7的新特性"><span class="nav-number">1.3.</span> <span class="nav-text">泛型推断:JDK7的新特性</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#不用泛型之前"><span class="nav-number">2.</span> <span class="nav-text">不用泛型之前</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#使用泛型"><span class="nav-number">3.</span> <span class="nav-text">使用泛型</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#泛型类"><span class="nav-number">3.1.</span> <span class="nav-text">泛型类</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#泛型方法"><span class="nav-number">3.2.</span> <span class="nav-text">泛型方法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#泛型接口"><span class="nav-number">3.3.</span> <span class="nav-text">泛型接口</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#泛型高级-通配符"><span class="nav-number">4.</span> <span class="nav-text">泛型高级(通配符)</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#泛型通配符-lt-gt"><span class="nav-number">4.1.</span> <span class="nav-text">泛型通配符&lt;?&gt;</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#extends-E"><span class="nav-number">4.2.</span> <span class="nav-text">? extends E</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#super-E"><span class="nav-number">4.3.</span> <span class="nav-text">? super E</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-heartbeat" aria-hidden="true"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">小良</span>
+
+  
+</div>
+
+<div class="powered-by">
+<i class="fa fa-user-md"></i><span id="busuanzi_container_site_uv">
+  本站访客数:<span id="busuanzi_value_site_uv"></span>
+</span>
+</div>
+
+
+<!--
+
+-->
+<div class="theme-info">
+  <div class="powered-by"></div>
+  <span class="post-count">博客全站共字</span>
+</div>
+
+
+
+<div class="coding-pages">
+  <p>Hosted by <a href="https://pages.coding.me" style="font-weight: bold">Coding Pages</a></p>
+</div>
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/blog/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/blog/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/blog/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/blog/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/blog/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/blog/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/blog/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/blog/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/blog/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/blog/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/blog/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/blog/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/blog/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/blog/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

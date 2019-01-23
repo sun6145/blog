@@ -1,0 +1,1330 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/blog/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/blog/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/blog/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/blog/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/blog/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/blog/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/blog/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="List接口的成员方法,List 集合的遍历,">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="List 接口概述（列表） 有序的collection，可以对列表中的每个元素的插入位置进行精确的控制。用户可以根据元素的整数索引（在列表中的位置）访问元素，并搜索列表中的元素。列表通常允许重复的元素。">
+<meta name="keywords" content="List接口的成员方法,List 集合的遍历">
+<meta property="og:type" content="article">
+<meta property="og:title" content="List接口">
+<meta property="og:url" content="https://sun6145.github.io/blog/2018/07/31/List接口/index.html">
+<meta property="og:site_name" content="小良博客">
+<meta property="og:description" content="List 接口概述（列表） 有序的collection，可以对列表中的每个元素的插入位置进行精确的控制。用户可以根据元素的整数索引（在列表中的位置）访问元素，并搜索列表中的元素。列表通常允许重复的元素。">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://www.github.com/sun6145/githubPicture/raw/master/小书匠/what.jpg">
+<meta property="og:updated_time" content="2019-01-23T16:28:30.193Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="List接口">
+<meta name="twitter:description" content="List 接口概述（列表） 有序的collection，可以对列表中的每个元素的插入位置进行精确的控制。用户可以根据元素的整数索引（在列表中的位置）访问元素，并搜索列表中的元素。列表通常允许重复的元素。">
+<meta name="twitter:image" content="https://www.github.com/sun6145/githubPicture/raw/master/小书匠/what.jpg">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/blog/',
+    scheme: 'Gemini',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"hide","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://sun6145.github.io/blog/2018/07/31/List接口/">
+
+
+
+
+
+  <title>List接口 | 小良博客</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/blog/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">小良博客</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">小良博客</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/blog/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-writer">
+          <a href="/blog/2018/07/28/目录/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-sitemap"></i> <br>
+            
+            目录
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/blog/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/blog/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/blog/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-messagebook">
+          <a href="/blog/MessageBook" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-book"></i> <br>
+            
+            留言板
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off" placeholder="搜索..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://sun6145.github.io/blog/blog/2018/07/31/List接口/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="小良">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/blog/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="小良博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">List接口</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-07-31T17:27:55+00:00">
+                2018-07-31
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/blog/categories/Java/" itemprop="url" rel="index">
+                    <span itemprop="name">Java</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  字
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">
+                  分钟
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="List-接口概述（列表）"><a href="#List-接口概述（列表）" class="headerlink" title="List 接口概述（列表）"></a>List 接口概述（列表）</h1><blockquote>
+<p>有序的collection，可以对列表中的每个元素的插入位置进行精确的控制。用户可以根据元素的整数索引（在列表中的位置）访问元素，并搜索列表中的元素。<br>列表通常允许重复的元素。</p>
+</blockquote>
+<a id="more"></a>
+<h2 id="List的存储和遍历"><a href="#List的存储和遍历" class="headerlink" title="List的存储和遍历"></a>List的存储和遍历</h2><h3 id="List存储字符串并遍历"><a href="#List存储字符串并遍历" class="headerlink" title="List存储字符串并遍历"></a>List存储字符串并遍历</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">//创建集合对象</span><br><span class="line">List list = new ArrayList();</span><br><span class="line"></span><br><span class="line">//创建字符串并添加</span><br><span class="line">list.add(&quot;Hello&quot;);</span><br><span class="line">list.add(&quot;world&quot;);</span><br><span class="line">list.add(&quot;java&quot;);</span><br><span class="line"></span><br><span class="line">//遍历集合</span><br><span class="line">Iterator it = list.iterator();</span><br><span class="line">while(it.hasNext())&#123;</span><br><span class="line">	String s = (STring)it.next();</span><br><span class="line">	System.out.println(s);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="List存储自定义对象并遍历"><a href="#List存储自定义对象并遍历" class="headerlink" title="List存储自定义对象并遍历"></a>List存储自定义对象并遍历</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">// 创建集合对象</span><br><span class="line">List list = new ArrayList();</span><br><span class="line"></span><br><span class="line">//创建学生对象</span><br><span class="line">Student s1 = new Student(&quot;苏伯陵&quot;,27);</span><br><span class="line">Student s2 = new Student(&quot;东方瑾&quot;,26);</span><br><span class="line">Student s3 = new Student(&quot;夜子宸&quot;,28);</span><br><span class="line"></span><br><span class="line">//把学生对象添加到集合中</span><br><span class="line">list.add(s1);</span><br><span class="line">list.add(s2);</span><br><span class="line">list.add(s3);</span><br><span class="line"></span><br><span class="line">//遍历集合</span><br><span class="line">Iterator it = list.terator();</span><br><span class="line">while(it.hasNex())&#123;</span><br><span class="line">	Student s = (Student)it.next();</span><br><span class="line">	System.out.println(s.getName + &quot;---&quot; + s.getAge());</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="List集合的特点："><a href="#List集合的特点：" class="headerlink" title="List集合的特点："></a>List集合的特点：</h2><p><strong>有序(存储和取出的元素一致)，可重复的。</strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">// 创建集合对象</span><br><span class="line">List list = new ArrayList();</span><br><span class="line"></span><br><span class="line">// 存储元素</span><br><span class="line">list.add(&quot;hello&quot;);</span><br><span class="line">list.add(&quot;world&quot;);</span><br><span class="line">list.add(&quot;java&quot;);</span><br><span class="line">list.add(&quot;javaee&quot;);</span><br><span class="line">list.add(&quot;android&quot;);</span><br><span class="line">list.add(&quot;javaee&quot;);</span><br><span class="line">list.add(&quot;android&quot;);</span><br><span class="line"></span><br><span class="line">// 遍历集合</span><br><span class="line">Iterator it = list.iterator();</span><br><span class="line">while (it.hasNext()) &#123;</span><br><span class="line">	String s = (String) it.next();</span><br><span class="line">	System.out.println(s);</span><br><span class="line">&#125;</span><br><span class="line">结果：</span><br><span class="line">	hello</span><br><span class="line">	world</span><br><span class="line">	java</span><br><span class="line">	javaee</span><br><span class="line">	android</span><br><span class="line">	javaee</span><br><span class="line">	android</span><br></pre></td></tr></table></figure></p>
+<h2 id="List-接口的成员方法"><a href="#List-接口的成员方法" class="headerlink" title="List 接口的成员方法"></a>List 接口的成员方法</h2><ol>
+<li>添加功能<ul>
+<li>void add(int index,E element):&emsp;<strong>在指定位置添加元素</strong></li>
+</ul>
+</li>
+<li>获取功能<ul>
+<li>E get(int index):&emsp;<strong>获取指定位置的元素</strong></li>
+</ul>
+</li>
+<li>删除功能<ul>
+<li>E remove(int index):&emsp;<strong>根据索引删除元素,返回被删除的元素</strong></li>
+</ul>
+</li>
+<li>修改功能<ul>
+<li>E set(int index,E element):&emsp;<strong>根据索引修改元素，返回被修饰的元素</strong></li>
+</ul>
+</li>
+<li>列表迭代器<ul>
+<li>ListIterator listIterator():&emsp;<strong>List集合特有的迭代器</strong></li>
+</ul>
+</li>
+</ol>
+<h1 id="List的子类"><a href="#List的子类" class="headerlink" title="List的子类"></a>List的子类</h1><h2 id="ArrayList类概述及使用"><a href="#ArrayList类概述及使用" class="headerlink" title="ArrayList类概述及使用"></a>ArrayList类概述及使用</h2><p>ArrayList类概述<br>底层数据结构是数组，查询快，增删慢<br>线程不安全，效率高</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">//创建list对象</span><br><span class="line">List list = new ArrayList();</span><br><span class="line"></span><br><span class="line">//添加元素</span><br><span class="line">list.add(&quot;hello&quot;);</span><br><span class="line">list.add(&quot;world&quot;);</span><br><span class="line">list.add(&quot;java&quot;);</span><br><span class="line"></span><br><span class="line">----指定位置添加元素---------------------------------------</span><br><span class="line">list.add(1,&quot;android&quot;);</span><br><span class="line">System.out.println(&quot;list:&quot; + list);			//list:[hello, android, world, java]</span><br><span class="line">	list.add(4, &quot;javaee&quot;);					//有问题 IndexOutOfBoundsException</span><br><span class="line">	list.add(3, &quot;javaee&quot;); 					//没有问题,在最后添加list:[hello, world, java, javaee]</span><br><span class="line"></span><br><span class="line">----获取指定位置的元素--------------------------------------</span><br><span class="line">System.out.println(&quot;get:&quot; + list.get(1));	//get:world</span><br><span class="line">System.out.println(&quot;list:&quot; + list);			//list:[hello, world, java]</span><br><span class="line">System.out.println(&quot;get:&quot; + list.get(3));	//IndexOutOfBoundsException</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">----索引删除元素，返回被删除的元素--------------------------------------</span><br><span class="line">System.out.println(&quot;remove:&quot; + list.remove(1));		//remove:world</span><br><span class="line">System.out.println(&quot;list:&quot; + list);					//list:[hello, java]</span><br><span class="line">System.out.println(&quot;remove:&quot; + list.remove(3));		// IndexOutOfBoundsException</span><br><span class="line"></span><br><span class="line">----索引修改元素，返回被修饰的元素--------------------------------------</span><br><span class="line">System.out.println(&quot;set:&quot; + list.set(1, &quot;javaee&quot;));	//set:world</span><br><span class="line">System.out.println(&quot;list:&quot; + list);					//list:[hello, javaee, java]</span><br></pre></td></tr></table></figure>
+<h3 id="ArrayList-自带方法的遍历"><a href="#ArrayList-自带方法的遍历" class="headerlink" title="ArrayList 自带方法的遍历"></a>ArrayList 自带方法的遍历</h3><h4 id="普通for"><a href="#普通for" class="headerlink" title="普通for"></a>普通for</h4><h5 id="遍历数组-size-和-get-方法"><a href="#遍历数组-size-和-get-方法" class="headerlink" title="遍历数组 size() 和 get() 方法"></a>遍历数组 size() 和 get() 方法</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">//创建lis对象</span><br><span class="line">List list = new ArrayList();</span><br><span class="line"></span><br><span class="line">//添加元素</span><br><span class="line">list.add(&quot;hello&quot;);</span><br><span class="line">list.add(&quot;world&quot;);</span><br><span class="line">list.add(&quot;java&quot;);</span><br><span class="line"></span><br><span class="line">//遍历</span><br><span class="line">for(int i = 0;i &lt; list.size(); i++)&#123;</span><br><span class="line">	String s = (String) list.get(i);</span><br><span class="line">	System.ou.println(s);</span><br><span class="line">&#125;</span><br><span class="line">结果：</span><br><span class="line">	hello</span><br><span class="line">	world</span><br><span class="line">	java</span><br></pre></td></tr></table></figure>
+<h5 id="遍历自定义对象-size-和get-结合"><a href="#遍历自定义对象-size-和get-结合" class="headerlink" title="遍历自定义对象 size()和get()结合"></a>遍历自定义对象 size()和get()结合</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">// 创建集合对象</span><br><span class="line">List list = new ArrayList();</span><br><span class="line"></span><br><span class="line">//创建学生对象</span><br><span class="line">Student s1 = new Student(&quot;苏伯陵&quot;,27);</span><br><span class="line">Student s2 = new Student(&quot;东方瑾&quot;,26);</span><br><span class="line">Student s3 = new Student(&quot;夜子宸&quot;,28);</span><br><span class="line"></span><br><span class="line">//把学生对象添加到集合中</span><br><span class="line">list.add(s1);</span><br><span class="line">list.add(s2);</span><br><span class="line">list.add(s3);</span><br><span class="line"></span><br><span class="line">//遍历集合</span><br><span class="line">for(int i =0; i&lt;list.size();i++)&#123;</span><br><span class="line">	Student s = (Student)list.ger(i);</span><br><span class="line">	System.out.println(s.getName + &quot;---&quot; + s.getAge());</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="列表迭代器"><a href="#列表迭代器" class="headerlink" title="列表迭代器"></a><strong>列表迭代器</strong></h4><blockquote>
+<p><strong>ListIterator listIterator()：List集合特有的迭代器</strong></p>
+<pre><code>- 该迭代器继承了Iterator迭代器，所以，就可以直接使用hasNext()和next()方法。
+</code></pre><p><strong>特有功能：</strong></p>
+<pre><code>- Object previous():获取上一个元素
+- boolean hasPrevious():判断是否有元素
+</code></pre></blockquote>
+<h5 id="迭代器遍历数组"><a href="#迭代器遍历数组" class="headerlink" title="迭代器遍历数组"></a>迭代器遍历数组</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">// 创建List集合对象</span><br><span class="line">List list = new ArrayList();</span><br><span class="line">list.add(&quot;hello&quot;);</span><br><span class="line">list.add(&quot;world&quot;);</span><br><span class="line">list.add(&quot;java&quot;);</span><br><span class="line"></span><br><span class="line">// 集合的遍历</span><br><span class="line">// 创建迭代器</span><br><span class="line">ListIteartor lit = list.listIterator();	// 子类对象</span><br><span class="line"></span><br><span class="line">while (lit.hasNext()) &#123;</span><br><span class="line">	String s = (String) lit.next();</span><br><span class="line">	System.out.println(s);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">System.out.println(&quot;-----------------&quot;);</span><br><span class="line"></span><br><span class="line">while (lit.hasPrevious()) &#123;</span><br><span class="line">	String s = (String) lit.previous();</span><br><span class="line">	System.out.println(s);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">结果：</span><br><span class="line">	hello</span><br><span class="line">	world</span><br><span class="line">	java</span><br><span class="line">	-----------------</span><br><span class="line">	java</span><br><span class="line">	world</span><br><span class="line">	hello</span><br></pre></td></tr></table></figure>
+<h4 id="修改集合的内容"><a href="#修改集合的内容" class="headerlink" title="修改集合的内容"></a>修改集合的内容</h4><blockquote>
+<p>我有一个集合，如下，请问，我想判断里面有没有”world”这个元素，如果有，我就添加一个”javaee”元素，请写代码实现。</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">List list = new ArrayList();</span><br><span class="line">// 添加元素</span><br><span class="line">list.add(&quot;hello&quot;);</span><br><span class="line">list.add(&quot;world&quot;);</span><br><span class="line">list.add(&quot;java&quot;);</span><br><span class="line"></span><br><span class="line">ListIterator lit  = list.listIterator();</span><br><span class="line">while(lit.hasNext())&#123;</span><br><span class="line">	if(lit.next().equals(&quot;world&quot;))&#123;</span><br><span class="line">		list.add(&quot;javaEE&quot;);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="↑，ConcurrentModificationException-当方法检测到对象的并发修改，但不允许这种修改时，抛出此异常。"><a href="#↑，ConcurrentModificationException-当方法检测到对象的并发修改，但不允许这种修改时，抛出此异常。" class="headerlink" title="↑，ConcurrentModificationException:当方法检测到对象的并发修改，但不允许这种修改时，抛出此异常。"></a><center><strong>↑，ConcurrentModificationException:当方法检测到对象的并发修改，但不允许这种修改时，抛出此异常。</strong></center></h4><blockquote>
+<p><img src="https://www.github.com/sun6145/githubPicture/raw/master/小书匠/what.jpg" alt=""></p>
+</blockquote>
+<h4 id="产生问题的原因"><a href="#产生问题的原因" class="headerlink" title="产生问题的原因"></a>产生问题的原因</h4><blockquote>
+<p>迭代器依赖集合而存在，在判断成功后，集合中的新添加了元素，而迭代器却不知道，这个错叫并发修改异常。</p>
+<ul>
+<li>其实这个问题描述的是：迭代器遍历元素的时候，通过集合是不能修改元素的。</li>
+</ul>
+</blockquote>
+<h4 id="解决办法"><a href="#解决办法" class="headerlink" title="解决办法"></a>解决办法</h4><ol>
+<li><p><strong>迭代器迭代元素，迭代器修改元素</strong><br> 元素是跟在刚才迭代的元素后面的。<br> 而Iterator迭代器却没有添加功能，所以我们使用其子接口ListIterator<br> ListIterator:</p>
+<pre><code>- void add();
+- void remove();
+- void set(E e);
+</code></pre><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">List list = new ArrayList();</span><br><span class="line">// 添加元素</span><br><span class="line">list.add(&quot;hello&quot;);</span><br><span class="line">list.add(&quot;world&quot;);</span><br><span class="line">list.add(&quot;java&quot;);</span><br><span class="line"></span><br><span class="line">//迭代器遍历修改</span><br><span class="line">ListIterator lit =list.listIterator();</span><br><span class="line">while(lit.hasNext())&#123;</span><br><span class="line">	String s = （String)lit.next();</span><br><span class="line">	if(s.equals(&quot;world&quot;))&#123;</span><br><span class="line">		lit.add(&quot;javaee&quot;);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><strong>集合遍历元素，集合修改元素(普通for)</strong><br> 元素在最后添加的。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">List list = new ArrayList();</span><br><span class="line">// 添加元素</span><br><span class="line">list.add(&quot;hello&quot;);</span><br><span class="line">list.add(&quot;world&quot;);</span><br><span class="line">list.add(&quot;java&quot;);</span><br><span class="line"></span><br><span class="line">//集合遍历修改</span><br><span class="line">for(int i =0;i&lt;list.size()；i++)&#123;</span><br><span class="line">	String s = （String)list.get(i);</span><br><span class="line">	if（&quot;world&quot;.equals(s)）&#123;</span><br><span class="line">		list.add(&quot;javaee&quot;);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<h2 id="Vector类概述"><a href="#Vector类概述" class="headerlink" title="Vector类概述"></a>Vector类概述</h2><p>底层数据结构是数组，查询快，增删慢<br>线程安全，效率低</p>
+<h3 id="Vector的特有功能"><a href="#Vector的特有功能" class="headerlink" title="Vector的特有功能"></a>Vector的特有功能</h3><ol>
+<li>添加功能<ul>
+<li>public void addElement(Object obj)&emsp;&emsp;&emsp;&emsp;–    add()</li>
+</ul>
+</li>
+<li>获取功能<ul>
+<li>public Object elementAt(int index)&emsp;&emsp;&emsp;&emsp;        –  get()</li>
+<li>public Enumeration elements()&emsp;&emsp;&emsp;&emsp;            –    Iterator iterator()</li>
+<li>boolean hasMoreElements()&emsp;&emsp;&emsp;&emsp;                hasNext()</li>
+<li>Object nextElement()&emsp;&emsp;&emsp;&emsp;                    next()</li>
+</ul>
+</li>
+</ol>
+<blockquote>
+<p>一般不用特有的功能，用后面的方法替代，添加遍历与ArrayList相似</p>
+</blockquote>
+<h2 id="LinkedList类概述"><a href="#LinkedList类概述" class="headerlink" title="LinkedList类概述"></a>LinkedList类概述</h2><p>底层数据结构是链表，查询慢，增删快<br>线程不安全，效率高</p>
+<h3 id="LinkedList类特有功能"><a href="#LinkedList类特有功能" class="headerlink" title="LinkedList类特有功能"></a>LinkedList类特有功能</h3><ol>
+<li>添加功能<ul>
+<li>public void addFirst(E e)及addLast(E e)</li>
+</ul>
+</li>
+<li>获取功能<ul>
+<li>public E getFirst()及getLast()</li>
+</ul>
+</li>
+<li>删除功能<ul>
+<li>public E removeFirst()及public E removeLast()</li>
+</ul>
+</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line">// 创建集合对象</span><br><span class="line">LinkedList link = new LinkedList();</span><br><span class="line"></span><br><span class="line">// 添加元素</span><br><span class="line">link.add(&quot;hello&quot;);</span><br><span class="line">link.add(&quot;world&quot;);</span><br><span class="line">link.add(&quot;java&quot;);</span><br><span class="line"></span><br><span class="line">// public void addFirst(Object e)</span><br><span class="line">// link.addFirst(&quot;javaee&quot;);</span><br><span class="line">// public void addLast(Object e)</span><br><span class="line">// link.addLast(&quot;android&quot;);</span><br><span class="line"></span><br><span class="line">link:[javaee, hello, world, java, android]</span><br><span class="line"></span><br><span class="line">-------------------------------------------------</span><br><span class="line"></span><br><span class="line">// public Object getFirst()</span><br><span class="line">// System.out.println(&quot;getFirst:&quot; + link.getFirst());</span><br><span class="line">// public Obejct getLast()</span><br><span class="line">// System.out.println(&quot;getLast:&quot; + link.getLast());</span><br><span class="line"></span><br><span class="line">getFirst:hello</span><br><span class="line">getLast:java</span><br><span class="line">link:[hello, world, java]</span><br><span class="line"></span><br><span class="line">-------------------------------------------------------</span><br><span class="line"></span><br><span class="line">// public Object removeFirst()</span><br><span class="line">System.out.println(&quot;removeFirst:&quot; + link.removeFirst());</span><br><span class="line">// public Object removeLast()</span><br><span class="line">System.out.println(&quot;removeLast:&quot; + link.removeLast());</span><br><span class="line"></span><br><span class="line">removeFirst:hello</span><br><span class="line">removeLast:java</span><br><span class="line">link:[world]</span><br><span class="line"></span><br><span class="line">---------------------------------------------------------</span><br><span class="line">// 输出对象名</span><br><span class="line">System.out.println(&quot;link:&quot; + link);</span><br></pre></td></tr></table></figure>
+<h1 id="List的子类特点"><a href="#List的子类特点" class="headerlink" title="List的子类特点"></a>List的子类特点</h1><table>
+<thead>
+<tr>
+<th style="text-align:center">子类</th>
+<th style="text-align:center">底层数据结构</th>
+<th style="text-align:right">特点</th>
+<th style="text-align:right">安全</th>
+<th style="text-align:right">效率</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">ArrayList</td>
+<td style="text-align:center">数组</td>
+<td style="text-align:right">查询快，增删慢</td>
+<td style="text-align:right">线程不安全</td>
+<td style="text-align:right">效率高</td>
+</tr>
+<tr>
+<td style="text-align:center">Vector</td>
+<td style="text-align:center">数组</td>
+<td style="text-align:right">查询快，增删慢</td>
+<td style="text-align:right">线程安全</td>
+<td style="text-align:right">效率低</td>
+</tr>
+<tr>
+<td style="text-align:center">LinkedList</td>
+<td style="text-align:center">链表</td>
+<td style="text-align:right">查询慢，增删快</td>
+<td style="text-align:right">线程不安全</td>
+<td style="text-align:right">效率高</td>
+</tr>
+</tbody>
+</table>
+<pre><code>List有三个儿子，我们到底使用谁呢?
+    看需求(情况)。
+
+要安全吗?
+    要：Vector(即使要安全，也不用这个了，后面有替代的)
+    不要：ArrayList或者LinkedList
+        查询多：ArrayList
+        增删多：LinkedList
+
+如果你什么都不懂，就用ArrayList。
+</code></pre><h1 id="数据结构"><a href="#数据结构" class="headerlink" title="数据结构"></a>数据结构</h1><blockquote>
+<p><a href="https://www.jianshu.com/p/230e6fde9c75" target="_blank" rel="noopener">常见数据结构与算法整理总结（上）</a></p>
+</blockquote>
+<blockquote>
+<p><a href="https://www.github.com/sun6145/githubPicture/raw/master/小书匠/数据结构之数组和链表.png" title="数据结构之数组和链表" target="_blank" rel="noopener">数据结构之数组和链表</a></p>
+</blockquote>
+<blockquote>
+<p><a href="https://www.github.com/sun6145/githubPicture/raw/master/小书匠/数据结构之栈和队列.png" title="数据结构之栈和队列" target="_blank" rel="noopener">数据结构之栈和队列</a></p>
+</blockquote>
+
+      
+    </div>
+    
+    
+    
+<div>
+
+<div>
+
+    <div style="text-align:center;color: #ccc;font-size:14px;">-------------本文结束<i class="fa fa-paw"></i>感谢您的阅读-------------</div>
+
+</div>
+
+</div>
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/blog/tags/List接口的成员方法/" rel="tag"># List接口的成员方法</a>
+          
+            <a href="/blog/tags/List-集合的遍历/" rel="tag"># List 集合的遍历</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/blog/2018/07/31/集合/" rel="next" title="集合">
+                <i class="fa fa-chevron-left"></i> 集合
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/blog/2018/08/01/java基础day04/" rel="prev" title="java基础day04">
+                java基础day04 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+    </div>
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/blog/images/avatar.png" alt="小良">
+            
+              <p class="site-author-name" itemprop="name">小良</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/blog/archives/">
+              
+                  <span class="site-state-item-count">77</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/blog/categories/index.html">
+                  <span class="site-state-item-count">5</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/blog/tags/index.html">
+                  <span class="site-state-item-count">81</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+            <div class="links-of-blogroll motion-element links-of-blogroll-block">
+              <div class="links-of-blogroll-title">
+                <i class="fa  fa-fw fa-link"></i>
+                友情链接
+              </div>
+              <ul class="links-of-blogroll-list">
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://sun__shine.coding.me/blog" title="旧版本" target="_blank">旧版本</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="/sun/2018/07/28/目录/" title="回到目录" target="_blank">回到目录</a>
+                  </li>
+                
+              </ul>
+            </div>
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#List-接口概述（列表）"><span class="nav-number">1.</span> <span class="nav-text">List 接口概述（列表）</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#List的存储和遍历"><span class="nav-number">1.1.</span> <span class="nav-text">List的存储和遍历</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#List存储字符串并遍历"><span class="nav-number">1.1.1.</span> <span class="nav-text">List存储字符串并遍历</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#List存储自定义对象并遍历"><span class="nav-number">1.1.2.</span> <span class="nav-text">List存储自定义对象并遍历</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#List集合的特点："><span class="nav-number">1.2.</span> <span class="nav-text">List集合的特点：</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#List-接口的成员方法"><span class="nav-number">1.3.</span> <span class="nav-text">List 接口的成员方法</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#List的子类"><span class="nav-number">2.</span> <span class="nav-text">List的子类</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#ArrayList类概述及使用"><span class="nav-number">2.1.</span> <span class="nav-text">ArrayList类概述及使用</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#ArrayList-自带方法的遍历"><span class="nav-number">2.1.1.</span> <span class="nav-text">ArrayList 自带方法的遍历</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#普通for"><span class="nav-number">2.1.1.1.</span> <span class="nav-text">普通for</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#遍历数组-size-和-get-方法"><span class="nav-number">2.1.1.1.1.</span> <span class="nav-text">遍历数组 size() 和 get() 方法</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#遍历自定义对象-size-和get-结合"><span class="nav-number">2.1.1.1.2.</span> <span class="nav-text">遍历自定义对象 size()和get()结合</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#列表迭代器"><span class="nav-number">2.1.1.2.</span> <span class="nav-text">列表迭代器</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#迭代器遍历数组"><span class="nav-number">2.1.1.2.1.</span> <span class="nav-text">迭代器遍历数组</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#修改集合的内容"><span class="nav-number">2.1.1.3.</span> <span class="nav-text">修改集合的内容</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#↑，ConcurrentModificationException-当方法检测到对象的并发修改，但不允许这种修改时，抛出此异常。"><span class="nav-number">2.1.1.4.</span> <span class="nav-text">↑，ConcurrentModificationException:当方法检测到对象的并发修改，但不允许这种修改时，抛出此异常。</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#产生问题的原因"><span class="nav-number">2.1.1.5.</span> <span class="nav-text">产生问题的原因</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#解决办法"><span class="nav-number">2.1.1.6.</span> <span class="nav-text">解决办法</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Vector类概述"><span class="nav-number">2.2.</span> <span class="nav-text">Vector类概述</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Vector的特有功能"><span class="nav-number">2.2.1.</span> <span class="nav-text">Vector的特有功能</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#LinkedList类概述"><span class="nav-number">2.3.</span> <span class="nav-text">LinkedList类概述</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#LinkedList类特有功能"><span class="nav-number">2.3.1.</span> <span class="nav-text">LinkedList类特有功能</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#List的子类特点"><span class="nav-number">3.</span> <span class="nav-text">List的子类特点</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#数据结构"><span class="nav-number">4.</span> <span class="nav-text">数据结构</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-heartbeat" aria-hidden="true"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">小良</span>
+
+  
+</div>
+
+<div class="powered-by">
+<i class="fa fa-user-md"></i><span id="busuanzi_container_site_uv">
+  本站访客数:<span id="busuanzi_value_site_uv"></span>
+</span>
+</div>
+
+
+<!--
+
+-->
+<div class="theme-info">
+  <div class="powered-by"></div>
+  <span class="post-count">博客全站共字</span>
+</div>
+
+
+
+<div class="coding-pages">
+  <p>Hosted by <a href="https://pages.coding.me" style="font-weight: bold">Coding Pages</a></p>
+</div>
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/blog/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/blog/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/blog/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/blog/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/blog/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/blog/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/blog/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/blog/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/blog/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/blog/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/blog/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/blog/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/blog/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/blog/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

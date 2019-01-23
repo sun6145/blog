@@ -1,0 +1,1201 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/blog/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/blog/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/blog/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/blog/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/blog/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/blog/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/blog/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="集合的嵌套遍历,">
+
+
+
+
+
+
+
+
+
+
+<meta name="keywords" content="集合的嵌套遍历">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Map集合练习">
+<meta property="og:url" content="https://sun6145.github.io/blog/2018/08/06/Map集合练习/index.html">
+<meta property="og:site_name" content="小良博客">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2019-01-23T16:28:30.193Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Map集合练习">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/blog/',
+    scheme: 'Gemini',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"hide","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://sun6145.github.io/blog/2018/08/06/Map集合练习/">
+
+
+
+
+
+  <title>Map集合练习 | 小良博客</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/blog/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">小良博客</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">小良博客</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/blog/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-writer">
+          <a href="/blog/2018/07/28/目录/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-sitemap"></i> <br>
+            
+            目录
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/blog/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/blog/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/blog/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-messagebook">
+          <a href="/blog/MessageBook" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-book"></i> <br>
+            
+            留言板
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off" placeholder="搜索..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://sun6145.github.io/blog/blog/2018/08/06/Map集合练习/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="小良">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/blog/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="小良博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Map集合练习</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-08-06T17:21:44+00:00">
+                2018-08-06
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/blog/categories/Java/" itemprop="url" rel="index">
+                    <span itemprop="name">Java</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  字
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">
+                  分钟
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <hr>
+<a id="more"></a>
+<ol>
+<li>获取字符串中每一个字母出现的次数<blockquote>
+<p>分析：</p>
+<pre><code>A:定义一个字符串(可以改进为键盘录入)
+B:定义一个TreeMap集合
+    键:Character
+    值：Integer
+C:把字符串转换为字符数组
+D:遍历字符数组，得到每一个字符
+E:拿刚才得到的字符作为键到集合中去找值，看返回值
+    是null:说明该键不存在，就把该字符作为键，1作为值存储
+    不是null:说明该键存在，就把值加1，然后重写存储该键和值
+F:定义字符串缓冲区变量
+G:遍历集合，得到键和值，进行按照要求拼接
+H:把字符串缓冲区转换为字符串输出
+录入：aababcabcdabcde
+结果：result:a(5)b(4)c(3)d(2)e(1)
+</code></pre><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line">// 定义一个字符串(可以改进为键盘录入)</span><br><span class="line">Scanner sc = new Scanner(System.in);</span><br><span class="line">System.out.println(&quot;请输入一个字符串：&quot;);</span><br><span class="line">String line = sc.nextLine();</span><br><span class="line"></span><br><span class="line">// 定义一个TreeMap集合</span><br><span class="line">TreeMap&lt;Character, Integer&gt; tm = new TreeMap&lt;Character, Integer&gt;();</span><br><span class="line"></span><br><span class="line">//把字符串转换为字符数组</span><br><span class="line">char[] chs = line.toCharArray();</span><br><span class="line"></span><br><span class="line">//遍历字符数组，得到每一个字符</span><br><span class="line">for(char ch : chs)&#123;</span><br><span class="line">	//拿刚才得到的字符作为键到集合中去找值，看返回值</span><br><span class="line">	Integer i =  tm.get(ch);</span><br><span class="line">	</span><br><span class="line">	//是null:说明该键不存在，就把该字符作为键，1作为值存储</span><br><span class="line">	if(i == null)&#123;</span><br><span class="line">		tm.put(ch, 1);</span><br><span class="line">	&#125;else &#123;</span><br><span class="line">		//不是null:说明该键存在，就把值加1，然后重写存储该键和值</span><br><span class="line">		i++;</span><br><span class="line">		tm.put(ch,i);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">//定义字符串缓冲区变量</span><br><span class="line">StringBuilder sb=  new StringBuilder();</span><br><span class="line"></span><br><span class="line">//遍历集合，得到键和值，进行按照要求拼接</span><br><span class="line">Set&lt;Character&gt; set = tm.keySet();</span><br><span class="line">for(Character key : set)&#123;</span><br><span class="line">	Integer value = tm.get(key);</span><br><span class="line">	sb.append(key).append(&quot;(&quot;).append(value).append(&quot;)&quot;);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">//把字符串缓冲区转换为字符串输出</span><br><span class="line">String result = sb.toString();</span><br><span class="line">System.out.println(&quot;result:&quot;+result);</span><br></pre></td></tr></table></figure>
+</blockquote>
+</li>
+</ol>
+<h1 id="集合的嵌套遍历"><a href="#集合的嵌套遍历" class="headerlink" title="集合的嵌套遍历"></a>集合的嵌套遍历</h1><h2 id="HashMap嵌套HashMap"><a href="#HashMap嵌套HashMap" class="headerlink" title="HashMap嵌套HashMap"></a>HashMap嵌套HashMap</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line">// 创建集合对象</span><br><span class="line">HashMap&lt;String, HashMap&lt;String, Integer&gt;&gt; map1 = new HashMap&lt;String, HashMap&lt;String, Integer&gt;&gt;();</span><br><span class="line">HashMap&lt;String, Integer&gt; map2 = new HashMap&lt;String, Integer&gt;();</span><br><span class="line"></span><br><span class="line">// 添加元素</span><br><span class="line">map2.put(&quot;元素1&quot;, 20);</span><br><span class="line">map2.put(&quot;元素2&quot;, 22);</span><br><span class="line">// 把小集合添加到大集合</span><br><span class="line">map1.put(&quot;大集合1&quot;, map2);</span><br><span class="line"></span><br><span class="line">HashMap&lt;String, Integer&gt; map3 = new HashMap&lt;String, Integer&gt;();</span><br><span class="line">map3.put(&quot;元素1&quot;, 21);</span><br><span class="line">map3.put(&quot;元素2&quot;, 23);</span><br><span class="line">map1.put(&quot;大集合2&quot;, map3);</span><br><span class="line"></span><br><span class="line">//遍历</span><br><span class="line">//遍历集合</span><br><span class="line">Set&lt;String&gt; mapSet = map1.keySet();</span><br><span class="line">for(String mapKey : mapSet)&#123;</span><br><span class="line">	System.out.println(mapKey);</span><br><span class="line">	HashMap&lt;String, Integer&gt; mapValue = map1.get(mapKey);</span><br><span class="line">	Set&lt;String&gt; mapValueSet = mapValue.keySet();</span><br><span class="line">	for(String mapValueKey : mapValueSet)&#123;</span><br><span class="line">		Integer mapValueValue = mapValue.get(mapValueKey);</span><br><span class="line">		System.out.println(&quot;\t&quot;+mapValueKey+&quot;---&quot;+mapValueValue);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">大集合1</span><br><span class="line">	元素1---20</span><br><span class="line">	元素2---22</span><br><span class="line">大集合2</span><br><span class="line">	元素1---21</span><br><span class="line">	元素2---23</span><br></pre></td></tr></table></figure>
+<h2 id="HashMap嵌套ArrayList"><a href="#HashMap嵌套ArrayList" class="headerlink" title="HashMap嵌套ArrayList"></a>HashMap嵌套ArrayList</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line">// 创建集合对象</span><br><span class="line">HashMap&lt;String, ArrayList&lt;String&gt;&gt; hm = new HashMap&lt;String, ArrayList&lt;String&gt;&gt;();</span><br><span class="line"></span><br><span class="line">// 创建元素集合1</span><br><span class="line">ArrayList&lt;String&gt; array1 = new ArrayList&lt;String&gt;();</span><br><span class="line">array1.add(&quot;吕布&quot;);</span><br><span class="line">array1.add(&quot;周瑜&quot;);</span><br><span class="line">hm.put(&quot;三国演义&quot;, array1);</span><br><span class="line"></span><br><span class="line">// 创建元素集合2</span><br><span class="line">ArrayList&lt;String&gt; array2 = new ArrayList&lt;String&gt;();</span><br><span class="line">array2.add(&quot;令狐冲&quot;);</span><br><span class="line">array2.add(&quot;林平之&quot;);</span><br><span class="line">hm.put(&quot;笑傲江湖&quot;, array2);</span><br><span class="line"></span><br><span class="line">// 创建元素集合3</span><br><span class="line">ArrayList&lt;String&gt; array3 = new ArrayList&lt;String&gt;();</span><br><span class="line">array3.add(&quot;郭靖&quot;);</span><br><span class="line">array3.add(&quot;杨过&quot;);</span><br><span class="line">hm.put(&quot;神雕侠侣&quot;, array3);</span><br><span class="line"></span><br><span class="line">//遍历集合</span><br><span class="line">Set&lt;String&gt; set = hm.keySet();</span><br><span class="line">for(String key : set)&#123;</span><br><span class="line">	System.out.println(key);</span><br><span class="line">	ArrayList&lt;String&gt; value = hm.get(key);</span><br><span class="line">	for(String s : value)&#123;</span><br><span class="line">		System.out.println(&quot;\t&quot;+s);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">神雕侠侣</span><br><span class="line">	郭靖</span><br><span class="line">	杨过</span><br><span class="line">三国演义</span><br><span class="line">	吕布</span><br><span class="line">	周瑜</span><br><span class="line">笑傲江湖</span><br><span class="line">	令狐冲</span><br><span class="line">	林平之</span><br></pre></td></tr></table></figure>
+<h2 id="ArrayList嵌套HashMap"><a href="#ArrayList嵌套HashMap" class="headerlink" title="ArrayList嵌套HashMap"></a>ArrayList嵌套HashMap</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line">public static void main(String[] args) &#123;</span><br><span class="line">// 创建集合对象</span><br><span class="line">ArrayList&lt;HashMap&lt;String, String&gt;&gt; array = new ArrayList&lt;HashMap&lt;String, String&gt;&gt;();</span><br><span class="line"></span><br><span class="line">// 创建元素1</span><br><span class="line">HashMap&lt;String, String&gt; hm1 = new HashMap&lt;String, String&gt;();</span><br><span class="line">hm1.put(&quot;周瑜&quot;, &quot;小乔&quot;);</span><br><span class="line">hm1.put(&quot;吕布&quot;, &quot;貂蝉&quot;);</span><br><span class="line">// 把元素添加到array里面</span><br><span class="line">array.add(hm1);</span><br><span class="line"></span><br><span class="line">// 创建元素1</span><br><span class="line">HashMap&lt;String, String&gt; hm2 = new HashMap&lt;String, String&gt;();</span><br><span class="line">hm2.put(&quot;郭靖&quot;, &quot;黄蓉&quot;);</span><br><span class="line">hm2.put(&quot;杨过&quot;, &quot;小龙女&quot;);</span><br><span class="line">// 把元素添加到array里面</span><br><span class="line">array.add(hm2);</span><br><span class="line"></span><br><span class="line">// 创建元素1</span><br><span class="line">HashMap&lt;String, String&gt; hm3 = new HashMap&lt;String, String&gt;();</span><br><span class="line">hm3.put(&quot;令狐冲&quot;, &quot;任盈盈&quot;);</span><br><span class="line">hm3.put(&quot;林平之&quot;, &quot;岳灵珊&quot;);</span><br><span class="line">// 把元素添加到array里面</span><br><span class="line">array.add(hm3);</span><br><span class="line"></span><br><span class="line">// 遍历</span><br><span class="line">for (HashMap&lt;String, String&gt; hm : array) &#123;</span><br><span class="line">	Set&lt;String&gt; set = hm.keySet();</span><br><span class="line">	for (String key : set) &#123;</span><br><span class="line">		String value = hm.get(key);</span><br><span class="line">		System.out.println(key + &quot;---&quot; + value);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">吕布---貂蝉</span><br><span class="line">周瑜---小乔</span><br><span class="line">杨过---小龙女</span><br><span class="line">郭靖---黄蓉</span><br><span class="line">令狐冲---任盈盈</span><br><span class="line">林平之---岳灵珊</span><br></pre></td></tr></table></figure>
+<h2 id="HashMap嵌套HashMap嵌套ArrayList-三层嵌套"><a href="#HashMap嵌套HashMap嵌套ArrayList-三层嵌套" class="headerlink" title="HashMap嵌套HashMap嵌套ArrayList(三层嵌套)"></a>HashMap嵌套HashMap嵌套ArrayList(三层嵌套)</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br></pre></td><td class="code"><pre><span class="line">// 创建大集合</span><br><span class="line">HashMap&lt;String, HashMap&lt;String, ArrayList&lt;Student&gt;&gt;&gt; map = new HashMap&lt;String, HashMap&lt;String, ArrayList&lt;Student&gt;&gt;&gt;();</span><br><span class="line">// 北京数据</span><br><span class="line">HashMap&lt;String, ArrayList&lt;Student&gt;&gt; bjMap = new HashMap&lt;String, ArrayList&lt;Student&gt;&gt;();</span><br><span class="line">ArrayList&lt;Student&gt; array1 = new ArrayList&lt;Student&gt;();</span><br><span class="line">Student s1 = new Student(&quot;学生1&quot;, 27);</span><br><span class="line">Student s2 = new Student(&quot;学生2&quot;, 30);</span><br><span class="line">array1.add(s1);</span><br><span class="line">array1.add(s2);</span><br><span class="line"></span><br><span class="line">ArrayList&lt;Student&gt; array2 = new ArrayList&lt;Student&gt;();</span><br><span class="line">Student s3 = new Student(&quot;学生3&quot;, 28);</span><br><span class="line">Student s4 = new Student(&quot;学生4&quot;, 29);</span><br><span class="line">array2.add(s3);</span><br><span class="line">array2.add(s4);</span><br><span class="line"></span><br><span class="line">bjMap.put(&quot;基础班&quot;, array1);</span><br><span class="line">bjMap.put(&quot;就业班&quot;, array2);</span><br><span class="line">map.put(&quot;北京校区&quot;, bjMap);</span><br><span class="line"></span><br><span class="line">// 西安校区数据</span><br><span class="line">HashMap&lt;String, ArrayList&lt;Student&gt;&gt; xaMap = new HashMap&lt;String, ArrayList&lt;Student&gt;&gt;();</span><br><span class="line">ArrayList&lt;Student&gt; array3 = new ArrayList&lt;Student&gt;();</span><br><span class="line">Student s5 = new Student(&quot;学生5&quot;, 27);</span><br><span class="line">Student s6 = new Student(&quot;学生6&quot;, 30);</span><br><span class="line">array3.add(s5);</span><br><span class="line">array3.add(s6);</span><br><span class="line">ArrayList&lt;Student&gt; array4 = new ArrayList&lt;Student&gt;();</span><br><span class="line">Student s7 = new Student(&quot;学生7&quot;, 28);</span><br><span class="line">Student s8 = new Student(&quot;学生8&quot;, 29);</span><br><span class="line">array4.add(s7);</span><br><span class="line">array4.add(s8);</span><br><span class="line">xaMap.put(&quot;基础班&quot;, array3);</span><br><span class="line">xaMap.put(&quot;就业班&quot;, array4);</span><br><span class="line">map.put(&quot;西安校区&quot;, xaMap);</span><br><span class="line"></span><br><span class="line">//集合遍历</span><br><span class="line">Set&lt;String&gt; mapSet = map.keySet();</span><br><span class="line">for (String mapKey : mapSet) &#123;</span><br><span class="line">	System.out.println(mapKey);</span><br><span class="line">	HashMap&lt;String, ArrayList&lt;Student&gt;&gt; mapValue = map</span><br><span class="line">			.get(mapKey);</span><br><span class="line">	Set&lt;String&gt; mapValueSet = mapValue.keySet();</span><br><span class="line">	for (String mapValueKey : mapValueSet) &#123;</span><br><span class="line">		System.out.println(&quot;\t&quot; + mapValueKey);</span><br><span class="line">		ArrayList&lt;Student&gt; czbkMapValueValue = mapValue</span><br><span class="line">				.get(mapValueKey);</span><br><span class="line">		for (Student s : czbkMapValueValue) &#123;</span><br><span class="line">			System.out.println(&quot;\t\t&quot; + s.getName() + &quot;---&quot;</span><br><span class="line">					+ s.getAge());</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">西安校区</span><br><span class="line">	就业班</span><br><span class="line">		学生7---28</span><br><span class="line">		学生8---29</span><br><span class="line">	基础班</span><br><span class="line">		学生5---27</span><br><span class="line">		学生6---30</span><br><span class="line">北京校区</span><br><span class="line">	就业班</span><br><span class="line">		学生3---28</span><br><span class="line">		学生4---29</span><br><span class="line">	基础班</span><br><span class="line">		学生1---27</span><br><span class="line">		学生2---30</span><br></pre></td></tr></table></figure>
+<h1 id="Hashtable和HashMap的区别"><a href="#Hashtable和HashMap的区别" class="headerlink" title="Hashtable和HashMap的区别?"></a>Hashtable和HashMap的区别?</h1><p>Hashtable:线程安全，效率低。不允许null键和null值<br>HashMap:线程不安全，效率高。允许null键和null值</p>
+<h1 id="2-List-Set-Map等接口是否都继承子Map接口"><a href="#2-List-Set-Map等接口是否都继承子Map接口" class="headerlink" title="2:List,Set,Map等接口是否都继承子Map接口?"></a>2:List,Set,Map等接口是否都继承子Map接口?</h1><p>List，Set不是继承自Map接口，它们继承自Collection接口<br>Map接口本身就是一个顶层接口</p>
+
+      
+    </div>
+    
+    
+    
+<div>
+
+<div>
+
+    <div style="text-align:center;color: #ccc;font-size:14px;">-------------本文结束<i class="fa fa-paw"></i>感谢您的阅读-------------</div>
+
+</div>
+
+</div>
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/blog/tags/集合的嵌套遍历/" rel="tag"># 集合的嵌套遍历</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/blog/2018/08/06/Map子类/" rel="next" title="Map子类">
+                <i class="fa fa-chevron-left"></i> Map子类
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/blog/2018/08/07/java基础day08/" rel="prev" title="java基础day08">
+                java基础day08 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+    </div>
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/blog/images/avatar.png" alt="小良">
+            
+              <p class="site-author-name" itemprop="name">小良</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/blog/archives/">
+              
+                  <span class="site-state-item-count">77</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/blog/categories/index.html">
+                  <span class="site-state-item-count">5</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/blog/tags/index.html">
+                  <span class="site-state-item-count">81</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+            <div class="links-of-blogroll motion-element links-of-blogroll-block">
+              <div class="links-of-blogroll-title">
+                <i class="fa  fa-fw fa-link"></i>
+                友情链接
+              </div>
+              <ul class="links-of-blogroll-list">
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://sun__shine.coding.me/blog" title="旧版本" target="_blank">旧版本</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="/sun/2018/07/28/目录/" title="回到目录" target="_blank">回到目录</a>
+                  </li>
+                
+              </ul>
+            </div>
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#集合的嵌套遍历"><span class="nav-number">1.</span> <span class="nav-text">集合的嵌套遍历</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#HashMap嵌套HashMap"><span class="nav-number">1.1.</span> <span class="nav-text">HashMap嵌套HashMap</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#HashMap嵌套ArrayList"><span class="nav-number">1.2.</span> <span class="nav-text">HashMap嵌套ArrayList</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ArrayList嵌套HashMap"><span class="nav-number">1.3.</span> <span class="nav-text">ArrayList嵌套HashMap</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#HashMap嵌套HashMap嵌套ArrayList-三层嵌套"><span class="nav-number">1.4.</span> <span class="nav-text">HashMap嵌套HashMap嵌套ArrayList(三层嵌套)</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Hashtable和HashMap的区别"><span class="nav-number">2.</span> <span class="nav-text">Hashtable和HashMap的区别?</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-List-Set-Map等接口是否都继承子Map接口"><span class="nav-number">3.</span> <span class="nav-text">2:List,Set,Map等接口是否都继承子Map接口?</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-heartbeat" aria-hidden="true"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">小良</span>
+
+  
+</div>
+
+<div class="powered-by">
+<i class="fa fa-user-md"></i><span id="busuanzi_container_site_uv">
+  本站访客数:<span id="busuanzi_value_site_uv"></span>
+</span>
+</div>
+
+
+<!--
+
+-->
+<div class="theme-info">
+  <div class="powered-by"></div>
+  <span class="post-count">博客全站共字</span>
+</div>
+
+
+
+<div class="coding-pages">
+  <p>Hosted by <a href="https://pages.coding.me" style="font-weight: bold">Coding Pages</a></p>
+</div>
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/blog/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/blog/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/blog/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/blog/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/blog/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/blog/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/blog/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/blog/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/blog/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/blog/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/blog/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/blog/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/blog/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/blog/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

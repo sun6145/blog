@@ -1,0 +1,1369 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/blog/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/blog/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/blog/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/blog/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/blog/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/blog/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/blog/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="包装类,日期,成员内部类,匿名内部类,">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="正则表达式12345一个典型的调用序列 Pattern p = Pattern.compile(&amp;quot;a*b&amp;quot;); Matcher m = p.matcher(&amp;quot;aaaaab&amp;quot;); boolean b = m.matches();">
+<meta name="keywords" content="包装类,日期,成员内部类,匿名内部类">
+<meta property="og:type" content="article">
+<meta property="og:title" content="java基础day11">
+<meta property="og:url" content="https://sun6145.github.io/blog/2018/08/10/java基础day11/index.html">
+<meta property="og:site_name" content="小良博客">
+<meta property="og:description" content="正则表达式12345一个典型的调用序列 Pattern p = Pattern.compile(&amp;quot;a*b&amp;quot;); Matcher m = p.matcher(&amp;quot;aaaaab&amp;quot;); boolean b = m.matches();">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://www.github.com/sun6145/githubPicture/raw/master/小书匠/正则表达式符号.png">
+<meta property="og:updated_time" content="2019-01-23T16:28:30.197Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="java基础day11">
+<meta name="twitter:description" content="正则表达式12345一个典型的调用序列 Pattern p = Pattern.compile(&amp;quot;a*b&amp;quot;); Matcher m = p.matcher(&amp;quot;aaaaab&amp;quot;); boolean b = m.matches();">
+<meta name="twitter:image" content="https://www.github.com/sun6145/githubPicture/raw/master/小书匠/正则表达式符号.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/blog/',
+    scheme: 'Gemini',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"hide","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://sun6145.github.io/blog/2018/08/10/java基础day11/">
+
+
+
+
+
+  <title>java基础day11 | 小良博客</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/blog/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">小良博客</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">小良博客</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/blog/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-writer">
+          <a href="/blog/2018/07/28/目录/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-sitemap"></i> <br>
+            
+            目录
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/blog/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/blog/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/blog/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-messagebook">
+          <a href="/blog/MessageBook" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-book"></i> <br>
+            
+            留言板
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off" placeholder="搜索..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://sun6145.github.io/blog/blog/2018/08/10/java基础day11/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="小良">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/blog/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="小良博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">java基础day11</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-08-10T09:40:15+00:00">
+                2018-08-10
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/blog/categories/JavaSE/" itemprop="url" rel="index">
+                    <span itemprop="name">JavaSE</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  字
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">
+                  分钟
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="正则表达式"><a href="#正则表达式" class="headerlink" title="正则表达式"></a>正则表达式</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">一个典型的调用序列</span><br><span class="line"></span><br><span class="line"> Pattern p = Pattern.compile(&quot;a*b&quot;);</span><br><span class="line"> Matcher m = p.matcher(&quot;aaaaab&quot;);</span><br><span class="line"> boolean b = m.matches();</span><br></pre></td></tr></table></figure>
+<a id="more"></a>
+<p><img src="https://www.github.com/sun6145/githubPicture/raw/master/小书匠/正则表达式符号.png" alt="enter description here" title="正则表达式符号"></p>
+<h1 id="自动拆装箱-包装类"><a href="#自动拆装箱-包装类" class="headerlink" title="自动拆装箱(包装类)"></a>自动拆装箱(包装类)</h1><blockquote>
+<p>包装类是不可变类;对象创建就不能更改<br>包装类使用类常量池技术,提高了性能<br>对包装类的一部分数据进行缓存(除了float和double)</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">类型		缓存数据</span><br><span class="line">byte  	  	-128 ~ 127</span><br><span class="line">char 	 	0 ~ 127</span><br><span class="line">boolean 	全部</span><br></pre></td></tr></table></figure>
+<h2 id="String-–-gt-数字"><a href="#String-–-gt-数字" class="headerlink" title="String – &gt; 数字"></a>String – &gt; 数字</h2><p>new Ingetger(String str).intValue();<br>Integer.parseInt(String str);<br>num = Integer.valueof(String);</p>
+<h2 id="数字-–-gt-String"><a href="#数字-–-gt-String" class="headerlink" title="数字 –&gt; String"></a>数字 –&gt; String</h2><p>s = num + “”;<br>s = String.valueof(num);<br>s = Integer.toString(num);</p>
+<h2 id="进制转换"><a href="#进制转换" class="headerlink" title="进制转换"></a>进制转换</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">System.out.println(Integer.toBinaryString(5));	//转换为2进制</span><br><span class="line">System.out.println(Integer.toOctalString(10));	//转换为8进制</span><br><span class="line">System.out.println(Integer.toHexString(15));	//转换为16进制</span><br></pre></td></tr></table></figure>
+<h3 id="十进制变其他进制"><a href="#十进制变其他进制" class="headerlink" title="十进制变其他进制()"></a>十进制变其他进制()</h3><blockquote>
+<p>除基取余</p>
+<ol>
+<li><code>public static String toString(int i,int radix);</code>将i变为 radix 进制<ul>
+<li>(范围：2-36，因为表示的数有0-9,a-z共36个)<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">System.out.println(Integer.toString(5, 2));//101</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+</ol>
+</blockquote>
+<h3 id="其他进制-变十进制"><a href="#其他进制-变十进制" class="headerlink" title="其他进制 变十进制"></a>其他进制 变十进制</h3><blockquote>
+<p>位 乘以 基的权次幂</p>
+<ol>
+<li><code>public static int parseInt(String s,int radix);</code> 将字符串s变为 radix 进制</li>
+<li><code>public static int valueOf(String s,int radix);</code> 将字符串s变为 radix 进制</li>
+</ol>
+</blockquote>
+<pre><code><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">System.out.println(Integer.parseInt(&quot;101&quot;, 2));	//5</span><br><span class="line">System.out.println(Integer.valueOf(&quot;101&quot;, 8));	//65</span><br></pre></td></tr></table></figure>
+</code></pre><h1 id="Date"><a href="#Date" class="headerlink" title="Date"></a>Date</h1><ol>
+<li><p>构造方法:获取当前的时间</p>
+ <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">java.util.Date date = new java.util.Date();</span><br><span class="line">System.out.println(date);	//Sun Aug 12 15:11:48 CST 2018</span><br><span class="line">//过时的方法,(不建议使用)</span><br><span class="line">System.out.println(date.getYear() + 1900);</span><br><span class="line">System.out.println(date.getMonth() + 1);</span><br><span class="line">System.out.println(date.getDate());</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>public long getTime():获取时间，以毫秒为单位</p>
+</li>
+<li>public void setTime(long time):设置时间<h2 id="子类"><a href="#子类" class="headerlink" title="子类"></a>子类</h2><h3 id="Date-1"><a href="#Date-1" class="headerlink" title="Date"></a>Date</h3><blockquote>
+<p>java.sql.Date包下</p>
+</blockquote>
+</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">java.sql.Date dt1 = new java.sql.Date(date.getTime());</span><br><span class="line">System.out.println(dt1);		//2018-08-12</span><br><span class="line"></span><br><span class="line">//日期 转 字符串 Date.toSring()</span><br><span class="line">String sdt1 = dt1.toString();</span><br><span class="line">System.out.println(sdt1);		/2018-08-12</span><br><span class="line"></span><br><span class="line">//字符串 转 日期 Date.valueof(String str)</span><br><span class="line">dt1 = java.sql.Date.valueOf(sdt1);</span><br><span class="line">System.out.println(dt1);		//2018-08-12</span><br></pre></td></tr></table></figure>
+<h3 id="Time"><a href="#Time" class="headerlink" title="Time"></a>Time</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Time time = new Time(date.getTime());</span><br><span class="line">	System.out.println(time);	//15:20:51</span><br></pre></td></tr></table></figure>
+<h2 id="Calendar类"><a href="#Calendar类" class="headerlink" title="Calendar类"></a>Calendar类</h2><blockquote>
+<p>月份从0开始<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">Calendar c = Calendar.getInstance();</span><br><span class="line">System.out.println(c.getTime());		//Sun Aug 12 15:23:15 CST 2018</span><br><span class="line">System.out.println(c.get(Calendar.YEAR));	//2018</span><br><span class="line">System.out.println(c.get(Calendar.MONTH)+1);	//8</span><br><span class="line">System.out.println(c.get(Calendar.DATE));		/12</span><br><span class="line"></span><br><span class="line">//add()调节时间 </span><br><span class="line">c.add(Calendar.YEAR, -10);		//10年前的今天;		</span><br><span class="line">System.out.println(c.getTime());	//Tue Aug 12 15:24:55 CST 2008</span><br></pre></td></tr></table></figure></p>
+</blockquote>
+<h2 id="格式化"><a href="#格式化" class="headerlink" title="格式化"></a>格式化</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">// 数字的格式化Format</span><br><span class="line">//当前环境 缺省的格式</span><br><span class="line">NumberFormat f1 = NumberFormat.getInstance();</span><br><span class="line">System.out.println(f1.format(234.55665));	//234.557</span><br><span class="line">// 当前环境缺省的货币格式</span><br><span class="line">f1 = NumberFormat.getCurrencyInstance();</span><br><span class="line">System.out.println(f1.format(2.364588));	//￥2.36</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br></pre></td><td class="code"><pre><span class="line">//----------------------日期格式化------------------------------------</span><br><span class="line">		//父类 </span><br><span class="line">		//当前环境缺省格式</span><br><span class="line">		DateFormat  df = DateFormat.getInstance();</span><br><span class="line">		System.out.println(df.format(date));//18-8-10 上午11:47</span><br><span class="line">//==Date=============================================================</span><br><span class="line">		df = DateFormat.getDateInstance();</span><br><span class="line">		System.out.println(df.format(date));//2018-8-10</span><br><span class="line"></span><br><span class="line">		df = DateFormat.getDateInstance(DateFormat.SHORT);</span><br><span class="line">		System.out.println(df.format(date));//18-8-10</span><br><span class="line"></span><br><span class="line">		df = DateFormat.getDateInstance(DateFormat.MEDIUM);</span><br><span class="line">		System.out.println(df.format(date));//2018-8-10</span><br><span class="line"></span><br><span class="line">		df = DateFormat.getDateInstance(DateFormat.LONG);</span><br><span class="line">		System.out.println(df.format(date));//2018年8月10日</span><br><span class="line"></span><br><span class="line">		df = DateFormat.getDateInstance(DateFormat.FULL);</span><br><span class="line">		System.out.println(df.format(date));//2018年8月10日 星期五</span><br><span class="line">//==Time=============================================================</span><br><span class="line">		df = DateFormat.getTimeInstance();</span><br><span class="line">		System.out.println(df.format(date));//11:50:46</span><br><span class="line">		</span><br><span class="line">		d1 = DateFormat.getTimeInstance(DateFormat.SHORT);</span><br><span class="line">		System.out.println(d1.format(date));// 上午11:58</span><br><span class="line"></span><br><span class="line">		d1 = DateFormat.getTimeInstance(DateFormat.MEDIUM);</span><br><span class="line">		System.out.println(d1.format(date));// 11:50:46</span><br><span class="line"></span><br><span class="line">		d1 = DateFormat.getTimeInstance(DateFormat.LONG);</span><br><span class="line">		System.out.println(d1.format(date));// 上午11时58分30秒</span><br><span class="line">//===DateTime=============================================================</span><br><span class="line">		df = DateFormat.getDateTimeInstance();</span><br><span class="line">		System.out.println(df.format(date));//2018-8-10 11:51:20</span><br><span class="line"></span><br><span class="line">		df = DateFormat.getDateTimeInstance(DateFormat.FULL,DateFormat.FULL);</span><br><span class="line">		System.out.println(df.format(date));//2018年8月10日 星期五 上午11时52分06秒 CST</span><br><span class="line">		</span><br><span class="line">//子类</span><br><span class="line">		// yy MM dd  hh(12)  H   (24) mm ss S</span><br><span class="line">		SimpleDateFormat sf1 = new SimpleDateFormat(&quot;yyyy年MM-dd H:mm:ss.SSS&quot;);</span><br><span class="line">		System.out.println(sf1.format(date));	//2018年08-12 15:35:11.322</span><br><span class="line">		</span><br><span class="line">//-----------------------------8.0--------------------------------------</span><br><span class="line">		//日期</span><br><span class="line">		LocalDate ldate = LocalDate.now();</span><br><span class="line">		ldate = LocalDate.of(2012, 1, 23);	//自己设置时间</span><br><span class="line">		System.out.println(ldate);	//2012-02-23</span><br><span class="line">		System.out.println(ldate.getYear());	//2012</span><br><span class="line">		System.out.println(ldate.getMonthValue());	//2</span><br><span class="line">		System.out.println(ldate.getDayOfMonth());	//23</span><br><span class="line">		System.out.println(ldate.getDayOfYear());	//一年中的第几天54</span><br><span class="line">		System.out.println(ldate.getDayOfWeek());	//THURSDAY</span><br><span class="line">		System.out.println(ldate.plusYears(10));	//2022-02-23 10年后</span><br><span class="line">		System.out.println(ldate.minusYears(5));	//2007-02-23 5年前</span><br><span class="line">		</span><br><span class="line">		//时间</span><br><span class="line">		LocalTime ltime = LocalTime.now();</span><br><span class="line">		ltime = LocalTime.of(3, 20, 23);	</span><br><span class="line">		System.out.println(ltime);		//03:20:23</span><br><span class="line">		System.out.println(ltime.getHour());	//3</span><br><span class="line">		System.out.println(ltime.plusHours(10));	//13:20:23</span><br><span class="line">		System.out.println(ltime.minusHours(4));	//23:20:23</span><br><span class="line">		</span><br><span class="line">		//日期时间</span><br><span class="line">		LocalDateTime ldt1 = LocalDateTime.now();</span><br><span class="line">		ldt1 = LocalDateTime.of(2012, 2, 3, 4, 5 ,56);</span><br><span class="line">		System.out.println(ldt1);		//2012-02-03T04:05:56</span><br><span class="line">		System.out.println(ldt1.getYear());	//2012</span><br><span class="line">		System.out.println(ldt1.getDayOfMonth());	//3</span><br><span class="line">		</span><br><span class="line">		//运算</span><br><span class="line">		LocalDateTime ldt2 = LocalDateTime.now();</span><br><span class="line">		ldt2 = LocalDateTime.of(2012, 1, 3, 4, 5, 56);</span><br><span class="line"></span><br><span class="line">		LocalDateTime ldt3 = LocalDateTime.now();</span><br><span class="line">		ldt3 = LocalDateTime.of(2012, 2, 5, 4, 5, 56);</span><br><span class="line"></span><br><span class="line">		Duration du = Duration.between(ldt2, ldt3);</span><br><span class="line">		System.out.println(du.toDays());	//33</span><br></pre></td></tr></table></figure>
+<h1 id="内部类"><a href="#内部类" class="headerlink" title="内部类"></a>内部类</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">class Outer&#123;//外部类 ,外围类</span><br><span class="line">	class Inner &#123;</span><br><span class="line">		//内部类 ,嵌入类</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="分类"><a href="#分类" class="headerlink" title="分类"></a>分类</h2><ol>
+<li>成员内部类<ol>
+<li>实例成员内部类</li>
+<li>静态成员内部类</li>
+</ol>
+</li>
+<li>局部内部类</li>
+<li>匿名内部类</li>
+</ol>
+<h2 id="成员内部类"><a href="#成员内部类" class="headerlink" title="成员内部类"></a>成员内部类</h2><h3 id="实例成员内部类"><a href="#实例成员内部类" class="headerlink" title="实例成员内部类"></a>实例成员内部类</h3><ol>
+<li>内部类可以使用四种权限访问修饰符</li>
+<li>内部类归该类的对象<ul>
+<li>创建内部类对象</li>
+<li>外部类名.内部类名 实例名 = new 外部对象().new 内部类对象()</li>
+</ul>
+</li>
+<li>内部类可以直接访问外部类成员，因为内部类对象中都隐藏了一个外部类对象<ul>
+<li>包括private修饰的</li>
+</ul>
+</li>
+<li>内部类字节码<strong>命名:外部类名$内部类名.class</strong><ul>
+<li>Cat$CatBody.class</li>
+</ul>
+</li>
+<li>除了 静态内部类 以外 ,都不允许 定义静态内容<ul>
+<li>但是 static final 除外</li>
+<li>static final int N=22;</li>
+<li>编译期能识别,编译后 所有N 用22 替代了</li>
+<li>因为static归类所用 ,内部类归外部类对象所有</li>
+</ul>
+</li>
+<li><strong>外部类静态方法</strong>中<strong>不能直接访问实例内部类数据</strong><ul>
+<li>用对象调用 new Outer().new Inner().method();</li>
+<li><strong>静态方法只能访问静态</strong></li>
+</ul>
+</li>
+<li>如果外部类成员变量,内部类成员变量,内部类方法中的变量同名<ul>
+<li>内部类方法中的变量&gt; 内部类成员变量&gt; 外部类成员变量</li>
+<li>内部类的方法访问同名变量</li>
+<li>num:内部类方法中的变量</li>
+<li>this.num:内部类成员变量</li>
+<li>Other.this.num:内部类使用外部类成员变量</li>
+<li>Other.this.fun():内部类调用外部类的成员方法</li>
+</ul>
+</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">class Outer&#123;</span><br><span class="line">	public void f()&#123;&#125;</span><br><span class="line">	int n;</span><br><span class="line">	class Inner&#123;</span><br><span class="line">	</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>例子:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br></pre></td><td class="code"><pre><span class="line">class Cat &#123;</span><br><span class="line">	private int weight;</span><br><span class="line"></span><br><span class="line">	public Cat() &#123;</span><br><span class="line">		super();</span><br><span class="line">		// TODO Auto-generated constructor stub</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	public Cat(int weight) &#123;</span><br><span class="line">		this.weight = weight;</span><br><span class="line">	&#125;</span><br><span class="line">----------------------------------------------------------------------------</span><br><span class="line">class CatBody &#123;</span><br><span class="line"></span><br><span class="line">	*************************************************	</span><br><span class="line">	1.class 可以用四种权限修饰符,</span><br><span class="line">		* 如果为private的时候,就要提供公共的方法得到内部类对象</span><br><span class="line">	</span><br><span class="line">	*************************************************	</span><br><span class="line"></span><br><span class="line">	private String color;</span><br><span class="line"></span><br><span class="line">	public CatBody(String color) &#123;</span><br><span class="line">		super();</span><br><span class="line">		this.color = color;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	***********************************************************</span><br><span class="line">	内部类可以直接访问外部类成员，因为内部类对象中都隐藏了一个外部类对象</span><br><span class="line">	**********************************************************</span><br><span class="line"></span><br><span class="line">	public void show() &#123;</span><br><span class="line">		System.out.println(&quot;颜色:&quot; + color + &quot;,重量&quot; + weight);</span><br><span class="line">		// System.out.println(&quot;颜色:&quot;+color+&quot;,重量&quot;+Cat.this.weight);</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line">---------------------------------------------------------------------------</span><br><span class="line">	public void display() &#123;</span><br><span class="line">		System.err.println(weight);</span><br><span class="line">		CatBody body = new CatBody(&quot;土豪金&quot;);</span><br><span class="line">		body.show();</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">===========================================================================</span><br><span class="line"></span><br><span class="line">public class Demo7 &#123;</span><br><span class="line">	public static void main(String[] args) &#123;</span><br><span class="line">		Cat cat = new Cat(200);</span><br><span class="line">		// 创建一个内部类对象</span><br><span class="line">		Cat.CatBody body = cat.new CatBody(&quot;黑色&quot;);</span><br><span class="line">		Cat.CatBody body2 = new Cat(120).new CatBody(&quot;金色&quot;);</span><br><span class="line">		body.show();</span><br><span class="line">		body2.show();</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">===========================================================================</span><br><span class="line">结果:</span><br><span class="line">	颜色:黑色,重量200</span><br><span class="line">	颜色:金色,重量120</span><br></pre></td></tr></table></figure></p>
+<h3 id="静态内部类"><a href="#静态内部类" class="headerlink" title="静态内部类"></a>静态内部类</h3><ol>
+<li>内部类是外部类的静态成员</li>
+<li>创建静态内部类对象<ul>
+<li>外部类名.静态内部类名 = new 外部类名.静态内部类名();</li>
+</ul>
+</li>
+<li>静态内部类的静态方法只能访问静态</li>
+<li>外部类使用静态内部类的静态方法<ul>
+<li>通过静态内部类名.静态方法名();</li>
+</ul>
+</li>
+<li>外部类使用静态内部类的成员方法’<ul>
+<li>通过创建对象使用</li>
+</ul>
+</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">class Outer&#123;</span><br><span class="line">     static void sf()&#123;&#125;</span><br><span class="line">     static class Inner&#123;</span><br><span class="line">     &#125;</span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure>
+<p>例子<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line">class School &#123;</span><br><span class="line">-----------静态内部类-------------------------------------------------</span><br><span class="line">	static class WaterFountain &#123;</span><br><span class="line">		private int x = 5000;</span><br><span class="line">		static int y = 22;</span><br><span class="line"></span><br><span class="line">		public void show() &#123;</span><br><span class="line">			System.out.println(&quot;水量&quot; + x + &quot;ml&quot;);</span><br><span class="line">			System.out.println(y);</span><br><span class="line">		&#125;</span><br><span class="line"></span><br><span class="line">		public static void show2() &#123;</span><br><span class="line"></span><br><span class="line">			System.out.println(y);</span><br><span class="line">			// System.out.println(x);//静态方法不能调用非静态</span><br><span class="line">			// System.out.println(z);//报错,静态方法不能调用非静态</span><br><span class="line">			System.out.println(z1);</span><br><span class="line"></span><br><span class="line">			System.out.println(new WaterFountain().x);//通过对象调用非静态</span><br><span class="line">			System.out.println(new School().z);//通过对象调用非静态</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">--------成员变量----------------------------------------------------</span><br><span class="line">	private int z = 100;</span><br><span class="line">	private static int z1 = 100;</span><br><span class="line"></span><br><span class="line">------成员方法--------------------------------------------------</span><br><span class="line">	public void manager() &#123;</span><br><span class="line">		WaterFountain.show2();</span><br><span class="line">		new WaterFountain().show();</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line">------测试-----------------------------------------------------</span><br><span class="line">public class Demo9 &#123;</span><br><span class="line">	public static void main(String[] args) &#123;</span><br><span class="line">		//创建静态内部类对象</span><br><span class="line">		//外部类使用静态内部类的成员方法</span><br><span class="line">		School.WaterFountain w = new School.WaterFountain();</span><br><span class="line">		w.show();</span><br><span class="line"></span><br><span class="line">		//外部类使用静态内部类的静态方法</span><br><span class="line">		School.WaterFountain.show2();</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h3 id="接口中-可以定义静态内部类-静态内部接口"><a href="#接口中-可以定义静态内部类-静态内部接口" class="headerlink" title="接口中 可以定义静态内部类,静态内部接口"></a>接口中 可以定义静态内部类,静态内部接口</h3><blockquote>
+<p>接口中 定义的 <strong>类和接口默认 public static </strong></p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">interface Info&#123;</span><br><span class="line">	//---静态内部类------------------------</span><br><span class="line">	class A&#123;</span><br><span class="line">		int x = 11;</span><br><span class="line">		public void f() &#123;&#125;</span><br><span class="line">		public static void sf() &#123;&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	//---静态内部接口------------------------</span><br><span class="line">	interface IA&#123;</span><br><span class="line">		int N = 45;</span><br><span class="line">		void af();</span><br><span class="line">		default void df() &#123;&#125;</span><br><span class="line">		static void sf1() &#123;&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">---接口的实现类----------------------------------</span><br><span class="line">class InfoImpl implements Info &#123;</span><br><span class="line">//-----访问class A------------------------------------</span><br><span class="line">	public void method() &#123;</span><br><span class="line">		// A是实现类的内部类,属于实现类的对象</span><br><span class="line">		System.out.println(new A().x);</span><br><span class="line">		new A().f();</span><br><span class="line">		A.sf();		//静态方法属于类</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">//-----访问接口内容-----------------------------------------------</span><br><span class="line">	public void method2() &#123;</span><br><span class="line">		System.out.println(IA.N);</span><br><span class="line">		IA.sf1();</span><br><span class="line">		// 使用接口对象(匿名内部类)调用默认方法和抽象方法</span><br><span class="line">		IA ia = new IA() &#123;</span><br><span class="line"></span><br><span class="line">			@Override</span><br><span class="line">			public void af() &#123;</span><br><span class="line">				// TODO Auto-generated method stub</span><br><span class="line"></span><br><span class="line">			&#125;</span><br><span class="line"></span><br><span class="line">		&#125;;</span><br><span class="line"></span><br><span class="line">		ia.df();</span><br><span class="line">		ia.af();</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>实现接口中的接口</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">class IAImpl implements Info.IA &#123;</span><br><span class="line">	@Override</span><br><span class="line">	public void af() &#123;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">===使用===================================</span><br><span class="line">public void show()&#123;</span><br><span class="line">	df();	//默认的用对象</span><br><span class="line">	int n =Info.IA.N;	//静态的用接口名限定</span><br><span class="line">	Info.IA.sf1();		//静态的用接口名限定</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="继承实例内部类"><a href="#继承实例内部类" class="headerlink" title="继承实例内部类"></a>继承实例内部类</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">class Outer2&#123;</span><br><span class="line">	Outer2()&#123;</span><br><span class="line">		System.out.println(&quot;outer2&quot;);</span><br><span class="line">	&#125;</span><br><span class="line">	class Inner2&#123;</span><br><span class="line">		Inner2()&#123;</span><br><span class="line">			System.out.println(&quot;Inner2&quot;);</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>继承实例内部类</p>
+</blockquote>
+<ol>
+<li>继承实例内部类<ol>
+<li>子类需要访问实例内部类(父类)的无参构造方法</li>
+</ol>
+</li>
+<li>实例内部类是属于外部类的对象.<ol>
+<li>父类的构造方法是应该用外部对象调用(new Outer).</li>
+</ol>
+</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">class Demo extends Outer2.Inner2&#123;</span><br><span class="line">	Demo(Outer2 o)&#123;</span><br><span class="line">		o.super();</span><br><span class="line">		//new Outer().super();</span><br><span class="line">		System.out.println(&quot;Demo&quot;);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line">public class TestInner &#123;</span><br><span class="line">	public static void main(String[] args) &#123;</span><br><span class="line">		Demo d = new Demo(new Outer2());</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="局部内部类"><a href="#局部内部类" class="headerlink" title="局部内部类"></a>局部内部类</h2><p>注意：</p>
+<ul>
+<li>局部内部类不能声明静态成员</li>
+<li>局部内部类处于静态方法中只能直接访问外部类的静态成员</li>
+<li>局部内部类处于实例方法中可以直接访问外部类静态成员和实例成员</li>
+<li>局部类对局部变量的访问<ul>
+<li>1.8 之前要用final修饰</li>
+<li>1.8 之后可以访问变量,但是变量的值不能更改</li>
+</ul>
+</li>
+<li>字节码文件名： <strong>外部类名$N内部类名.class</strong></li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br></pre></td><td class="code"><pre><span class="line">public class TestLocalInner1 &#123;</span><br><span class="line">	static int sn = 33;</span><br><span class="line">	int num = 44;</span><br><span class="line">	</span><br><span class="line">	public void f() &#123;</span><br><span class="line">		int m = 45;//局部变量</span><br><span class="line">		//1.8之前防止栈内存的数据在内部类使用的时候销毁,</span><br><span class="line">		//需要用fianl修饰 final int m =45;</span><br><span class="line">		//局部变量被用到的地方全部用值替换了.</span><br><span class="line">		</span><br><span class="line">		//非静态方法局部内部类</span><br><span class="line">		class Parent&#123;</span><br><span class="line">			int x = 22;</span><br><span class="line">			public void sss() &#123;</span><br><span class="line">				System.out.println(sn);	//可以访问静态和非静态</span><br><span class="line">				System.out.println(num);</span><br><span class="line">				//jdk1.8后可以访问局部变量了，但是变量的值 不能更改</span><br><span class="line">				//1.8之前的</span><br><span class="line">				System.out.println(m);</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	public static void main(String[] args) &#123;</span><br><span class="line">		//静态方法里的局部内部类</span><br><span class="line">		class Parent&#123;</span><br><span class="line">			int x = 22;</span><br><span class="line">			static final int n = 56;</span><br><span class="line">			public void ss() &#123;</span><br><span class="line">				System.out.println(sn);		//静态只能范围内静态</span><br><span class="line">				System.out.println(new TestLocalInner1().num);//访问非静态可以使用对象</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line"></span><br><span class="line">//----局部内部类继承-------------------------------------------</span><br><span class="line">		class Child extends Parent&#123;</span><br><span class="line">			int y = 33;</span><br><span class="line">		&#125;</span><br><span class="line">		Child c = new Child();</span><br><span class="line">		System.out.println(c.x);</span><br><span class="line">		System.out.println(c.y);</span><br><span class="line"></span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">//---生成的字节码文件列表----------------------------------</span><br><span class="line">TestLocalInner1.class</span><br><span class="line">TestLocalInner1$1Parent.class</span><br><span class="line">TestLocalInner1$2Parent.class</span><br><span class="line">TestLocalInner1$1Child.class</span><br></pre></td></tr></table></figure>
+<h2 id="匿名内部类"><a href="#匿名内部类" class="headerlink" title="匿名内部类"></a>匿名内部类</h2><blockquote>
+<p>只能用一次<br>外部类名<strong>$N.class</strong><br>理解: 匿名内部类就是<strong>实现接口的类 或 继承了该类 的 对象</strong></p>
+</blockquote>
+<p>格式<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">new 父类(参数列表) | 实现接口()&#123;</span><br><span class="line">	//匿名内部类的类体部分</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p><strong>注意:</strong></p>
+<ul>
+<li>必须实现一个类或一个接口。<ul>
+<li>返回的是子类 或 实现类 的子类对象</li>
+</ul>
+</li>
+<li>不能定义静态数据<ul>
+<li>只有静态内部类才能定义静态</li>
+<li>static final 除外</li>
+</ul>
+</li>
+<li>不能定义构造器<ul>
+<li>构造器和类名一样</li>
+<li>匿名就是没有名字</li>
+</ul>
+</li>
+<li>不能是抽象的<ul>
+<li>返回的是继承了父类的子类对象</li>
+<li>抽象的就不能返回对象了</li>
+</ul>
+</li>
+<li>传参问题<ul>
+<li>父类构造有参数,可以传参数</li>
+</ul>
+</li>
+<li>同名问题</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">interface Info1&#123;</span><br><span class="line">	void af();</span><br><span class="line">&#125;</span><br><span class="line">interface IE&#123;</span><br><span class="line">	void f();</span><br><span class="line">&#125;</span><br><span class="line">interface IF&#123;</span><br><span class="line">	void f();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">//创建Info1的匿名对象</span><br><span class="line">Info1 info1 = new Info1() &#123;</span><br><span class="line">		@Override</span><br><span class="line">		public void af() &#123;</span><br><span class="line">			// TODO Auto-generated method stub</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>抽象类使用匿名内部类</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line">abstract class Base1 &#123;</span><br><span class="line">	Base1(int n) &#123;</span><br><span class="line">		System.out.println(n);</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	public void f() &#123;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">-----------------------------</span><br><span class="line">Base1 base1 = </span><br><span class="line">		////---匿名内部类-------------------------</span><br><span class="line">		new Base1(22) &#123;</span><br><span class="line">		&#123;</span><br><span class="line">			System.out.println(&quot;构造块&quot;);</span><br><span class="line">		&#125;</span><br><span class="line"></span><br><span class="line">		public void f() &#123;</span><br><span class="line">			System.out.println(&quot;sub_f&quot;);</span><br><span class="line">		&#125;</span><br><span class="line"></span><br><span class="line">		public void method() &#123;</span><br><span class="line">		&#125;// 调用不到,Base1没有,多态</span><br><span class="line">	&#125;;</span><br><span class="line"></span><br><span class="line">//如果要调用,匿名内部类</span><br><span class="line">//匿名内部类是对象,所以能调用方法</span><br><span class="line">new Base1(44) &#123;</span><br><span class="line">		public void f() &#123;</span><br><span class="line">			System.out.println(&quot;sub_f&quot;);</span><br><span class="line">		&#125;</span><br><span class="line"></span><br><span class="line">		public void m() &#123;</span><br><span class="line">			System.out.println(&quot;自己添加的m()&quot;);</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;.m();</span><br></pre></td></tr></table></figure>
+      
+    </div>
+    
+    
+    
+<div>
+
+<div>
+
+    <div style="text-align:center;color: #ccc;font-size:14px;">-------------本文结束<i class="fa fa-paw"></i>感谢您的阅读-------------</div>
+
+</div>
+
+</div>
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/blog/tags/包装类/" rel="tag"># 包装类</a>
+          
+            <a href="/blog/tags/日期/" rel="tag"># 日期</a>
+          
+            <a href="/blog/tags/成员内部类/" rel="tag"># 成员内部类</a>
+          
+            <a href="/blog/tags/匿名内部类/" rel="tag"># 匿名内部类</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/blog/2018/08/09/java基础day10/" rel="next" title="java基础day10">
+                <i class="fa fa-chevron-left"></i> java基础day10
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/blog/2018/08/10/Lanbda表达式/" rel="prev" title="Lanbda表达式">
+                Lanbda表达式 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+    </div>
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/blog/images/avatar.png" alt="小良">
+            
+              <p class="site-author-name" itemprop="name">小良</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/blog/archives/">
+              
+                  <span class="site-state-item-count">77</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/blog/categories/index.html">
+                  <span class="site-state-item-count">5</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/blog/tags/index.html">
+                  <span class="site-state-item-count">81</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+            <div class="links-of-blogroll motion-element links-of-blogroll-block">
+              <div class="links-of-blogroll-title">
+                <i class="fa  fa-fw fa-link"></i>
+                友情链接
+              </div>
+              <ul class="links-of-blogroll-list">
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://sun__shine.coding.me/blog" title="旧版本" target="_blank">旧版本</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="/sun/2018/07/28/目录/" title="回到目录" target="_blank">回到目录</a>
+                  </li>
+                
+              </ul>
+            </div>
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#正则表达式"><span class="nav-number">1.</span> <span class="nav-text">正则表达式</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#自动拆装箱-包装类"><span class="nav-number">2.</span> <span class="nav-text">自动拆装箱(包装类)</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#String-–-gt-数字"><span class="nav-number">2.1.</span> <span class="nav-text">String – &gt; 数字</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#数字-–-gt-String"><span class="nav-number">2.2.</span> <span class="nav-text">数字 –&gt; String</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#进制转换"><span class="nav-number">2.3.</span> <span class="nav-text">进制转换</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#十进制变其他进制"><span class="nav-number">2.3.1.</span> <span class="nav-text">十进制变其他进制()</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#其他进制-变十进制"><span class="nav-number">2.3.2.</span> <span class="nav-text">其他进制 变十进制</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Date"><span class="nav-number">3.</span> <span class="nav-text">Date</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#子类"><span class="nav-number">3.1.</span> <span class="nav-text">子类</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Date-1"><span class="nav-number">3.1.1.</span> <span class="nav-text">Date</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Time"><span class="nav-number">3.1.2.</span> <span class="nav-text">Time</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Calendar类"><span class="nav-number">3.2.</span> <span class="nav-text">Calendar类</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#格式化"><span class="nav-number">3.3.</span> <span class="nav-text">格式化</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#内部类"><span class="nav-number">4.</span> <span class="nav-text">内部类</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#分类"><span class="nav-number">4.1.</span> <span class="nav-text">分类</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#成员内部类"><span class="nav-number">4.2.</span> <span class="nav-text">成员内部类</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#实例成员内部类"><span class="nav-number">4.2.1.</span> <span class="nav-text">实例成员内部类</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#静态内部类"><span class="nav-number">4.2.2.</span> <span class="nav-text">静态内部类</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#接口中-可以定义静态内部类-静态内部接口"><span class="nav-number">4.2.3.</span> <span class="nav-text">接口中 可以定义静态内部类,静态内部接口</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#继承实例内部类"><span class="nav-number">4.2.4.</span> <span class="nav-text">继承实例内部类</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#局部内部类"><span class="nav-number">4.3.</span> <span class="nav-text">局部内部类</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#匿名内部类"><span class="nav-number">4.4.</span> <span class="nav-text">匿名内部类</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-heartbeat" aria-hidden="true"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">小良</span>
+
+  
+</div>
+
+<div class="powered-by">
+<i class="fa fa-user-md"></i><span id="busuanzi_container_site_uv">
+  本站访客数:<span id="busuanzi_value_site_uv"></span>
+</span>
+</div>
+
+
+<!--
+
+-->
+<div class="theme-info">
+  <div class="powered-by"></div>
+  <span class="post-count">博客全站共字</span>
+</div>
+
+
+
+<div class="coding-pages">
+  <p>Hosted by <a href="https://pages.coding.me" style="font-weight: bold">Coding Pages</a></p>
+</div>
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/blog/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/blog/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/blog/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/blog/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/blog/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/blog/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/blog/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/blog/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/blog/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/blog/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/blog/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/blog/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/blog/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/blog/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

@@ -1,0 +1,1397 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/blog/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/blog/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/blog/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/blog/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/blog/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/blog/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/blog/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Hexo, NexT">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="数据的完整性 实体完整性 引用完整性 dml 修改和删除 查询 单行函数 聚合函数和分组函数 加密函数">
+<meta property="og:type" content="article">
+<meta property="og:title" content="javaeeday02">
+<meta property="og:url" content="https://sun6145.github.io/blog/2018/08/24/javaeeday02/index.html">
+<meta property="og:site_name" content="小良博客">
+<meta property="og:description" content="数据的完整性 实体完整性 引用完整性 dml 修改和删除 查询 单行函数 聚合函数和分组函数 加密函数">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2019-01-23T16:28:30.197Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="javaeeday02">
+<meta name="twitter:description" content="数据的完整性 实体完整性 引用完整性 dml 修改和删除 查询 单行函数 聚合函数和分组函数 加密函数">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/blog/',
+    scheme: 'Gemini',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"hide","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://sun6145.github.io/blog/2018/08/24/javaeeday02/">
+
+
+
+
+
+  <title>javaeeday02 | 小良博客</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/blog/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">小良博客</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">小良博客</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/blog/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-writer">
+          <a href="/blog/2018/07/28/目录/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-sitemap"></i> <br>
+            
+            目录
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/blog/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/blog/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/blog/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-messagebook">
+          <a href="/blog/MessageBook" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-book"></i> <br>
+            
+            留言板
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off" placeholder="搜索..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://sun6145.github.io/blog/blog/2018/08/24/javaeeday02/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="小良">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/blog/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="小良博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">javaeeday02</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-08-24T09:03:04+00:00">
+                2018-08-24
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  字
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">
+                  分钟
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="数据的完整性"><a href="#数据的完整性" class="headerlink" title="数据的完整性"></a>数据的完整性</h1><ol>
+<li>实体完整性</li>
+<li>引用完整性</li>
+<li>dml</li>
+<li>修改和删除</li>
+<li>查询</li>
+<li>单行函数</li>
+<li>聚合函数和分组函数</li>
+<li>加密函数</li>
+</ol>
+<a id="more"></a>
+<h1 id="完整性约束"><a href="#完整性约束" class="headerlink" title="完整性约束"></a>完整性约束</h1><h2 id="实体完整性"><a href="#实体完整性" class="headerlink" title="实体完整性"></a>实体完整性</h2><blockquote>
+<p>保证数据记录之间是准确的(能够唯一标识一个实体)</p>
+</blockquote>
+<ol>
+<li>实体: 客观存在的实物,数据库中指的是一条记录.</li>
+</ol>
+<blockquote>
+<p><strong>保证实体的完整性:</strong></p>
+<ol>
+<li>主键约束</li>
+<li>唯一约束</li>
+<li>主键自增约束</li>
+</ol>
+</blockquote>
+<h3 id="主键约束"><a href="#主键约束" class="headerlink" title="主键约束()"></a>主键约束()</h3><ol>
+<li>唯一</li>
+<li>非空</li>
+</ol>
+<h4 id="主键字段的选择"><a href="#主键字段的选择" class="headerlink" title="主键字段的选择"></a>主键字段的选择</h4><ol>
+<li>必须是唯一的</li>
+<li>不要选择业务字段(有真实含义的字段(身份证))</li>
+<li>一张表中只能有一个主键,但是可以有联合主键(多个字段组成)</li>
+<li>每一张表必选要设置主键</li>
+</ol>
+<h4 id="创建表的同时添加主键"><a href="#创建表的同时添加主键" class="headerlink" title="创建表的同时添加主键"></a>创建表的同时添加主键</h4><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 创建主键(非空,唯一),字段后面添加时不能添加联合主键</span></span><br><span class="line"><span class="keyword">CREATE</span> <span class="keyword">table</span> studetn(</span><br><span class="line"><span class="keyword">sid</span> <span class="built_in">int</span> primary <span class="keyword">key</span>,</span><br><span class="line">sname <span class="built_in">VARCHAR</span>(<span class="number">20</span>) </span><br><span class="line">);</span><br><span class="line"></span><br><span class="line"><span class="comment"># 创建表的时候,先给字段,后添加约束</span></span><br><span class="line"><span class="keyword">create</span> <span class="keyword">table</span> student(</span><br><span class="line"><span class="keyword">sid</span> <span class="built_in">int</span>,</span><br><span class="line">sname <span class="built_in">varchar</span>(<span class="number">20</span>),</span><br><span class="line">primary <span class="keyword">key</span>(<span class="keyword">sid</span>)  <span class="comment"># 可以设置联合主键</span></span><br><span class="line">);</span><br></pre></td></tr></table></figure>
+<h4 id="表已经创建-alter"><a href="#表已经创建-alter" class="headerlink" title="表已经创建(alter)"></a>表已经创建(alter)</h4><blockquote>
+<p>表已经创建了,添加约束的时候,需要表中的数据合理,不能空和重复</p>
+</blockquote>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 添加约束(constraint)</span></span><br><span class="line"><span class="comment"># 约束名pk_字段</span></span><br><span class="line"><span class="keyword">alter</span> <span class="keyword">table</span> student <span class="keyword">add</span> <span class="keyword">constraint</span> pk_sid PRIMARY <span class="keyword">key</span>(<span class="keyword">sid</span>);</span><br></pre></td></tr></table></figure>
+<h3 id="唯一约束-unique"><a href="#唯一约束-unique" class="headerlink" title="唯一约束(unique)"></a>唯一约束(unique)</h3><blockquote>
+<p>不能重复,可以为空(空只能有一个)</p>
+</blockquote>
+<h4 id="创建表的时候添加"><a href="#创建表的时候添加" class="headerlink" title="创建表的时候添加"></a>创建表的时候添加</h4><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 添加唯一约束</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">create</span>  <span class="keyword">table</span> sun(</span><br><span class="line">uid <span class="built_in">int</span> PRIMARY <span class="keyword">KEY</span>,</span><br><span class="line">uname <span class="built_in">varchar</span>(<span class="number">20</span>),</span><br><span class="line">card <span class="built_in">VARCHAR</span>(<span class="number">18</span>) <span class="keyword">unique</span></span><br><span class="line">);</span><br><span class="line"></span><br><span class="line"><span class="keyword">create</span>  <span class="keyword">table</span> sun(</span><br><span class="line">uid <span class="built_in">int</span> PRIMARY <span class="keyword">KEY</span>,</span><br><span class="line">uname <span class="built_in">varchar</span>(<span class="number">20</span>),</span><br><span class="line">card <span class="built_in">VARCHAR</span>(<span class="number">18</span>),</span><br><span class="line"><span class="keyword">unique</span>(card)</span><br><span class="line">);</span><br></pre></td></tr></table></figure>
+<h4 id="表存在"><a href="#表存在" class="headerlink" title="表存在"></a>表存在</h4><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 添加唯一约束</span></span><br><span class="line"><span class="keyword">create</span>  <span class="keyword">table</span> sun(</span><br><span class="line">uid <span class="built_in">int</span> PRIMARY <span class="keyword">KEY</span>,</span><br><span class="line">uname <span class="built_in">varchar</span>(<span class="number">20</span>),</span><br><span class="line">card <span class="built_in">VARCHAR</span>(<span class="number">18</span>)</span><br><span class="line">);</span><br><span class="line"></span><br><span class="line"><span class="keyword">alter</span> <span class="keyword">table</span> sun <span class="keyword">add</span> <span class="keyword">constraint</span> uq_card  <span class="keyword">UNIQUE</span>(card);</span><br></pre></td></tr></table></figure>
+<h3 id="主键自增长约束-auto-increment"><a href="#主键自增长约束-auto-increment" class="headerlink" title="主键自增长约束(auto_increment)"></a>主键自增长约束(auto_increment)</h3><blockquote>
+<p>从1开始,每次自身加1(oracle)</p>
+<p>好处:不用关心主键重复问题</p>
+</blockquote>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 主键自增长</span></span><br><span class="line"><span class="keyword">create</span> <span class="keyword">table</span> student(</span><br><span class="line"><span class="keyword">sid</span> <span class="built_in">int</span>  primary <span class="keyword">key</span> auto_increment,</span><br><span class="line">sname <span class="built_in">VARCHAR</span>(<span class="number">20</span>)</span><br><span class="line">);</span><br><span class="line"></span><br><span class="line"><span class="keyword">alter</span> <span class="keyword">table</span> student <span class="keyword">MODIFY</span> <span class="keyword">sid</span> <span class="built_in">int</span> auto_increment;</span><br></pre></td></tr></table></figure>
+<h3 id="删除约束"><a href="#删除约束" class="headerlink" title="删除约束"></a>删除约束</h3><p>frm:存储数据的元数据信息(结构,约束,索引)</p>
+<ol>
+<li>有主键自增长约束的时候,先删除自增长约束,后才能删除主键</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"># 自增长约束</span><br><span class="line">alter table student MODIFY sid int;</span><br><span class="line"># 主键约束</span><br><span class="line">alter table student drop PRIMARY KEY ;</span><br><span class="line"># 唯一约束</span><br><span class="line">drop index uq_sname on student;</span><br></pre></td></tr></table></figure>
+<h2 id="域完整性"><a href="#域完整性" class="headerlink" title="域完整性"></a>域完整性</h2><blockquote>
+<p>域: 字段</p>
+</blockquote>
+<blockquote>
+<p><strong>域的完整性:</strong></p>
+<ol>
+<li>类型约束</li>
+<li>非空约束:  不能为空  not null</li>
+<li>默认值: default 值</li>
+</ol>
+</blockquote>
+<h3 id="类型约束-非空-默认值"><a href="#类型约束-非空-默认值" class="headerlink" title="类型约束,非空,默认值"></a>类型约束,非空,默认值</h3><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 非空 和 默认值</span></span><br><span class="line"><span class="keyword">create</span> <span class="keyword">table</span> student(</span><br><span class="line"><span class="keyword">sid</span> <span class="built_in">int</span> PRIMARY <span class="keyword">KEY</span> auto_increment,</span><br><span class="line">sname <span class="built_in">varchar</span>(<span class="number">20</span>) <span class="keyword">not</span> <span class="literal">null</span>,</span><br><span class="line">gender <span class="built_in">bit</span>(<span class="number">1</span>) <span class="keyword">default</span> <span class="number">1</span></span><br><span class="line">);</span><br></pre></td></tr></table></figure>
+<h2 id="引用完整性"><a href="#引用完整性" class="headerlink" title="引用完整性"></a>引用完整性</h2><blockquote>
+<p>一张表中通用列的取值必须参考另外一张表主键字段</p>
+</blockquote>
+<h3 id="外键约束-foreign-key"><a href="#外键约束-foreign-key" class="headerlink" title="外键约束(foreign key)"></a>外键约束(foreign key)</h3><blockquote>
+<p>主外键关联</p>
+<p>add constraint 外键名 foreign key(外键关联字段) references 参考表(参考字段)</p>
+<ol>
+<li>参考字段通常是参考表的主键</li>
+<li>外键关联字段名称可以不一样,但是类型必须一致</li>
+</ol>
+</blockquote>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">alter</span> <span class="keyword">table</span> student <span class="keyword">add</span> <span class="keyword">constraint</span> FK_cid <span class="keyword">foreign</span> <span class="keyword">key</span>(cid) <span class="keyword">references</span> classroom(cid);</span><br></pre></td></tr></table></figure>
+<h2 id="自定义完整性"><a href="#自定义完整性" class="headerlink" title="自定义完整性"></a>自定义完整性</h2><h3 id="check约束-在mysql中不能使用"><a href="#check约束-在mysql中不能使用" class="headerlink" title="check约束:在mysql中不能使用"></a>check约束:在mysql中不能使用</h3><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">alter</span> <span class="keyword">table</span> student <span class="keyword">add</span> <span class="keyword">constraint</span> <span class="keyword">check</span> (sage <span class="keyword">between</span> <span class="number">1</span> <span class="keyword">and</span> <span class="number">50</span>)</span><br></pre></td></tr></table></figure>
+<h1 id="运算符"><a href="#运算符" class="headerlink" title="运算符"></a>运算符</h1><h2 id="算数运算符"><a href="#算数运算符" class="headerlink" title="算数运算符"></a>算数运算符</h2><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> <span class="number">1</span>+<span class="number">1</span>;	//2</span><br><span class="line"></span><br><span class="line"><span class="keyword">select</span> <span class="number">1</span><span class="number">-1</span>;	//0</span><br><span class="line"></span><br><span class="line"><span class="keyword">select</span> <span class="number">1</span>*<span class="number">2</span>;	//2</span><br><span class="line"></span><br><span class="line"><span class="keyword">select</span> <span class="number">3</span>/<span class="number">2</span>;	//1.5</span><br><span class="line"></span><br><span class="line"><span class="keyword">select</span> <span class="number">3</span> <span class="keyword">div</span> <span class="number">2</span>;  1 <span class="comment">## 整除</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">select</span> <span class="number">3</span>/<span class="number">0</span>;	<span class="comment"># null</span></span><br></pre></td></tr></table></figure>
+<h2 id="比较运算符"><a href="#比较运算符" class="headerlink" title="比较运算符"></a>比较运算符</h2><blockquote>
+<ol>
+<li>></li>
+<li>&lt;</li>
+<li>!= / &lt;&gt;</li>
+<li>=</li>
+<li>>=</li>
+<li>&lt;=</li>
+<li>true  显示:1</li>
+<li>false  显示:0</li>
+<li>is  null     //  is  not  null</li>
+<li>between … and … [ a , b ]</li>
+<li>in   //  not  in</li>
+</ol>
+</blockquote>
+<h2 id="逻辑运算符"><a href="#逻辑运算符" class="headerlink" title="逻辑运算符"></a>逻辑运算符</h2><ol>
+<li>and</li>
+<li>or</li>
+<li>!</li>
+</ol>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> <span class="number">1</span>=<span class="number">1</span> <span class="keyword">and</span> <span class="number">1</span>=<span class="number">2</span>;		//0</span><br><span class="line"><span class="keyword">select</span> <span class="number">1</span>=<span class="number">1</span> <span class="keyword">and</span> <span class="number">1</span>=<span class="number">2</span>;		//1</span><br><span class="line"><span class="keyword">select</span> !<span class="number">2</span>=<span class="number">2</span>;		//0</span><br></pre></td></tr></table></figure>
+<h2 id="位运算符"><a href="#位运算符" class="headerlink" title="位运算符"></a>位运算符</h2><ol>
+<li>&amp;</li>
+<li>|</li>
+<li>^(异或)</li>
+</ol>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> <span class="number">3</span> &amp; <span class="number">2</span>; <span class="comment"># 2</span></span><br><span class="line"><span class="keyword">select</span> <span class="number">3</span> | <span class="number">2</span>; <span class="comment"># 3</span></span><br><span class="line"><span class="keyword">select</span> <span class="number">3</span> ^ <span class="number">2</span>; <span class="comment"># 1</span></span><br></pre></td></tr></table></figure>
+<h1 id="DML"><a href="#DML" class="headerlink" title="DML"></a>DML</h1><h2 id="添加数据insert"><a href="#添加数据insert" class="headerlink" title="添加数据insert"></a>添加数据insert</h2><blockquote>
+<p>insert into tname[(字段名称….)] values(值…)</p>
+</blockquote>
+<ol>
+<li><p>默认插入:给所有的字段添加值,和表中的字段顺序一致</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">insert</span> <span class="keyword">into</span> classroom <span class="keyword">VALUES</span> (<span class="number">3</span>,<span class="string">'bd1807'</span>)</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>添加指定的字段,cid是自增长的</p>
+<pre><code>给定字段时,值和给定的字段顺序一致
+</code></pre> <figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">insert</span> <span class="keyword">into</span> classroom(cname) <span class="keyword">values</span> (<span class="string">'bd1808'</span>);</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>添加多条数据:使用逗号隔开</p>
+ <figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">insert</span> <span class="keyword">into</span> classroom(cname) <span class="keyword">value</span> (<span class="string">'bd1809'</span>),</span><br><span class="line">(<span class="string">'bd1810'</span>),</span><br><span class="line">(<span class="string">'bd1811'</span>);</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>将classroom 的值 整体复制到 classroom1</p>
+ <figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 将classroom 的值 整体复制到 classroom1</span></span><br><span class="line"><span class="keyword">insert</span> <span class="keyword">into</span> classroom1 <span class="keyword">select</span> * <span class="keyword">from</span> </span><br><span class="line"></span><br><span class="line"><span class="keyword">create</span>  <span class="keyword">table</span> classroom1 <span class="keyword">select</span> * <span class="keyword">from</span> classroom;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>复制表的结构</p>
+ <figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">create</span>  <span class="keyword">table</span> classroom1 <span class="keyword">select</span> * <span class="keyword">from</span> classroom <span class="keyword">where</span> <span class="number">0</span>;</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<h2 id="删除数据delete"><a href="#删除数据delete" class="headerlink" title="删除数据delete"></a>删除数据delete</h2><blockquote>
+<p>delete是逐行删除,不影响自增长.自是修改数据(自增不会重置)</p>
+<p>truncate 清空,文件级别的清空,(自增重置)</p>
+</blockquote>
+<ol>
+<li>删除所有</li>
+</ol>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">delete</span> <span class="keyword">from</span> classroom;</span><br></pre></td></tr></table></figure>
+<ol start="2">
+<li>删除指定的记录</li>
+</ol>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">delete</span> <span class="keyword">from</span> classroom <span class="keyword">where</span> cid=<span class="number">2</span>;</span><br></pre></td></tr></table></figure>
+<h2 id="修改数据update"><a href="#修改数据update" class="headerlink" title="修改数据update"></a>修改数据update</h2><blockquote>
+<p>使用的时候不带条件是对整张表修改</p>
+<p>update  表名  set 字段 = 值 where 字段 = 值</p>
+</blockquote>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">update</span> classroom <span class="keyword">set</span> cname=<span class="string">'1806'</span> <span class="keyword">where</span> cid =<span class="number">1</span>;</span><br></pre></td></tr></table></figure>
+<h2 id="查询数据"><a href="#查询数据" class="headerlink" title="查询数据"></a>查询数据</h2><h3 id="普通查询select"><a href="#普通查询select" class="headerlink" title="普通查询select"></a>普通查询select</h3><blockquote>
+<p>select 字段| 表达式 form 表|视图|结果集</p>
+<p>select子句的作用:字段值</p>
+<p>from子句: 从哪些表或者结果集中查询</p>
+<p>where: 条件</p>
+</blockquote>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 查询</span></span><br><span class="line"><span class="keyword">select</span> * <span class="keyword">from</span> emp;</span><br><span class="line"></span><br><span class="line"><span class="comment"># 查询所有员工的姓名和工资</span></span><br><span class="line"><span class="keyword">select</span> ename,sal <span class="keyword">from</span> emp;</span><br><span class="line"></span><br><span class="line"><span class="comment"># 查询工资大于2000</span></span><br><span class="line"><span class="keyword">select</span> * <span class="keyword">from</span> emp <span class="keyword">where</span> sal&gt;=<span class="number">2000</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment"># 查询工资1000~2000</span></span><br><span class="line"><span class="keyword">select</span> * <span class="keyword">from</span> emp <span class="keyword">where</span> sal <span class="keyword">between</span> <span class="number">1000</span> <span class="keyword">and</span> <span class="number">2000</span>;</span><br></pre></td></tr></table></figure>
+<h3 id="集合查询-in-值-值-…"><a href="#集合查询-in-值-值-…" class="headerlink" title="集合查询(in ([值 , 值 ,…]))"></a>集合查询(in ([值 , 值 ,…]))</h3><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> * <span class="keyword">from</span> emp <span class="keyword">where</span> empno=<span class="number">7521</span> <span class="keyword">or</span> <span class="string">`empno`</span>=<span class="number">7369</span> <span class="keyword">or</span> empno = <span class="number">7788</span>;</span><br><span class="line"><span class="comment"># 集合查询</span></span><br><span class="line"><span class="keyword">select</span> * <span class="keyword">from</span> emp wher empno <span class="keyword">in</span> (<span class="number">7521</span>,<span class="number">7369</span>,<span class="number">7788</span>)</span><br></pre></td></tr></table></figure>
+<h3 id="取别名-as-别名"><a href="#取别名-as-别名" class="headerlink" title="取别名 (as 别名)"></a>取别名 (as 别名)</h3><blockquote>
+<p>简化 作解释说明</p>
+<p>(as) 别名</p>
+</blockquote>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> <span class="number">1</span>+<span class="number">1</span> <span class="keyword">count</span>; <span class="comment"># 将结果用count表示</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">select</span> ename,sal*<span class="number">1.5</span> <span class="keyword">new</span>  <span class="keyword">from</span> emp; <span class="comment"># 将结果用new表示</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">select</span> emp.ename <span class="keyword">from</span> emp;</span><br><span class="line"></span><br><span class="line"><span class="keyword">select</span> e.sal <span class="keyword">from</span> emp e;</span><br></pre></td></tr></table></figure>
+<h3 id="去除重复distinct"><a href="#去除重复distinct" class="headerlink" title="去除重复distinct"></a>去除重复distinct</h3><blockquote>
+<p>在查询前面添加 distinct</p>
+</blockquote>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> <span class="keyword">DISTINCT</span> job <span class="keyword">from</span> emp;</span><br></pre></td></tr></table></figure>
+<h3 id="排序order-by"><a href="#排序order-by" class="headerlink" title="排序order by"></a>排序order by</h3><blockquote>
+<p>默认升序:assc</p>
+<p>降序 : desc</p>
+<p>多个规则使用 逗号隔开</p>
+</blockquote>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> * <span class="keyword">from</span>  emp <span class="keyword">where</span> deptno=<span class="number">10</span> <span class="keyword">order</span> <span class="keyword">BY</span> emp.sal <span class="keyword">desc</span>;</span><br><span class="line"><span class="keyword">select</span> * <span class="keyword">from</span>  emp <span class="keyword">where</span> deptno=<span class="number">10</span> <span class="keyword">order</span> <span class="keyword">BY</span> emp.sal <span class="keyword">desc</span>,emp.ename <span class="keyword">desc</span>;</span><br></pre></td></tr></table></figure>
+<h3 id="限制结果查询limit"><a href="#限制结果查询limit" class="headerlink" title="限制结果查询limit"></a>限制结果查询limit</h3><blockquote>
+<p>limti : 下标  ,  长度</p>
+<p><strong>仅仅适用于MySQL.</strong></p>
+</blockquote>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 取5条记录</span></span><br><span class="line"><span class="keyword">select</span> * <span class="keyword">from</span> emp <span class="keyword">limit</span> <span class="number">0</span>,<span class="number">5</span>;</span><br><span class="line"><span class="comment"># 取部门为10的员工中的最大值</span></span><br><span class="line"><span class="keyword">select</span> * <span class="keyword">from</span>  emp <span class="keyword">where</span> deptno=<span class="number">10</span> <span class="keyword">order</span> <span class="keyword">BY</span> emp.sal <span class="keyword">desc</span> <span class="keyword">limit</span> <span class="number">0</span>,<span class="number">1</span>;</span><br></pre></td></tr></table></figure>
+<h3 id="模糊查询-like"><a href="#模糊查询-like" class="headerlink" title="模糊查询:like"></a>模糊查询:like</h3><blockquote>
+<p>% 表示多个字符</p>
+<p>_ 表示一个字符</p>
+</blockquote>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 模糊查询</span></span><br><span class="line"><span class="keyword">select</span> * <span class="keyword">from</span> emp <span class="keyword">where</span> ename <span class="keyword">like</span> <span class="string">'s%'</span>;</span><br><span class="line"><span class="keyword">select</span> * <span class="keyword">from</span> emp <span class="keyword">where</span> ename <span class="keyword">like</span><span class="string">'%s'</span></span><br><span class="line"><span class="keyword">select</span> * <span class="keyword">from</span> emp <span class="keyword">where</span> ename <span class="keyword">like</span><span class="string">'%s%'</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 第二个字符为L的所有员工信息</span></span><br><span class="line"><span class="keyword">select</span> * <span class="keyword">from</span> emp <span class="keyword">where</span> ename <span class="keyword">like</span> <span class="string">'_l%'</span>;</span><br></pre></td></tr></table></figure>
+<h1 id="函数"><a href="#函数" class="headerlink" title="函数"></a>函数</h1><h2 id="单行函数"><a href="#单行函数" class="headerlink" title="单行函数"></a>单行函数</h2><h3 id="数学函数"><a href="#数学函数" class="headerlink" title="数学函数"></a>数学函数</h3><blockquote>
+<p>返回值只有一条记录</p>
+</blockquote>
+<ol>
+<li>PI() :π</li>
+<li>ceil(): 向上取整</li>
+<li>floor():向下取整</li>
+<li>round():四舍五入</li>
+<li>mod(): 取模</li>
+<li>rand(): 随机数</li>
+<li>pow():幂运算</li>
+</ol>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> <span class="keyword">PI</span>();	<span class="comment"># 3.141593</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">select</span> <span class="keyword">ceil</span>(<span class="number">12.3</span>);<span class="comment"># 13</span></span><br><span class="line"><span class="keyword">select</span> <span class="keyword">ceil</span>(<span class="number">-12.3</span>);;<span class="comment">#12</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">select</span> <span class="keyword">floor</span>(<span class="number">12.3</span>);	<span class="comment">#12</span></span><br><span class="line"><span class="keyword">select</span> <span class="keyword">floor</span>(<span class="number">-12.3</span>);	<span class="comment">#-13</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">select</span> <span class="keyword">round</span>(<span class="number">3.5</span>);	<span class="comment">#4</span></span><br><span class="line"><span class="keyword">select</span> <span class="keyword">round</span>(<span class="number">3.45</span>);	<span class="comment">#3</span></span><br><span class="line"><span class="keyword">select</span> <span class="keyword">round</span>(<span class="number">3.45</span>,<span class="number">1</span>);	<span class="comment">#3.5</span></span><br><span class="line"><span class="keyword">select</span> <span class="keyword">round</span>(<span class="number">3.45</span>,<span class="number">-1</span>);	<span class="comment">#0</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">select</span> <span class="keyword">mod</span>(<span class="number">5</span>,<span class="number">2</span>);	<span class="comment"># 1</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">select</span> <span class="keyword">rand</span>();[0,1)</span><br><span class="line">               </span><br><span class="line"><span class="comment"># 随机从emp获取二条记录</span></span><br><span class="line"><span class="keyword">select</span> * <span class="keyword">from</span> emp <span class="keyword">ORDER</span> <span class="keyword">BY</span> <span class="keyword">rand</span>() <span class="keyword">LIMIT</span> <span class="number">2</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">select</span> <span class="keyword">pow</span>(<span class="number">2</span>,<span class="number">3</span>);  <span class="comment"># 2^3=8</span></span><br></pre></td></tr></table></figure>
+<h3 id="字符函数"><a href="#字符函数" class="headerlink" title="字符函数"></a>字符函数</h3><ol>
+<li>length(): 获取字符的长度</li>
+<li>lower(‘THIS’):字符转为小写字母</li>
+<li>upper(‘this’): 字符转为大写字母</li>
+<li>substr(‘this is zs’ ,  1 , 6): 下标从1开始</li>
+<li>replace(str,from_str,to_str); ;字符的替换</li>
+<li>trim(‘str’) : 去除字符二端的空格</li>
+<li>lpad(str, num , ‘str’): 用’str’  左填充str, num小于length,截取</li>
+<li>rpad(str, num , ‘str’):右填充</li>
+</ol>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> <span class="keyword">length</span>(<span class="string">'this is zs'</span>)		<span class="comment"># 10</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">select</span> <span class="keyword">upper</span>(<span class="string">'this'</span>)    <span class="comment"># THIS</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">select</span> <span class="keyword">lower</span>(<span class="string">'THIS'</span>)   <span class="comment"># this</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">select</span> <span class="keyword">substr</span>(<span class="string">'this is zs'</span>,<span class="number">1</span>,<span class="number">6</span>)		<span class="comment">#this i</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">select</span> <span class="keyword">replace</span>(<span class="string">'this is zs'</span>,<span class="string">'this'</span>,<span class="string">'he'</span>); <span class="comment">#he is zs</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">select</span> <span class="keyword">trim</span>(<span class="string">' this is '</span>); <span class="comment">#去两端空格 this is</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">select</span> <span class="keyword">LPAD</span>(<span class="string">'aa'</span>,<span class="number">10</span>,<span class="string">'*'</span>);   <span class="comment">#********aa</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">select</span> <span class="keyword">LPAD</span>(<span class="string">'ab'</span>,<span class="number">1</span>,<span class="string">'*'</span>); 	<span class="comment">#a</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">select</span> rpad(<span class="string">'aa'</span>,<span class="number">10</span>,<span class="string">'*'</span>);   <span class="comment">#aa********</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">select</span> rpad(<span class="string">'ab'</span>,<span class="number">1</span>,<span class="string">'*'</span>); 	<span class="comment">#a</span></span><br></pre></td></tr></table></figure>
+<h3 id="日期函数"><a href="#日期函数" class="headerlink" title="日期函数"></a>日期函数</h3><ol>
+<li>now(): 当前时间</li>
+<li>sysdate:获取系统时间</li>
+<li>curdate() /current_date(): 获取日期 : 年月日</li>
+<li>curtime() / current_time(): 获取时间 : 时分秒</li>
+<li>year(date): 获取指定时间的年份</li>
+<li>month(date): 获取指定时间的月份</li>
+<li>day(date): 获取指定是时间的天数</li>
+<li><strong>last_day(date):</strong>:获取指点时间的月份的最后一天</li>
+<li><strong>date_add(时间 , interval  值  ,类型):</strong>值可以为正负,类型可以是year/month/day</li>
+</ol>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> <span class="keyword">NOW</span>();  <span class="comment">#当前时间 2018-08-29 21:17:54</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">select</span> <span class="keyword">SYSDATE</span>();  <span class="comment">#获取系统时间 2018-08-29 21:18:04</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">select</span> <span class="keyword">CURRENT_DATE</span>();	2018-08-29</span><br><span class="line"></span><br><span class="line"><span class="keyword">select</span> <span class="keyword">CURDATE</span>();	2018-08-29</span><br><span class="line"></span><br><span class="line"><span class="keyword">select</span> <span class="keyword">CURRENT_TIME</span>();	21:18:47</span><br><span class="line"></span><br><span class="line"><span class="keyword">select</span> <span class="keyword">CURTIME</span>();	21:18:47</span><br><span class="line"></span><br><span class="line"><span class="keyword">select</span> <span class="keyword">YEAR</span>(<span class="string">'1998-09-09'</span>);	1998</span><br><span class="line"></span><br><span class="line"><span class="keyword">select</span> <span class="keyword">YEAR</span>(<span class="keyword">NOW</span>());	2018</span><br><span class="line"></span><br><span class="line"><span class="keyword">select</span> <span class="keyword">MONTH</span>(<span class="keyword">NOW</span>());	8</span><br><span class="line"></span><br><span class="line"><span class="keyword">select</span> <span class="keyword">DAY</span>(<span class="keyword">NOW</span>());	29</span><br><span class="line"></span><br><span class="line"><span class="comment">#获取当前月最后一天</span></span><br><span class="line"><span class="keyword">select</span> <span class="keyword">LAST_DAY</span>(<span class="string">'2018-02-01'</span>);	2018-02-28</span><br><span class="line"></span><br><span class="line"><span class="comment">#日期计算</span></span><br><span class="line"><span class="keyword">select</span> <span class="keyword">DATE_ADD</span>(<span class="keyword">NOW</span>(),<span class="built_in">interval</span> <span class="number">2</span> <span class="keyword">MONTH</span>);	2018-10-29 21:20:28</span><br></pre></td></tr></table></figure>
+<h2 id="聚合函数"><a href="#聚合函数" class="headerlink" title="聚合函数"></a>聚合函数</h2><blockquote>
+<p>对数据整体进行运算,查询语句中<strong>不能出现单个字段</strong></p>
+</blockquote>
+<ol>
+<li>min():最小值</li>
+<li>max():最大值</li>
+<li>avg():平均值</li>
+<li>count():总计</li>
+<li>sum():求和</li>
+</ol>
+<blockquote>
+<p>count();常用来统计表中的记录数,但是不会统计字段中为nulll的记录,所以统计表中的记录数的时候,选择不为null的更好,</p>
+<p>分页操作:聚合函数和限制结果查询</p>
+</blockquote>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> <span class="keyword">max</span>(sal) <span class="keyword">from</span> emp;</span><br><span class="line"><span class="keyword">select</span> <span class="keyword">min</span>(sal) <span class="keyword">from</span> emp;</span><br><span class="line"><span class="keyword">select</span> <span class="keyword">avg</span>(sal) <span class="keyword">from</span> emp;  </span><br><span class="line"><span class="keyword">select</span> <span class="keyword">count</span>(*) <span class="keyword">from</span> emp;  <span class="comment">#记录数</span></span><br><span class="line"><span class="keyword">select</span> <span class="keyword">count</span>(<span class="number">1</span>) <span class="keyword">from</span> emp;  <span class="comment">#记录数</span></span><br><span class="line"><span class="keyword">select</span> <span class="keyword">count</span>(comm) <span class="keyword">from</span> emp; <span class="comment">#字段非空总数</span></span><br><span class="line"><span class="keyword">select</span> <span class="keyword">sum</span>(sal) <span class="keyword">from</span> emp;</span><br></pre></td></tr></table></figure>
+<h2 id="分组函数group-by"><a href="#分组函数group-by" class="headerlink" title="分组函数group by"></a>分组函数group by</h2><blockquote>
+<p>使用分组的依据可以出现在select  查询的语句中</p>
+</blockquote>
+<ol>
+<li>where 在group by 之后</li>
+<li>where 中 不能使用聚合函数</li>
+</ol>
+<blockquote>
+<p>having</p>
+</blockquote>
+<ol>
+<li>having 代替where ,分组之后进行检索</li>
+<li>可以使用聚合函数</li>
+</ol>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#分组 group by 分组条件   having:分组之后进行检索</span></span><br><span class="line">	  <span class="keyword">select</span> deptno,<span class="keyword">avg</span>(sal) <span class="keyword">from</span> emp <span class="keyword">group</span> <span class="keyword">by</span> deptno;</span><br><span class="line">		</span><br><span class="line"><span class="comment"># 查询平均工资大于2000的部门的编号和平均工资。</span></span><br><span class="line"><span class="comment"># 1.where在group by之后</span></span><br><span class="line"><span class="comment"># 2.where中不能使用聚合函数</span></span><br><span class="line">	   <span class="keyword">select</span> deptno,<span class="keyword">avg</span>(sal) <span class="keyword">from</span> emp <span class="keyword">group</span> <span class="keyword">by</span> deptno <span class="keyword">having</span> <span class="keyword">avg</span>(sal) &gt; <span class="number">2000</span>;</span><br></pre></td></tr></table></figure>
+<h2 id="加密函数"><a href="#加密函数" class="headerlink" title="加密函数"></a>加密函数</h2><ol>
+<li>MD5(str):32为位</li>
+<li>SHA(str):40位</li>
+<li>password(str):</li>
+</ol>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> <span class="keyword">MD5</span>(<span class="string">'root'</span>); <span class="comment">#63a9f0ea7bb98050796b649e85481845</span></span><br><span class="line"><span class="keyword">select</span> <span class="keyword">SHA</span>(<span class="string">'root'</span>);<span class="comment">#dc76e9f0c0006e8f919e0c515c66dbba3982f785</span></span><br><span class="line"><span class="keyword">select</span> <span class="keyword">password</span>(<span class="string">'root'</span>);<span class="comment">#*81F5E21E35407D884A6CD4A731AEBFB6AF209E1B # 41位</span></span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    
+    
+    
+<div>
+
+<div>
+
+    <div style="text-align:center;color: #ccc;font-size:14px;">-------------本文结束<i class="fa fa-paw"></i>感谢您的阅读-------------</div>
+
+</div>
+
+</div>
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/blog/2018/08/23/javaeeday01/" rel="next" title="javaeeday01">
+                <i class="fa fa-chevron-left"></i> javaeeday01
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/blog/2018/08/27/javaeeday03/" rel="prev" title="javaeeday03">
+                javaeeday03 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+    </div>
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/blog/images/avatar.png" alt="小良">
+            
+              <p class="site-author-name" itemprop="name">小良</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/blog/archives/">
+              
+                  <span class="site-state-item-count">77</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/blog/categories/index.html">
+                  <span class="site-state-item-count">5</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/blog/tags/index.html">
+                  <span class="site-state-item-count">81</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+            <div class="links-of-blogroll motion-element links-of-blogroll-block">
+              <div class="links-of-blogroll-title">
+                <i class="fa  fa-fw fa-link"></i>
+                友情链接
+              </div>
+              <ul class="links-of-blogroll-list">
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://sun__shine.coding.me/blog" title="旧版本" target="_blank">旧版本</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="/sun/2018/07/28/目录/" title="回到目录" target="_blank">回到目录</a>
+                  </li>
+                
+              </ul>
+            </div>
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#数据的完整性"><span class="nav-number">1.</span> <span class="nav-text">数据的完整性</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#完整性约束"><span class="nav-number">2.</span> <span class="nav-text">完整性约束</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#实体完整性"><span class="nav-number">2.1.</span> <span class="nav-text">实体完整性</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#主键约束"><span class="nav-number">2.1.1.</span> <span class="nav-text">主键约束()</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#主键字段的选择"><span class="nav-number">2.1.1.1.</span> <span class="nav-text">主键字段的选择</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#创建表的同时添加主键"><span class="nav-number">2.1.1.2.</span> <span class="nav-text">创建表的同时添加主键</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#表已经创建-alter"><span class="nav-number">2.1.1.3.</span> <span class="nav-text">表已经创建(alter)</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#唯一约束-unique"><span class="nav-number">2.1.2.</span> <span class="nav-text">唯一约束(unique)</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#创建表的时候添加"><span class="nav-number">2.1.2.1.</span> <span class="nav-text">创建表的时候添加</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#表存在"><span class="nav-number">2.1.2.2.</span> <span class="nav-text">表存在</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#主键自增长约束-auto-increment"><span class="nav-number">2.1.3.</span> <span class="nav-text">主键自增长约束(auto_increment)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#删除约束"><span class="nav-number">2.1.4.</span> <span class="nav-text">删除约束</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#域完整性"><span class="nav-number">2.2.</span> <span class="nav-text">域完整性</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#类型约束-非空-默认值"><span class="nav-number">2.2.1.</span> <span class="nav-text">类型约束,非空,默认值</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#引用完整性"><span class="nav-number">2.3.</span> <span class="nav-text">引用完整性</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#外键约束-foreign-key"><span class="nav-number">2.3.1.</span> <span class="nav-text">外键约束(foreign key)</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#自定义完整性"><span class="nav-number">2.4.</span> <span class="nav-text">自定义完整性</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#check约束-在mysql中不能使用"><span class="nav-number">2.4.1.</span> <span class="nav-text">check约束:在mysql中不能使用</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#运算符"><span class="nav-number">3.</span> <span class="nav-text">运算符</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#算数运算符"><span class="nav-number">3.1.</span> <span class="nav-text">算数运算符</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#比较运算符"><span class="nav-number">3.2.</span> <span class="nav-text">比较运算符</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#逻辑运算符"><span class="nav-number">3.3.</span> <span class="nav-text">逻辑运算符</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#位运算符"><span class="nav-number">3.4.</span> <span class="nav-text">位运算符</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#DML"><span class="nav-number">4.</span> <span class="nav-text">DML</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#添加数据insert"><span class="nav-number">4.1.</span> <span class="nav-text">添加数据insert</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#删除数据delete"><span class="nav-number">4.2.</span> <span class="nav-text">删除数据delete</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#修改数据update"><span class="nav-number">4.3.</span> <span class="nav-text">修改数据update</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#查询数据"><span class="nav-number">4.4.</span> <span class="nav-text">查询数据</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#普通查询select"><span class="nav-number">4.4.1.</span> <span class="nav-text">普通查询select</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#集合查询-in-值-值-…"><span class="nav-number">4.4.2.</span> <span class="nav-text">集合查询(in ([值 , 值 ,…]))</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#取别名-as-别名"><span class="nav-number">4.4.3.</span> <span class="nav-text">取别名 (as 别名)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#去除重复distinct"><span class="nav-number">4.4.4.</span> <span class="nav-text">去除重复distinct</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#排序order-by"><span class="nav-number">4.4.5.</span> <span class="nav-text">排序order by</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#限制结果查询limit"><span class="nav-number">4.4.6.</span> <span class="nav-text">限制结果查询limit</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#模糊查询-like"><span class="nav-number">4.4.7.</span> <span class="nav-text">模糊查询:like</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#函数"><span class="nav-number">5.</span> <span class="nav-text">函数</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#单行函数"><span class="nav-number">5.1.</span> <span class="nav-text">单行函数</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#数学函数"><span class="nav-number">5.1.1.</span> <span class="nav-text">数学函数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#字符函数"><span class="nav-number">5.1.2.</span> <span class="nav-text">字符函数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#日期函数"><span class="nav-number">5.1.3.</span> <span class="nav-text">日期函数</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#聚合函数"><span class="nav-number">5.2.</span> <span class="nav-text">聚合函数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#分组函数group-by"><span class="nav-number">5.3.</span> <span class="nav-text">分组函数group by</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#加密函数"><span class="nav-number">5.4.</span> <span class="nav-text">加密函数</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-heartbeat" aria-hidden="true"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">小良</span>
+
+  
+</div>
+
+<div class="powered-by">
+<i class="fa fa-user-md"></i><span id="busuanzi_container_site_uv">
+  本站访客数:<span id="busuanzi_value_site_uv"></span>
+</span>
+</div>
+
+
+<!--
+
+-->
+<div class="theme-info">
+  <div class="powered-by"></div>
+  <span class="post-count">博客全站共字</span>
+</div>
+
+
+
+<div class="coding-pages">
+  <p>Hosted by <a href="https://pages.coding.me" style="font-weight: bold">Coding Pages</a></p>
+</div>
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/blog/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/blog/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/blog/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/blog/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/blog/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/blog/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/blog/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/blog/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/blog/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/blog/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/blog/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/blog/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/blog/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/blog/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

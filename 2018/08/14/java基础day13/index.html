@@ -1,0 +1,1389 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/blog/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/blog/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/blog/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/blog/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/blog/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/blog/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/blog/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="泛型,">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="泛型 泛型，即“参数化类型”。就是将类型由原来的具体的类型参数化，类似于方法中的变量参数，此时类型也定义成参数形式（可以称之为类型形参），然后在使用/调用时传入具体的类型（类型实参）。   泛型的本质是为了参数化类型（在不创建新的类型的情况下，通过泛型指定的不同类型来控制形参具体限制的类型）。也就是说在泛型使用过程中，操作的数据类型被指定为一个参数，这种参数类型可以用在类、接口和方法中，分别被称为">
+<meta name="keywords" content="泛型">
+<meta property="og:type" content="article">
+<meta property="og:title" content="java基础day13">
+<meta property="og:url" content="https://sun6145.github.io/blog/2018/08/14/java基础day13/index.html">
+<meta property="og:site_name" content="小良博客">
+<meta property="og:description" content="泛型 泛型，即“参数化类型”。就是将类型由原来的具体的类型参数化，类似于方法中的变量参数，此时类型也定义成参数形式（可以称之为类型形参），然后在使用/调用时传入具体的类型（类型实参）。   泛型的本质是为了参数化类型（在不创建新的类型的情况下，通过泛型指定的不同类型来控制形参具体限制的类型）。也就是说在泛型使用过程中，操作的数据类型被指定为一个参数，这种参数类型可以用在类、接口和方法中，分别被称为">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2019-01-23T16:28:30.197Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="java基础day13">
+<meta name="twitter:description" content="泛型 泛型，即“参数化类型”。就是将类型由原来的具体的类型参数化，类似于方法中的变量参数，此时类型也定义成参数形式（可以称之为类型形参），然后在使用/调用时传入具体的类型（类型实参）。   泛型的本质是为了参数化类型（在不创建新的类型的情况下，通过泛型指定的不同类型来控制形参具体限制的类型）。也就是说在泛型使用过程中，操作的数据类型被指定为一个参数，这种参数类型可以用在类、接口和方法中，分别被称为">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/blog/',
+    scheme: 'Gemini',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"hide","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://sun6145.github.io/blog/2018/08/14/java基础day13/">
+
+
+
+
+
+  <title>java基础day13 | 小良博客</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/blog/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">小良博客</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">小良博客</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/blog/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-writer">
+          <a href="/blog/2018/07/28/目录/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-sitemap"></i> <br>
+            
+            目录
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/blog/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/blog/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/blog/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-messagebook">
+          <a href="/blog/MessageBook" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-book"></i> <br>
+            
+            留言板
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off" placeholder="搜索..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://sun6145.github.io/blog/blog/2018/08/14/java基础day13/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="小良">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/blog/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="小良博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">java基础day13</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-08-14T09:06:45+00:00">
+                2018-08-14
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/blog/categories/JavaSE/" itemprop="url" rel="index">
+                    <span itemprop="name">JavaSE</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  字
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">
+                  分钟
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="泛型"><a href="#泛型" class="headerlink" title="泛型"></a>泛型</h1><blockquote>
+<p>泛型，即“参数化类型”。就是将类型由原来的具体的类型参数化，类似于方法中的变量参数，此时类型也定义成参数形式（可以称之为类型形参），然后在使用/调用时传入具体的类型（类型实参）。</p>
+</blockquote>
+<blockquote>
+<p>泛型的本质是为了参数化类型（在不创建新的类型的情况下，通过泛型指定的不同类型来控制形参具体限制的类型）。也就是说在泛型使用过程中，操作的数据类型被指定为一个参数，这种参数类型可以用在类、接口和方法中，分别被称为泛型类、泛型接口、泛型方法。</p>
+</blockquote>
+<blockquote>
+<p><strong>参考:<a href="/2018/08/02/泛型/" title="泛型">泛型使用</a></strong></p>
+</blockquote>
+<a id="more"></a>
+<h2 id="泛型使用"><a href="#泛型使用" class="headerlink" title="泛型使用"></a>泛型使用</h2><blockquote>
+<p><code>class Point&lt;T&gt;{}</code>:这是一个泛型类</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line">1. &lt;T&gt;: 形式类型参数: 参数可以是任意类型</span><br><span class="line"></span><br><span class="line">2. Point&lt;具体的类型参数&gt;:参数化类型</span><br><span class="line">	应用时,一个类型后边指定一定具体的类型参数</span><br><span class="line">	Point&lt;Integer&gt;</span><br><span class="line"></span><br><span class="line">3. 类型推断 菱形语法</span><br><span class="line">	Point&lt;Integer&gt; point = new Point&lt;&gt;();</span><br><span class="line"></span><br><span class="line">4. 原生类型:</span><br><span class="line">	使用的时候,类型后面没有指定具体类型</span><br><span class="line">	Point point = new Point();</span><br><span class="line"></span><br><span class="line">5. 类型参数: 可以定义多个类型参数,用逗号分隔</span><br><span class="line">	Point&lt;K , V&gt;</span><br><span class="line"></span><br><span class="line">6. W规范:</span><br><span class="line">	1. 使用一个大写字母</span><br><span class="line">		1. Type T</span><br><span class="line">		2. Element E</span><br><span class="line">		3. Key	K</span><br><span class="line">		4. Value	v</span><br><span class="line"></span><br><span class="line">7. 泛型的好处</span><br><span class="line">	1. 编译期进行类型检查</span><br><span class="line">	2. 类型不确定时也能使用</span><br><span class="line"></span><br><span class="line">8. 格式</span><br><span class="line">	class 类名&lt;泛型类型标识&gt;&#123;</span><br><span class="line">		访问修饰符 &lt;泛型类型&gt; 属性;</span><br><span class="line">		访问修饰符 &lt;泛型类型&gt; 方法()&#123;&#125;</span><br><span class="line">		访问修饰符 &lt;泛型类型&gt; 方法(泛型类型 参数)&#123;&#125;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">应用：</span><br><span class="line">	1. 类名&lt;具体类型&gt; 对象名 ＝ new 类名&lt;具体类&gt; ();</span><br><span class="line">	2. 菱形语法</span><br></pre></td></tr></table></figure>
+<h2 id="泛型通配符及上限、下限"><a href="#泛型通配符及上限、下限" class="headerlink" title="泛型通配符及上限、下限"></a>泛型通配符及上限、下限</h2><ul>
+<li>通配符<br>  ? 可以匹配任意的引用类型</li>
+<li>泛型通配符上限<br>  ? extends E:接收E或者E的子类型</li>
+<li>泛型通配符下限<br>  ? super E:接收E或者E的父类型</li>
+</ul>
+<h3 id="类型参数-与通配符的区别"><a href="#类型参数-与通配符的区别" class="headerlink" title="类型参数 与通配符的区别"></a>类型参数 与通配符的区别</h3><ol>
+<li><ul>
+<li>类型参数 可以表示一种类型</li>
+<li>通配符 不能表示一种类型</li>
+</ul>
+</li>
+<li><ul>
+<li>类型参数只能指定上限</li>
+<li>通配符可以指定上限,也可以指定下限</li>
+</ul>
+</li>
+<li><ul>
+<li>类型参数可以指定多个上限,用<code>&amp;</code>连接</li>
+<li>通配符只能指定一个上限</li>
+</ul>
+</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">interface Info1 &#123;&#125;</span><br><span class="line"></span><br><span class="line">interface Info2 &#123;&#125;</span><br><span class="line"></span><br><span class="line">class Base &#123;&#125;</span><br><span class="line"></span><br><span class="line">class Sub extends Base implements Info1, Info2 &#123;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">//===类型参数===========</span><br><span class="line">class Point&lt;T extends Base &amp; Info1 &amp; Info2&gt; &#123;&#125;</span><br><span class="line"></span><br><span class="line">//===通配符参数===========</span><br><span class="line">class Point&lt;T extends Number&gt; &#123;&#125;</span><br><span class="line">class Point&lt;T super Integer&gt; &#123;&#125;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>多个参数化类型,生成的字节码文件是同一个<br>在生成字节码的时候,会擦除掉形式类型参数<br>String 是 Object 的子类<br>Object类型 = String类型 (可行)</p>
+</blockquote>
+<ul>
+<li><code>Point&lt;String&gt;</code> <strong>不是</strong> <code>Point&lt;Object&gt;</code>的子类,泛型只是检查类型</li>
+</ul>
+<h2 id="泛型类举例"><a href="#泛型类举例" class="headerlink" title="泛型类举例"></a>泛型类举例</h2><blockquote>
+<p>一个属性</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">class Apple&lt;T&gt; &#123;</span><br><span class="line">	private T size;</span><br><span class="line"></span><br><span class="line">	public Apple(T size) &#123; this.size = size;&#125;</span><br><span class="line"></span><br><span class="line">	public T getSize() &#123; return size;&#125;</span><br><span class="line"></span><br><span class="line">	public void setSize(T size) &#123; this.size = size;&#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">public class Demo2 &#123;</span><br><span class="line">	public static void main(String[] args) &#123;</span><br><span class="line">		Apple&lt;Integer&gt; apple = new Apple(10);</span><br><span class="line">		apple.setSize(100);</span><br><span class="line">		Apple&lt;? super Integer&gt; apple2 = new Apple(1.0);// Integer --Number --子类</span><br><span class="line">		apple2.getSize();</span><br><span class="line">		Apple&lt;? extends String&gt; apple3 = new Apple(&quot;123&quot;);// Integer --Number</span><br><span class="line">		apple2.getSize();</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>二个属性</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">class Contacts&lt;K, V&gt; &#123;</span><br><span class="line">	private K id;</span><br><span class="line">	private V Tel;</span><br><span class="line"></span><br><span class="line">	public Contacts(K id, V tel) &#123;</span><br><span class="line">		this.id = id;</span><br><span class="line">		Tel = tel;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	public K getId() &#123;	return id;&#125;</span><br><span class="line"></span><br><span class="line">	public void setId(K id) &#123;	this.id = id;&#125;</span><br><span class="line"></span><br><span class="line">	public V getTel() &#123;	return Tel; &#125;</span><br><span class="line"></span><br><span class="line">	public void setTel(V tel) &#123;	Tel = tel;&#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">public class Demo3 &#123;</span><br><span class="line">	public static void main(String[] args) &#123;</span><br><span class="line">		Contacts&lt;?,String&gt; contacts = new Contacts(1, &quot;123456&quot;);</span><br><span class="line">		System.out.println(contacts.getId()+&quot;---&quot;+contacts.getTel());</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="泛型类使用总结"><a href="#泛型类使用总结" class="headerlink" title="泛型类使用总结:"></a>泛型类使用总结:</h2><ol>
+<li>根据类的属性设置类型参数<ol>
+<li>参数只能指定上限(extend),不能下限</li>
+<li>参数类型可以指定多个上限</li>
+</ol>
+</li>
+<li>使用泛型类的时候 <ol>
+<li>使用通配符控制属性类型的范围</li>
+</ol>
+</li>
+</ol>
+<h2 id="泛型构造器"><a href="#泛型构造器" class="headerlink" title="泛型构造器"></a>泛型构造器</h2><blockquote>
+<p><strong>使用泛型构造器的时候,不要使用菱形语法</strong></p>
+</blockquote>
+<blockquote>
+<p>定义:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&lt;E&gt;  类名(E e)&#123;</span><br><span class="line">	//代码块</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+</blockquote>
+<blockquote>
+<p>使用:</p>
+</blockquote>
+<ol>
+<li><p><code>参数化类型 引用名 = new 泛型类名&lt;&gt;();</code></p>
+</li>
+<li><p><s><code>参数化类型 引用名 = new &lt;E&gt;泛型类名&lt;&gt;();    //会报错</code></s><br> <code>参数化类型 引用名 = new &lt;E&gt;泛型类名&lt;</code><i>具体类型</i><code>&gt;();</code></p>
+</li>
+</ol>
+<blockquote>
+<p>例子<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">//定义泛型构造器</span><br><span class="line"></span><br><span class="line">public &lt;E&gt; Demo(E e)&#123;</span><br><span class="line">	System.out.println(e);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">// 类型推断,根据参数推断</span><br><span class="line">Demo&lt;String&gt; demo = new Demo&lt;&gt;(123);</span><br><span class="line">	由123 得到&lt;E&gt; 是 Integer</span><br><span class="line"></span><br><span class="line">Demo&lt;String&gt; demo2 = new &lt;Integer&gt; Demo&lt;&gt;(12);	//报错,不使用菱形语法</span><br><span class="line">Demo&lt;String&gt; demo2 = new &lt;Integer&gt; Demo&lt;String&gt;(&quot;12&quot;);	//报错</span><br><span class="line">	给定了&lt;E&gt;是Integer ,传入字符串&quot;12&quot;会报错</span><br><span class="line"></span><br><span class="line">Demo&lt;String&gt; demo2 = new &lt;Integer&gt; Demo&lt;String&gt;(12);	//编译通过</span><br><span class="line">Demo&lt;String&gt; demo3 = new &lt;String &gt; Demo&lt;String&gt;(&quot;12&quot;);	//编译通过</span><br></pre></td></tr></table></figure></p>
+</blockquote>
+<h2 id="泛型方法"><a href="#泛型方法" class="headerlink" title="泛型方法"></a>泛型方法</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">class Demo&#123;</span><br><span class="line">	//泛型方法定义</span><br><span class="line">	public &lt;T&gt; void f(T t) &#123;</span><br><span class="line">		System.out.println(t);</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	public &lt;T extends Object&gt; T ff(T t) &#123;</span><br><span class="line">		//调用了泛型方法</span><br><span class="line">		//类型推断</span><br><span class="line">		f(&quot;hello&quot;);</span><br><span class="line">		//显示指定具体的类型时  必须 用对象调用</span><br><span class="line">		this.&lt;String&gt;f(&quot;hellotom&quot;);</span><br><span class="line">		this.&lt;Integer&gt;f(123);</span><br><span class="line">		return t;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line">public class TestPoint3 &#123;</span><br><span class="line"></span><br><span class="line">	public static void main(String[] args) &#123;</span><br><span class="line">		Demo d = new Demo();</span><br><span class="line">		//类型推断，根据参数推断</span><br><span class="line">		d.f(&quot;hello&quot;);</span><br><span class="line">		d.f(22);</span><br><span class="line">		//</span><br><span class="line">		d.&lt;String&gt;f(&quot;hellotom&quot;);</span><br><span class="line">		d.&lt;Double&gt;f(22.2);</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h1 id="泛型的擦除"><a href="#泛型的擦除" class="headerlink" title="泛型的擦除"></a>泛型的擦除</h1><blockquote>
+<p>泛型是编译的检查<br>生成的字节码的时候会擦除 </p>
+</blockquote>
+<h2 id="擦除原则："><a href="#擦除原则：" class="headerlink" title="擦除原则："></a>擦除原则：</h2><ul>
+<li><p>对于参数化类型:<code>Point&lt;String&gt;</code></p>
+<ul>
+<li>擦除后 为 原生类型:<code>Point</code></li>
+</ul>
+</li>
+<li><p>对于类型参数:</p>
+<ul>
+<li>无界类型参数,擦除后为<code>object</code><ul>
+<li><code>private T a; -----&gt;  private Object a;</code></li>
+<li><code>&lt;T&gt; void f(T t) -----&gt; void f( Object a);</code></li>
+</ul>
+</li>
+<li>有界:public <ul>
+<li>有一个上限<ul>
+<li>用上限替换</li>
+</ul>
+</li>
+<li>有多个上限<ul>
+<li>用第一个上限来替换</li>
+</ul>
+</li>
+<li><code>&lt;T extends Number&gt; void f(T t) -----&gt; void f( Number a);</code></li>
+<li><code>&lt;T extends Base &amp; Info1&gt; void f(T t) -----&gt; void f( Base a);</code></li>
+<li><code>&lt;T extends Info2 &amp; Info1&gt; void f(T t) -----&gt; void f( Info2 a);</code></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="泛型的重载"><a href="#泛型的重载" class="headerlink" title="泛型的重载"></a>泛型的重载</h2><blockquote>
+<p>重载:参数名相同,参数列表不同</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">class Point1&lt;T&gt; &#123;&#125;</span><br><span class="line"></span><br><span class="line">class Demo5 &#123;</span><br><span class="line">	</span><br><span class="line">	public void f(Point1&lt;String&gt; p) &#123;&#125;  //Point t</span><br><span class="line">	public void f(Point1&lt;Integer&gt; p) &#123;&#125; //Point t</span><br><span class="line">-----擦除后一样,不能重载------------------------------</span><br><span class="line"></span><br><span class="line">	&lt;T&gt; void f(T t) &#123;&#125;// Object t</span><br><span class="line">	&lt;T extends Number&gt; void f(T t) &#123;&#125;// Number t</span><br><span class="line">-----擦除后不一样,能重载------------------------------</span><br><span class="line"></span><br><span class="line">	&lt;T extends Base &amp; Info1&gt; void f(T t) &#123;&#125;// Base t</span><br><span class="line">	&lt;T extends Info1 &amp; Info2&gt; void f(T t) &#123;&#125;// Info1 t</span><br><span class="line">-----擦除后不一样,能重载------------------------------</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>重写: 父类擦除后与子类参数相同</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">class Parent &#123;</span><br><span class="line"></span><br><span class="line">	// 父类擦除后与子类参数相同</span><br><span class="line"></span><br><span class="line">	public void f(Point&lt;String&gt; p) &#123;&#125;// Point p</span><br><span class="line"></span><br><span class="line">	class Child extends Parent &#123;</span><br><span class="line"></span><br><span class="line">		@Override</span><br><span class="line">		public void f(Point p) &#123;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="泛型接口"><a href="#泛型接口" class="headerlink" title="泛型接口"></a>泛型接口</h2><p>实现泛型接口</p>
+<pre><code>1. 知道类型的实现:(创建原生类)
+    - `class 类名 implements 接口名&lt;类型&gt;` 
+2. 不知道类型的实现:(创建泛型类)
+    - `class 类名&lt;T&gt; implements 接口名&lt;T&gt;`
+</code></pre><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">//定义泛型接口</span><br><span class="line">interface IA&lt;T&gt;&#123;</span><br><span class="line">	void af(T t);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">// 1. 能确定类型</span><br><span class="line">class IAImpl1 implements IA&lt;String&gt;&#123;</span><br><span class="line">	@override</span><br><span class="line">	public void af(String t)&#123;</span><br><span class="line">		System.out.println(t);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line">// 1. 不能确定类型</span><br><span class="line">class IAImpl2&lt;T&gt; implements IA&lt;T&gt;&#123;</span><br><span class="line">	@override</span><br><span class="line">	public void af(T t)&#123;</span><br><span class="line">		System.out.println(t);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">//测试</span><br><span class="line">public static void main(String[] args) &#123;</span><br><span class="line">	IAImpl2&lt;Integer&gt; ia = new IAImpl2&lt;&gt;();</span><br><span class="line">	ia.af(34);</span><br><span class="line">	IAImpl2&lt;String&gt; ia1 = new IAImpl2&lt;&gt;();</span><br><span class="line">	ia1.af(&quot;abc&quot;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h1 id="比较器"><a href="#比较器" class="headerlink" title="比较器"></a>比较器</h1><h2 id="Comparable"><a href="#Comparable" class="headerlink" title="Comparable"></a>Comparable</h2><blockquote>
+<p>自然排序使用<br>默认使用自然排序 ;升序<br>规则写在 int compareTo()方法,</p>
+</blockquote>
+<blockquote>
+<p>使用<br>Comparable接口：让待排序对象所在的类实现Comparable接口，并重写Comparable接口中的compareTo()方法<br>缺点是只能按照一种规则排序 </p>
+</blockquote>
+<h2 id="Comparator-外部比较器"><a href="#Comparator-外部比较器" class="headerlink" title="Comparator : 外部比较器"></a>Comparator : 外部比较器</h2><blockquote>
+<p>自定义比较器使用</p>
+</blockquote>
+<p>使用Comparator接口：编写多个排序方式类实现Comparator接口，并重写新<code>Comparator接口</code>中的<code>compare()</code>方法 </p>
+<ul>
+<li><code>public static &lt;T&gt; void sort(T[] a,Comparator&lt;? super T&gt; c)</code>,根据指定比较器产生的顺序对指定对象数组进行排序。数组中的所有元素都必须是通过指定比较器可相互比较的 </li>
+<li>（也就是说，对于数组中的任何 e1 和 e2 元素而言，<code>c.compare(e1, e2)</code>不得抛出 <code>ClassCastException</code>）。 </li>
+<li>优点是可以按照多种方式排序，你要按照什么方式排序，就创建一个实现Comparator接口的排序方式类，然后将该排序类的对象传入到<code>Arrays.sort(待排序对象，该排序方式类的对象)</code></li>
+</ul>
+<h2 id="Comparable和Comparator区别："><a href="#Comparable和Comparator区别：" class="headerlink" title="Comparable和Comparator区别："></a>Comparable和Comparator区别：</h2><ol>
+<li><p>位置。</p>
+<ul>
+<li>Comparable代码写在要比较的类中；</li>
+<li>Comparator代码写在要比较的类外；</li>
+</ul>
+</li>
+<li><p>个数。</p>
+<ul>
+<li>Comparable就定义一种：</li>
+<li>Comparator可以定义多个比较方式。</li>
+</ul>
+</li>
+</ol>
+<h1 id="枚举"><a href="#枚举" class="headerlink" title="枚举"></a>枚举</h1><p>有的时候一个类的对<strong>象是有限且固定</strong>的，这种情况下我们使用枚举类就比较方便.<br>实际上 enum 就是一个 class，只不过 java 编译器帮我们做了语法的解析和编译而已。</p>
+<h2 id="枚举类"><a href="#枚举类" class="headerlink" title="枚举类"></a>枚举类</h2><ol>
+<li><p>语法</p>
+ <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">enum 枚举名称&#123;</span><br><span class="line">	对象,第一行处;</span><br><span class="line">	构造;	//private</span><br><span class="line">	方法();</span><br><span class="line">	抽象方法();</span><br><span class="line">		所有对象实现了抽象方法,那么此枚举类就是一个抽象枚举类</span><br><span class="line">	重写方法;</span><br><span class="line">	实现接口</span><br><span class="line">		接口的方法要在对象中重写,(使用的是匿名内部类)</span><br><span class="line">		生成了字节码文件</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">反编译: javap (-private) 包名.枚举名</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>注意事项</p>
+<ol>
+<li>隐式的继承了 java.lang.Enum类;</li>
+<li>对于一个非抽象的枚举类,<strong>默认是final</strong>的</li>
+<li>枚举类的对象<strong>必须</strong> 在枚举类的<strong>第一行代码处显示列举</strong>出来</li>
+<li>这些枚举对象都是 public static final;</li>
+<li>枚举类的构造器都是私有privatae的</li>
+<li>所有对象实现了抽象方法,那么此枚举类就是一个抽象枚举类</li>
+</ol>
+</li>
+</ol>
+<h2 id="常用方法"><a href="#常用方法" class="headerlink" title="常用方法"></a>常用方法</h2><ol>
+<li><p><code>int compareTo(E o)</code><br> 比较此枚举与指定对象的顺序。</p>
+</li>
+<li><p><code>Class&lt;E&gt; getDeclaringClass()</code><br> 返回与此枚举常量的枚举类型相对应的 Class 对象。</p>
+</li>
+<li><p><code>String name()</code><br> 返回此枚举常量的名称，在其枚举声明中对其进行声明。</p>
+</li>
+<li><p><code>int ordinal()</code><br> 返回枚举常量的序数（它在枚举声明中的位置，其中初始常量序数为零）。</p>
+</li>
+<li><p><code>String toString()</code></p>
+<p> 返回枚举常量的名称，它包含在声明中。</p>
+</li>
+<li><p><code>static &lt;T extends Enum&lt;T&gt;&gt; T valueOf(Class&lt;T&gt; enumType, String name)</code><br> 返回带指定名称的指定枚举类型的枚举常量。</p>
+</li>
+</ol>
+<h2 id="对象"><a href="#对象" class="headerlink" title="对象"></a>对象</h2><blockquote>
+<p>必须在枚举类的第一行列举<br>对象都是 public static final;</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">enum Color &#123;</span><br><span class="line">	//枚举类的对象</span><br><span class="line">	RED,BLUE,GREEN;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="成员变量"><a href="#成员变量" class="headerlink" title="成员变量"></a>成员变量</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">enum Color  &#123;</span><br><span class="line">	private int no;</span><br><span class="line">	private String name;</span><br><span class="line">	public int getNo() &#123;</span><br><span class="line">		return no;</span><br><span class="line">	&#125;</span><br><span class="line">	public void setNo(int no) &#123;</span><br><span class="line">		this.no = no;</span><br><span class="line">	&#125;</span><br><span class="line">	public String getName() &#123;</span><br><span class="line">		return name;</span><br><span class="line">	&#125;</span><br><span class="line">	public void setName(String name) &#123;</span><br><span class="line">		this.name = name;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">//使用: 访问成员变量</span><br><span class="line">Color.RED.setNo(11);</span><br><span class="line">Color.RED.setName(&quot;红色&quot;);</span><br><span class="line">System.out.println(Color.RED.getNo());</span><br><span class="line">System.out.println(Color.RED.getName());</span><br></pre></td></tr></table></figure>
+<h2 id="构造方法"><a href="#构造方法" class="headerlink" title="构造方法"></a>构造方法</h2><blockquote>
+<p>构造方法是private的.<br>有构造方法,需要修改对象</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line">enum Color implements InfoNew&#123;</span><br><span class="line">//对象--------------------</span><br><span class="line">	RED(1,&quot;红&quot;);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">	//构造</span><br><span class="line">	private Color(int no, String name) &#123;</span><br><span class="line">		this.no = no;</span><br><span class="line">		this.name = name;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	//成员变量</span><br><span class="line">	private int no;</span><br><span class="line">	private String name;</span><br><span class="line">	public int getNo() &#123;</span><br><span class="line">		return no;</span><br><span class="line">	&#125;</span><br><span class="line">	public void setNo(int no) &#123;</span><br><span class="line">		this.no = no;</span><br><span class="line">	&#125;</span><br><span class="line">	public String getName() &#123;</span><br><span class="line">		return name;</span><br><span class="line">	&#125;</span><br><span class="line">	public void setName(String name) &#123;</span><br><span class="line">		this.name = name;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">//使用</span><br><span class="line">//------------------构造赋值，访问成员变量-------------</span><br><span class="line">System.out.println(Color.RED.getNo());</span><br><span class="line">System.out.println(Color.RED.getName());</span><br></pre></td></tr></table></figure>
+<h2 id="普通方法"><a href="#普通方法" class="headerlink" title="普通方法"></a>普通方法</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">enum Color  &#123;</span><br><span class="line">	public void show() &#123;</span><br><span class="line">		System.out.println(&quot;普通方法&quot;);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">//使用:对象都是静态的</span><br><span class="line">Color.RED.show();</span><br></pre></td></tr></table></figure>
+<h2 id="抽象方法"><a href="#抽象方法" class="headerlink" title="抽象方法"></a>抽象方法</h2><blockquote>
+<p>如果有抽象方法,对象必须实现抽象方法<br>实现了抽象方法(匿名内部类),那么此枚举类就是一个抽象枚举类</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">enum Color  &#123;</span><br><span class="line">RED(1,&quot;红色&quot;) &#123;</span><br><span class="line">		@Override</span><br><span class="line">		public void af() &#123;</span><br><span class="line">			System.out.println(&quot;实现了 RED的抽象方法&quot;);</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;;</span><br><span class="line"></span><br><span class="line">	//抽象方法</span><br><span class="line">	public abstract void af();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">//-------------------抽象方法--------------------------------------</span><br><span class="line">Color.RED.af();</span><br></pre></td></tr></table></figure>
+<h2 id="实现接口"><a href="#实现接口" class="headerlink" title="实现接口"></a>实现接口</h2><blockquote>
+<p>实现一个接口,枚举对象要重写抽象方法(匿名内部类)</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">interface InfoNew&#123;</span><br><span class="line">	void ff();</span><br><span class="line">&#125;</span><br><span class="line">enum Color implements InfoNew &#123;</span><br><span class="line">//对象</span><br><span class="line">	RED(1,&quot;红色&quot;) &#123;</span><br><span class="line">		@Override</span><br><span class="line">		public void af() &#123;</span><br><span class="line">			System.out.println(&quot;实现了 RED的抽象方法&quot;);</span><br><span class="line">		&#125;</span><br><span class="line">	</span><br><span class="line">		@Override</span><br><span class="line">		public void ff() &#123;</span><br><span class="line">			System.out.println(&quot;实现了接口的抽象方法&quot;);</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="重写"><a href="#重写" class="headerlink" title="重写"></a>重写</h2><blockquote>
+<p>重写<code>toString()</code></p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">enum Color&#123;</span><br><span class="line">	RED;</span><br><span class="line">	@Override</span><br><span class="line">		public String toString() &#123;</span><br><span class="line">			return no + &quot;,&quot; + name;</span><br><span class="line">		&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">//------------------重写--------</span><br><span class="line">System.out.println(Color.RED.toString());</span><br></pre></td></tr></table></figure>
+<h2 id="枚举类的遍历"><a href="#枚举类的遍历" class="headerlink" title="枚举类的遍历"></a>枚举类的遍历</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">for(Color c : Color.values())&#123;</span><br><span class="line">	System.out.println(c.ordinal());</span><br><span class="line">	System.out.println(c.name());</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="switch使用"><a href="#switch使用" class="headerlink" title="switch使用"></a>switch使用</h2><blockquote>
+<p>switch(表达式)<br>表达式类型:byte short int char String enum<br>使用<code>枚举类对象=枚举类.valueOf(String str)</code><br>str不是枚举类的对象会抛出异常<code>IllegalArgumentException</code></p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">Scanner input = new Scanner(System.in);</span><br><span class="line">System.out.println(&quot;输入颜色：&quot;);</span><br><span class="line">String s = input.next();</span><br><span class="line">Color cr = Color.valueOf(s);</span><br><span class="line">switch(cr) &#123;</span><br><span class="line">	case RED:</span><br><span class="line">		System.out.println(&quot;红色&quot;);</span><br><span class="line">		break;</span><br><span class="line">	case GREEN:</span><br><span class="line">		System.out.println(&quot;绿色&quot;);</span><br><span class="line">		break;</span><br><span class="line">	case BLUE:</span><br><span class="line">		System.out.println(&quot;蓝色&quot;);</span><br><span class="line">		break;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+      
+    </div>
+    
+    
+    
+<div>
+
+<div>
+
+    <div style="text-align:center;color: #ccc;font-size:14px;">-------------本文结束<i class="fa fa-paw"></i>感谢您的阅读-------------</div>
+
+</div>
+
+</div>
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/blog/tags/泛型/" rel="tag"># 泛型</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/blog/2018/08/13/Mysql数据库设计/" rel="next" title="Mysql数据库设计">
+                <i class="fa fa-chevron-left"></i> Mysql数据库设计
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/blog/2018/08/15/java基础day14/" rel="prev" title="java基础day14">
+                java基础day14 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+    </div>
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/blog/images/avatar.png" alt="小良">
+            
+              <p class="site-author-name" itemprop="name">小良</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/blog/archives/">
+              
+                  <span class="site-state-item-count">77</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/blog/categories/index.html">
+                  <span class="site-state-item-count">5</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/blog/tags/index.html">
+                  <span class="site-state-item-count">81</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+            <div class="links-of-blogroll motion-element links-of-blogroll-block">
+              <div class="links-of-blogroll-title">
+                <i class="fa  fa-fw fa-link"></i>
+                友情链接
+              </div>
+              <ul class="links-of-blogroll-list">
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://sun__shine.coding.me/blog" title="旧版本" target="_blank">旧版本</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="/sun/2018/07/28/目录/" title="回到目录" target="_blank">回到目录</a>
+                  </li>
+                
+              </ul>
+            </div>
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#泛型"><span class="nav-number">1.</span> <span class="nav-text">泛型</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#泛型使用"><span class="nav-number">1.1.</span> <span class="nav-text">泛型使用</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#泛型通配符及上限、下限"><span class="nav-number">1.2.</span> <span class="nav-text">泛型通配符及上限、下限</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#类型参数-与通配符的区别"><span class="nav-number">1.2.1.</span> <span class="nav-text">类型参数 与通配符的区别</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#泛型类举例"><span class="nav-number">1.3.</span> <span class="nav-text">泛型类举例</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#泛型类使用总结"><span class="nav-number">1.4.</span> <span class="nav-text">泛型类使用总结:</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#泛型构造器"><span class="nav-number">1.5.</span> <span class="nav-text">泛型构造器</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#泛型方法"><span class="nav-number">1.6.</span> <span class="nav-text">泛型方法</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#泛型的擦除"><span class="nav-number">2.</span> <span class="nav-text">泛型的擦除</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#擦除原则："><span class="nav-number">2.1.</span> <span class="nav-text">擦除原则：</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#泛型的重载"><span class="nav-number">2.2.</span> <span class="nav-text">泛型的重载</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#泛型接口"><span class="nav-number">2.3.</span> <span class="nav-text">泛型接口</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#比较器"><span class="nav-number">3.</span> <span class="nav-text">比较器</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Comparable"><span class="nav-number">3.1.</span> <span class="nav-text">Comparable</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Comparator-外部比较器"><span class="nav-number">3.2.</span> <span class="nav-text">Comparator : 外部比较器</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Comparable和Comparator区别："><span class="nav-number">3.3.</span> <span class="nav-text">Comparable和Comparator区别：</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#枚举"><span class="nav-number">4.</span> <span class="nav-text">枚举</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#枚举类"><span class="nav-number">4.1.</span> <span class="nav-text">枚举类</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#常用方法"><span class="nav-number">4.2.</span> <span class="nav-text">常用方法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#对象"><span class="nav-number">4.3.</span> <span class="nav-text">对象</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#成员变量"><span class="nav-number">4.4.</span> <span class="nav-text">成员变量</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#构造方法"><span class="nav-number">4.5.</span> <span class="nav-text">构造方法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#普通方法"><span class="nav-number">4.6.</span> <span class="nav-text">普通方法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#抽象方法"><span class="nav-number">4.7.</span> <span class="nav-text">抽象方法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#实现接口"><span class="nav-number">4.8.</span> <span class="nav-text">实现接口</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#重写"><span class="nav-number">4.9.</span> <span class="nav-text">重写</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#枚举类的遍历"><span class="nav-number">4.10.</span> <span class="nav-text">枚举类的遍历</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#switch使用"><span class="nav-number">4.11.</span> <span class="nav-text">switch使用</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-heartbeat" aria-hidden="true"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">小良</span>
+
+  
+</div>
+
+<div class="powered-by">
+<i class="fa fa-user-md"></i><span id="busuanzi_container_site_uv">
+  本站访客数:<span id="busuanzi_value_site_uv"></span>
+</span>
+</div>
+
+
+<!--
+
+-->
+<div class="theme-info">
+  <div class="powered-by"></div>
+  <span class="post-count">博客全站共字</span>
+</div>
+
+
+
+<div class="coding-pages">
+  <p>Hosted by <a href="https://pages.coding.me" style="font-weight: bold">Coding Pages</a></p>
+</div>
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/blog/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/blog/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/blog/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/blog/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/blog/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/blog/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/blog/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/blog/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/blog/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/blog/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/blog/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/blog/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/blog/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/blog/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

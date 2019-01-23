@@ -1,0 +1,1408 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/blog/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/blog/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/blog/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/blog/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/blog/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/blog/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/blog/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="List,Map,">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="集合 存储可变的数据时,数组不能很好的处理集合是一个容器  二者的区别:  长度 数组长度固定 集合长度不固定   内容不同 数组存储基本类型和引用类型 集合只能存储引用类型   性能上 数组更好 集合底层数据结构复杂">
+<meta name="keywords" content="List,Map">
+<meta property="og:type" content="article">
+<meta property="og:title" content="java基础day14">
+<meta property="og:url" content="https://sun6145.github.io/blog/2018/08/15/java基础day14/index.html">
+<meta property="og:site_name" content="小良博客">
+<meta property="og:description" content="集合 存储可变的数据时,数组不能很好的处理集合是一个容器  二者的区别:  长度 数组长度固定 集合长度不固定   内容不同 数组存储基本类型和引用类型 集合只能存储引用类型   性能上 数组更好 集合底层数据结构复杂">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2019-01-23T16:28:30.197Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="java基础day14">
+<meta name="twitter:description" content="集合 存储可变的数据时,数组不能很好的处理集合是一个容器  二者的区别:  长度 数组长度固定 集合长度不固定   内容不同 数组存储基本类型和引用类型 集合只能存储引用类型   性能上 数组更好 集合底层数据结构复杂">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/blog/',
+    scheme: 'Gemini',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"hide","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://sun6145.github.io/blog/2018/08/15/java基础day14/">
+
+
+
+
+
+  <title>java基础day14 | 小良博客</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/blog/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">小良博客</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">小良博客</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/blog/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-writer">
+          <a href="/blog/2018/07/28/目录/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-sitemap"></i> <br>
+            
+            目录
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/blog/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/blog/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/blog/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-messagebook">
+          <a href="/blog/MessageBook" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-book"></i> <br>
+            
+            留言板
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off" placeholder="搜索..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://sun6145.github.io/blog/blog/2018/08/15/java基础day14/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="小良">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/blog/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="小良博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">java基础day14</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-08-15T09:26:15+00:00">
+                2018-08-15
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/blog/categories/JavaSE/" itemprop="url" rel="index">
+                    <span itemprop="name">JavaSE</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  字
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">
+                  分钟
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="集合"><a href="#集合" class="headerlink" title="集合"></a>集合</h1><blockquote>
+<p>存储可变的数据时,数组不能很好的处理<br>集合是一个容器</p>
+</blockquote>
+<p>二者的区别:</p>
+<ol>
+<li>长度<ul>
+<li>数组长度固定</li>
+<li>集合长度不固定</li>
+</ul>
+</li>
+<li>内容不同<ul>
+<li>数组存储基本类型和引用类型</li>
+<li>集合只能存储引用类型</li>
+</ul>
+</li>
+<li>性能上<ul>
+<li>数组更好</li>
+<li>集合底层数据结构复杂<a id="more"></a>
+</li>
+</ul>
+</li>
+</ol>
+<h2 id="集合树"><a href="#集合树" class="headerlink" title="集合树"></a>集合树</h2><ol>
+<li>Collection依赖Iterator<ol>
+<li>list: 重复,有序,依赖 ListIterator<ol>
+<li>ArrayList</li>
+<li>LinkedList</li>
+<li>Vector –&gt; 子类stack</li>
+</ol>
+</li>
+<li>set: 不能重复,map(值,null)<ol>
+<li>HashSet<ol>
+<li>LinkedHashSet</li>
+</ol>
+</li>
+<li>Treeset</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>Map依赖collection<ol>
+<li>HashMap: 存储一对信息</li>
+<li>TreeMap</li>
+</ol>
+</li>
+<li>comparable 和 comparator 排序器</li>
+</ol>
+<h1 id="Collection接口"><a href="#Collection接口" class="headerlink" title="Collection接口"></a>Collection接口</h1><blockquote>
+<p>存储数据,单列数据<br>可以重复,无序</p>
+</blockquote>
+<h2 id="常用的方法"><a href="#常用的方法" class="headerlink" title="常用的方法"></a>常用的方法</h2><ol>
+<li>isEmpty()<br> 查看集合是否为空</li>
+<li>size()<br> 查看集合的长度</li>
+<li>add()<br> 往集合中添加元素</li>
+<li>addAll(集合）<br> 将集合中的所有元素添加到当前集合中,只要当前集合发生改变true</li>
+<li>remove()<br> 将元素添从当前集合中删除,只要当前集合发生改变true</li>
+<li>removeAll(集合）<br> 将集合中的所有元素添加到当前集合中,只要当前集合发生改变true</li>
+<li>removeIf()<br> 带条件删除,重写Predicate接口的test方法</li>
+<li>contains()<br> 查看元素是否在集合中,有一个就是true</li>
+<li>containsAll(集合)<br> 判断集合元素是否全部在当前集合中,全部在为true</li>
+<li>toArray()<br> 将集合变为数组</li>
+<li>clear<br>清除集合中的所有元素</li>
+<li>Arrays.asList(String[] str)是Arrays的静态内部类<br>数组转集合,不能进行集合长度改变的操作(增加,删除),UnsupportedOperationException<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br></pre></td><td class="code"><pre><span class="line">//演示collection的功能()</span><br><span class="line">public static void main(String[] args) &#123;</span><br><span class="line">	Collection&lt;String&gt; c = new ArrayList&lt;&gt;();</span><br><span class="line">	System.out.println(&quot;isEmpty:&quot; + c.isEmpty());</span><br><span class="line">	// 添加数据</span><br><span class="line">	c.add(&quot;aa&quot;);</span><br><span class="line">	c.add(&quot;bb&quot;);</span><br><span class="line">	c.add(&quot;cc&quot;);</span><br><span class="line"></span><br><span class="line">	// 查看集合的长度</span><br><span class="line">	System.out.println(&quot;size:&quot; + c.size()); // size:3</span><br><span class="line"></span><br><span class="line">	// 遍历</span><br><span class="line">	for (String s : c) &#123;</span><br><span class="line">		System.out.print(s + &quot; &quot;); // aa bb cc</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	System.out.println();</span><br><span class="line"></span><br><span class="line">	// 添加集合addAll(集合)</span><br><span class="line">	c.addAll(c);</span><br><span class="line">	System.out.println(&quot;addAll:&quot; + c);// addAll:[aa, bb, cc, aa, bb, cc]</span><br><span class="line"></span><br><span class="line">	// 移除remove(object)</span><br><span class="line">	c.remove(&quot;aa&quot;);</span><br><span class="line">	System.out.println(&quot;remove:&quot; + c);// remove:[bb, cc, aa, bb, cc]</span><br><span class="line"></span><br><span class="line">	// 移除集合</span><br><span class="line">	Collection&lt;String&gt; d = new ArrayList&lt;&gt;();</span><br><span class="line">	d.add(&quot;aa&quot;);</span><br><span class="line">	d.add(&quot;bb&quot;);</span><br><span class="line">	c.removeAll(d);</span><br><span class="line">	System.out.println(&quot;removeAll:&quot; + c); // removeAll:[cc, cc]</span><br><span class="line"></span><br><span class="line">	// 带条件删除removeIf</span><br><span class="line">	c.add(&quot;abc&quot;);</span><br><span class="line">	// c.removeIf(new Predicate&lt;String&gt;() &#123;</span><br><span class="line">	//</span><br><span class="line">	// @Override</span><br><span class="line">	// public boolean test(String t) &#123;</span><br><span class="line">	// return t.length()&lt;=2;</span><br><span class="line">	// &#125;</span><br><span class="line">	// &#125;);</span><br><span class="line"></span><br><span class="line">	// lambda 表达式</span><br><span class="line">	c.removeIf((t) -&gt; t.length() &lt;= 2);</span><br><span class="line">	System.out.println(&quot;removeIf:&quot; + c); // removeIf:[abc]</span><br><span class="line"></span><br><span class="line">	// 是否存在参数指定的元素,存在true</span><br><span class="line">	System.out.println(&quot;contains:&quot; + c.contains(&quot;abc&quot;)); // contains:true</span><br><span class="line"></span><br><span class="line">	// 是否存在集合参数中的全部元素,全部存在为true</span><br><span class="line">	c.add(&quot;aa&quot;);</span><br><span class="line">	System.out.println(&quot;containsAll:&quot; + c.containsAll(d));// containsAll:false,只有aa包含</span><br><span class="line"></span><br><span class="line">	// 数组转换成集合,Arrays.asList是Arrays的静态内部类</span><br><span class="line">	// 不能添加,移除(改变长度)</span><br><span class="line">	List&lt;String&gt; list = Arrays.asList(new String[] &#123; &quot;aa&quot;, &quot;bb&quot; &#125;);</span><br><span class="line">	// list.add(&quot;cc&quot;); //UnsupportedOperationException</span><br><span class="line">	// list.remove(&quot;aa&quot;); // UnsupportedOperationException</span><br><span class="line">	System.out.println(&quot;get:&quot; + list.get(1)); // get:bb</span><br><span class="line"></span><br><span class="line">	// 集合转数组toArray</span><br><span class="line">	Object[] array = d.toArray(new Object[2]);</span><br><span class="line">	// Object[] array = d.toArray();</span><br><span class="line">	String[] array2 = d.toArray(new String[3]);</span><br><span class="line"></span><br><span class="line">	// 遍历</span><br><span class="line">	System.out.println(&quot;toArray:&quot; + Arrays.toString(array));// toArray:[aa, bb, null]</span><br><span class="line">	</span><br><span class="line">	//移除所有元素</span><br><span class="line">	c.clear();</span><br><span class="line">	System.out.println(&quot;clear:&quot; + c);//clear:[]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<h1 id="List-接口"><a href="#List-接口" class="headerlink" title="List 接口"></a>List 接口</h1><ol>
+<li>存储数据</li>
+<li>可以重复</li>
+<li>有序,按照元素add的顺序</li>
+</ol>
+<h2 id="方法"><a href="#方法" class="headerlink" title="方法"></a>方法</h2><ol>
+<li>add<br> 添加元素</li>
+<li>add(index,element)<br> 向参数索引处添加一个元素</li>
+<li>get(index)<br> 获取索引处多的元素</li>
+<li>set(index,element)<br> 用第二个参数元素替换第一个参数索引处的元素</li>
+<li>indexOf(element)<br> 参数元素第一次在集合中出现的索引位置</li>
+<li>lastindexOf(element)<br> 查找 参数元素最后一次在集合中出现的索引位置</li>
+<li>subList(start,end)<pre><code>子集合
+</code></pre></li>
+<li>remove(index)<br> 删除指定位置的元素</li>
+<li>sort(Comparator)<br> 排序Comparator<br> 使用sort(null):自然 升序 排序</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line">public static void main(String[] args) &#123;</span><br><span class="line">	List&lt;String&gt; list = new ArrayList&lt;&gt;();</span><br><span class="line">	// 添加元素</span><br><span class="line">	list.add(&quot;aa&quot;);</span><br><span class="line">	list.add(&quot;bb&quot;);</span><br><span class="line">	list.add(&quot;cc&quot;);</span><br><span class="line">	System.out.println(&quot;add:&quot; + list);// add:[aa, bb, cc]</span><br><span class="line"></span><br><span class="line">	// 向参数索引处添加一个元素</span><br><span class="line">	list.add(1, &quot;dd&quot;);</span><br><span class="line">	System.out.println(&quot;Index add:&quot; + list);// Index add:[aa, dd, bb, cc]</span><br><span class="line"></span><br><span class="line">	// 用第二个参数元素替换第一个参数索引处的元素</span><br><span class="line">	list.set(1, &quot;hello&quot;);</span><br><span class="line">	System.out.println(&quot;set:&quot; + list);// set:[aa, hello, bb, cc]</span><br><span class="line"></span><br><span class="line">	// 查找 参数元素第一次在集合中出现的索引位置</span><br><span class="line">	System.out.println(&quot;indexOf:&quot; + list.indexOf(&quot;hello&quot;));// indexOf:1</span><br><span class="line"></span><br><span class="line">	// 查找 参数元素最后一次在集合中出现的索引位置</span><br><span class="line">	System.out.println(&quot;lastIndexOf:&quot; + list.lastIndexOf(&quot;hello&quot;));// lastIndexOf:1</span><br><span class="line">	</span><br><span class="line">	// 子集合</span><br><span class="line">	list.subList(0, 2);</span><br><span class="line">	System.out.println(&quot;subList:&quot; + list.subList(0, 2));//subList:[aa, hello]</span><br><span class="line">	// 排序Comparator</span><br><span class="line">	System.out.println(&quot;set:&quot; + list);//set:[aa, hello, bb, cc]</span><br><span class="line">	</span><br><span class="line">	//按照 自然 升序 排序</span><br><span class="line">	list.sort(null);</span><br><span class="line">	System.out.println(&quot;sort:&quot;+list);//sort:[aa, bb, cc, hello]</span><br><span class="line">	</span><br><span class="line">	//删除</span><br><span class="line">	list.remove(1);</span><br><span class="line">	System.out.println(&quot;remove:&quot;+list);//remove:[aa, cc, hello]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="集合的遍历"><a href="#集合的遍历" class="headerlink" title="集合的遍历"></a>集合的遍历</h2><h3 id="基本for-只能是List"><a href="#基本for-只能是List" class="headerlink" title="基本for 只能是List"></a>基本for 只能是List</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">//1.基本for 只能 List-------------------------</span><br><span class="line">for(int i = 0; i &lt; list.size(); i++) &#123;</span><br><span class="line">	System.out.println(list.get(i));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="增强for-集合都能用"><a href="#增强for-集合都能用" class="headerlink" title="增强for 集合都能用"></a>增强for 集合都能用</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">//2.增强for ---------------------------------</span><br><span class="line">for(String s : list) &#123;</span><br><span class="line">	System.out.println(s);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="集合的forEach方法"><a href="#集合的forEach方法" class="headerlink" title="集合的forEach方法"></a>集合的forEach方法</h3><blockquote>
+<p><code>list.forEach</code>(Consumer接口)<br><code>list.forEach(System.out::println)</code>:方法的引用</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">list.forEach(new Consumer&lt;String&gt;() &#123;</span><br><span class="line">	//t 集合元素</span><br><span class="line">	@Override</span><br><span class="line">	public void accept(String t) &#123;</span><br><span class="line">		System.out.println(t);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">list.forEach(t-&gt;System.out.println(t));//lambda</span><br><span class="line"></span><br><span class="line">list.forEach(System.out::println);//方法的引用</span><br></pre></td></tr></table></figure>
+<h3 id="集合的流遍历"><a href="#集合的流遍历" class="headerlink" title="集合的流遍历"></a>集合的流遍历</h3><p>list.stream().forEach(System.out::println);</p>
+<h3 id="迭代器Iterator"><a href="#迭代器Iterator" class="headerlink" title="迭代器Iterator"></a>迭代器Iterator</h3><h4 id="迭代器的方法"><a href="#迭代器的方法" class="headerlink" title="迭代器的方法"></a>迭代器的方法</h4><ol>
+<li>hasNext()</li>
+<li>next</li>
+<li>forEachRemaining(Consumer接口);</li>
+</ol>
+<blockquote>
+<p>遍历的时候不能操作,并发修改异常使用ListIterator可以操作</p>
+</blockquote>
+<p>remove(): 删除最近一次next()的元素</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Iterator&lt;String&gt; i = list.iterator();</span><br><span class="line">while(i.hasnext())&#123;</span><br><span class="line">	System.out.println(i.next());</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="迭代器的forEachRemaining"><a href="#迭代器的forEachRemaining" class="headerlink" title="迭代器的forEachRemaining"></a>迭代器的forEachRemaining</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Iterator&lt;String&gt; i = list.iterator();</span><br><span class="line">i.forEachRemaining(System.out::println);</span><br></pre></td></tr></table></figure>
+<h4 id="ListIterator"><a href="#ListIterator" class="headerlink" title="ListIterator"></a>ListIterator</h4><ol>
+<li>void add():将指定的元素插入到列表中（可选操作）。 </li>
+<li>void remove():从列表中删除最后一个元素是由 next()或 previous()返回（可选操作）。 </li>
+<li>void set():取代过去的元素返回 next()或 previous()与指定的元素</li>
+<li>hasNext()</li>
+<li>next()</li>
+<li>hasPrevious()</li>
+<li>previous()</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">//next 遍历后可以向上遍历</span><br><span class="line">ListIterator&lt;String &gt; i = list.listIterator();</span><br><span class="line">while(i.hasPrevious())&#123;</span><br><span class="line">	System.out.println(i.previous());</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">//修改,添加,删除.没有并发异常</span><br><span class="line">while(iterator.hasNext())&#123;</span><br><span class="line">	String next = iterator.next();</span><br><span class="line">	if(&quot;aa&quot;.equals(next))&#123;</span><br><span class="line">		iterator.set(&quot;123&quot;);</span><br><span class="line">		iterator.remove();</span><br><span class="line">		iterator.add(&quot;456&quot;);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="实现类"><a href="#实现类" class="headerlink" title="实现类"></a>实现类</h2><ol>
+<li>ArrayList<ol>
+<li>底层数据结构是 数组(查找快)</li>
+<li>按照50% 扩容</li>
+<li>遍历 和随机访问效率高</li>
+</ol>
+</li>
+<li>Vector(jdk1.0出现,性能低)<ol>
+<li>Stack,可以模拟栈的操作</li>
+<li>按照100%扩容</li>
+<li>线程安全</li>
+<li>使用工具类包装arraylist代替掉</li>
+</ol>
+</li>
+<li>LinkedList<ol>
+<li>底层数据结构 是链表(增删快)</li>
+<li>链表的数据用节点表示:<ol>
+<li>构成<ol>
+<li>值域数据</li>
+<li>链域地址</li>
+</ol>
+</li>
+<li>单向链表:值域+ 链域</li>
+<li>双向链表: 前驱 + 值域 + 后继</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+<blockquote>
+<p>数组和链表的区别</p>
+</blockquote>
+<ol>
+<li><ul>
+<li>数组的地址是连续的</li>
+<li>链表的地址不连续</li>
+</ul>
+</li>
+<li><ul>
+<li>数组:遍历 和随机访问效率高</li>
+<li>链表:添加元素和删除元素效率高</li>
+</ul>
+</li>
+</ol>
+<h1 id="set接口"><a href="#set接口" class="headerlink" title="set接口"></a>set接口</h1><blockquote>
+<p>集合特点:无序且唯一</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">//获取7个不重复的随机数</span><br><span class="line">public static void main(String[] args) &#123;</span><br><span class="line">	// Set</span><br><span class="line">	Set&lt;Integer&gt; set = new HashSet&lt;&gt;();</span><br><span class="line">	int r;</span><br><span class="line">	while(true) &#123;</span><br><span class="line">		r = (int)(Math.random()*(30-1+1)+1);</span><br><span class="line">		set.add(r);// int -&gt;Integer</span><br><span class="line">		if(set.size() == 7) &#123;</span><br><span class="line">			break;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	set.forEach(System.out::println);</span><br><span class="line">	</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="HashSet类"><a href="#HashSet类" class="headerlink" title="HashSet类"></a>HashSet类</h2><blockquote>
+<p>底层数据结构是哈希表</p>
+</blockquote>
+<h3 id="hash唯一存储原理"><a href="#hash唯一存储原理" class="headerlink" title="hash唯一存储原理"></a>hash唯一存储原理</h3><p>首先,调用 hashCode()算出一个hash地址,把元素存进去,<br>如果hash值冲突hashCode()的值一样,这时候才会调用equals()判断二个对象是否相同,相同不存储,不同可以存储<br>需要重写hashCode()和equals方法.</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">@Override</span><br><span class="line">public int hashCode() &#123;</span><br><span class="line">	// 哈希地址 </span><br><span class="line">	return name.hashCode() + no;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">@Override</span><br><span class="line">public boolean equals(Object obj) &#123;</span><br><span class="line">	// this ,obj</span><br><span class="line">	// obj _ &gt; Employee</span><br><span class="line">	Employee e = (Employee)obj;</span><br><span class="line">	return this.no == e.no &amp;&amp; this.name.equals(e.name);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="LinkedHashSet"><a href="#LinkedHashSet" class="headerlink" title="LinkedHashSet"></a>LinkedHashSet</h2><blockquote>
+<p>有序,唯一<br>链表,根据插入的顺序</p>
+</blockquote>
+<h2 id="SortedSet接口"><a href="#SortedSet接口" class="headerlink" title="SortedSet接口"></a>SortedSet接口</h2><blockquote>
+<p>是Set的子接口,<br>实现类TreeSet;<br>底层数据结构是 二叉树</p>
+</blockquote>
+<ol>
+<li>first()    获得第一个元素<br> . last()    获得最后一个元素<br> . subSet(start, end)    得到子集,[起始元素,终止元素)</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">public static void main(String[] args) &#123;</span><br><span class="line">	SortedSet&lt;Integer&gt; set = new TreeSet&lt;&gt;();</span><br><span class="line">	set.add(111);</span><br><span class="line">	set.add(25);</span><br><span class="line">	set.add(153);</span><br><span class="line"></span><br><span class="line">	System.out.println(set);// [25, 111, 153]</span><br><span class="line">	// 获得第一个元素</span><br><span class="line">	System.out.println(set.first());// 25</span><br><span class="line"></span><br><span class="line">	// 获得最后一个元素</span><br><span class="line">	System.out.println(set.last());// 153</span><br><span class="line"></span><br><span class="line">	// 子集,[起始元素,终止元素)</span><br><span class="line">	System.out.println(set.subSet(25, 111));// [25]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="数-表示层次结构的"><a href="#数-表示层次结构的" class="headerlink" title="数:表示层次结构的"></a>数:表示层次结构的</h3><blockquote>
+<p>树：是由节点集及连接每对节点的有向边集组成。<br>二叉树：树形结构任意节点不能超过两个孩子。</p>
+<ol>
+<li>根节点</li>
+<li>枝节点</li>
+<li>叶节点</li>
+<li>中序遍历: 左中右</li>
+<li>要管理树(维持持续),效率不如hashSet</li>
+</ol>
+</blockquote>
+<h2 id="NavigableSet接口"><a href="#NavigableSet接口" class="headerlink" title="NavigableSet接口"></a>NavigableSet接口</h2><blockquote>
+<p>是sortedSet的子类接口<br>提供了接近匹配原则的检索元素的方法</p>
+</blockquote>
+<ol>
+<li>floor(e):小于 等于 指定参数 的最大元素</li>
+<li>ceiling:大于等于 指定参宿的 最小元素</li>
+<li>descendingSet():集合元素降序排序</li>
+<li>descendingIterator():降序的迭代器</li>
+<li>pollFirst():移除第一个元素</li>
+<li>pollLast(): 移除最后一个元素</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line">public static void main(String[] args) &#123;</span><br><span class="line">	// NavigableSet</span><br><span class="line">	NavigableSet&lt;Double&gt; set = new TreeSet&lt;&gt;();</span><br><span class="line">	set.add(11.1);</span><br><span class="line">	set.add(55.5);</span><br><span class="line">	set.add(22.2);</span><br><span class="line">	set.add(99.9);</span><br><span class="line">	System.out.println(set);	//[11.1, 22.2, 55.5, 99.9]</span><br><span class="line">	</span><br><span class="line">	//小于 等于 指定参数 的最大元素</span><br><span class="line">	System.out.println(set.floor(20.0));	//11.1</span><br><span class="line">	</span><br><span class="line">	//大于等于 指定参宿的 最小元素</span><br><span class="line">	System.out.println(set.ceiling(20.0));	//22.2</span><br><span class="line">	</span><br><span class="line">	//降序的集合</span><br><span class="line">	set.descendingSet().forEach(System.out::println);</span><br><span class="line">	</span><br><span class="line">	//降序的迭代器</span><br><span class="line">	set.descendingIterator().forEachRemaining(System.out::println);</span><br><span class="line">	</span><br><span class="line">	结果降序:</span><br><span class="line">	/*</span><br><span class="line">		99.9</span><br><span class="line">		55.5</span><br><span class="line">		22.2</span><br><span class="line">		11.1</span><br><span class="line">	*/</span><br><span class="line"></span><br><span class="line">	//移除第一个元素</span><br><span class="line">	set.pollFirst();</span><br><span class="line">	System.out.println(set);	//[22.2, 55.5, 99.9]</span><br><span class="line">	</span><br><span class="line">	//移除最后一个元素</span><br><span class="line">	set.pollLast();</span><br><span class="line">	System.out.println(set);	//[22.2, 55.5]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="TreeSet"><a href="#TreeSet" class="headerlink" title="TreeSet"></a>TreeSet</h2><blockquote>
+<p>真正的比较是依赖于元素的compareTo()方法，而这个方法是定义在 Comparable里面的。<br>所以，你要想重写该方法，就必须是先 Comparable接口。这个接口表示的就是自然排序。<br><strong>二叉树不需要重写hashCode()和equals()</strong></p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">compareTo()方法中:</span><br><span class="line">return 0: 不添加到集合</span><br><span class="line">return正数: 作为右孩子</span><br><span class="line">return 负数: 作为左孩子</span><br><span class="line"></span><br><span class="line">通过中序遍历可以得到有序</span><br></pre></td></tr></table></figure>
+<h1 id="List集合的排序"><a href="#List集合的排序" class="headerlink" title="List集合的排序"></a>List集合的排序</h1><ol>
+<li>sort(null): 自然排序,需要排序的类中实现Comparable接口</li>
+<li>sort(comparator): 推荐使用lambda表达式</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">class Dog implements Comparable&lt;Dog&gt;&#123;</span><br><span class="line">	@Override</span><br><span class="line">	public int compareTo(Dog o) &#123;</span><br><span class="line">		return this.age - o.age ;</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">public static void main(String[] args) &#123;</span><br><span class="line">	List&lt;Dog&gt; dogs = new ArrayList&lt;Dog&gt;();</span><br><span class="line">	Dog wangwang = new Dog(&quot;旺旺&quot;,&quot;金毛&quot;,2);</span><br><span class="line">	Dog meimei = new Dog(&quot;美美&quot;,&quot;吉娃娃&quot;,3);</span><br><span class="line">	Dog wangcai = new Dog(&quot;旺财&quot;,&quot;松狮&quot;,1);</span><br><span class="line">	dogs.add(wangwang);</span><br><span class="line">	dogs.add(meimei);</span><br><span class="line">	dogs.add(wangcai);</span><br><span class="line">	</span><br><span class="line">	//遍历</span><br><span class="line">	dogs.forEach(System.out::println);</span><br><span class="line">	</span><br><span class="line">	//2.实现自然排序</span><br><span class="line">	dogs.sort(null);</span><br><span class="line">	</span><br><span class="line">	//实现comparator年龄降序</span><br><span class="line">	dogs.sort((dog1,dog2)-&gt;dog2.getAge() - dog1.getAge());</span><br><span class="line">	</span><br><span class="line">	//删除美美</span><br><span class="line">	dogs.remove(meimei);</span><br><span class="line">	</span><br><span class="line">	//</span><br><span class="line">	System.out.println(dogs.size());	//2</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h1 id="使用选择"><a href="#使用选择" class="headerlink" title="使用选择"></a>使用选择</h1><ol>
+<li>数据情况<ol>
+<li>(Set)唯一:<ol>
+<li>无序:HashSet</li>
+<li>有序:<ol>
+<li>添加顺序: LinkedList</li>
+<li>自定义顺序: TreeSet</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>(List)重复:<ol>
+<li>查询多: ArrayList</li>
+<li>增删多: linkedList</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+<h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><ol>
+<li><a href="/2018/07/31/集合/" title="集合">集合</a></li>
+<li><a href="/2018/07/31/List接口/" title="List接口">List接口</a></li>
+<li><a href="/2018/08/02/List集合练习/" title="List集合练习">List集合练习</a></li>
+<li><a href="/2018/08/03/Set接口/" title="Set接口">Set接口</a> </li>
+</ol>
+
+      
+    </div>
+    
+    
+    
+<div>
+
+<div>
+
+    <div style="text-align:center;color: #ccc;font-size:14px;">-------------本文结束<i class="fa fa-paw"></i>感谢您的阅读-------------</div>
+
+</div>
+
+</div>
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/blog/tags/List/" rel="tag"># List</a>
+          
+            <a href="/blog/tags/Map/" rel="tag"># Map</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/blog/2018/08/14/java基础day13/" rel="next" title="java基础day13">
+                <i class="fa fa-chevron-left"></i> java基础day13
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/blog/2018/08/16/java基础day15/" rel="prev" title="java基础day15">
+                java基础day15 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+    </div>
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/blog/images/avatar.png" alt="小良">
+            
+              <p class="site-author-name" itemprop="name">小良</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/blog/archives/">
+              
+                  <span class="site-state-item-count">77</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/blog/categories/index.html">
+                  <span class="site-state-item-count">5</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/blog/tags/index.html">
+                  <span class="site-state-item-count">81</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+            <div class="links-of-blogroll motion-element links-of-blogroll-block">
+              <div class="links-of-blogroll-title">
+                <i class="fa  fa-fw fa-link"></i>
+                友情链接
+              </div>
+              <ul class="links-of-blogroll-list">
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://sun__shine.coding.me/blog" title="旧版本" target="_blank">旧版本</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="/sun/2018/07/28/目录/" title="回到目录" target="_blank">回到目录</a>
+                  </li>
+                
+              </ul>
+            </div>
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#集合"><span class="nav-number">1.</span> <span class="nav-text">集合</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#集合树"><span class="nav-number">1.1.</span> <span class="nav-text">集合树</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Collection接口"><span class="nav-number">2.</span> <span class="nav-text">Collection接口</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#常用的方法"><span class="nav-number">2.1.</span> <span class="nav-text">常用的方法</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#List-接口"><span class="nav-number">3.</span> <span class="nav-text">List 接口</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#方法"><span class="nav-number">3.1.</span> <span class="nav-text">方法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#集合的遍历"><span class="nav-number">3.2.</span> <span class="nav-text">集合的遍历</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#基本for-只能是List"><span class="nav-number">3.2.1.</span> <span class="nav-text">基本for 只能是List</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#增强for-集合都能用"><span class="nav-number">3.2.2.</span> <span class="nav-text">增强for 集合都能用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#集合的forEach方法"><span class="nav-number">3.2.3.</span> <span class="nav-text">集合的forEach方法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#集合的流遍历"><span class="nav-number">3.2.4.</span> <span class="nav-text">集合的流遍历</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#迭代器Iterator"><span class="nav-number">3.2.5.</span> <span class="nav-text">迭代器Iterator</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#迭代器的方法"><span class="nav-number">3.2.5.1.</span> <span class="nav-text">迭代器的方法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#迭代器的forEachRemaining"><span class="nav-number">3.2.5.2.</span> <span class="nav-text">迭代器的forEachRemaining</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#ListIterator"><span class="nav-number">3.2.5.3.</span> <span class="nav-text">ListIterator</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#实现类"><span class="nav-number">3.3.</span> <span class="nav-text">实现类</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#set接口"><span class="nav-number">4.</span> <span class="nav-text">set接口</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#HashSet类"><span class="nav-number">4.1.</span> <span class="nav-text">HashSet类</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#hash唯一存储原理"><span class="nav-number">4.1.1.</span> <span class="nav-text">hash唯一存储原理</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#LinkedHashSet"><span class="nav-number">4.2.</span> <span class="nav-text">LinkedHashSet</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#SortedSet接口"><span class="nav-number">4.3.</span> <span class="nav-text">SortedSet接口</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#数-表示层次结构的"><span class="nav-number">4.3.1.</span> <span class="nav-text">数:表示层次结构的</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#NavigableSet接口"><span class="nav-number">4.4.</span> <span class="nav-text">NavigableSet接口</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#TreeSet"><span class="nav-number">4.5.</span> <span class="nav-text">TreeSet</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#List集合的排序"><span class="nav-number">5.</span> <span class="nav-text">List集合的排序</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#使用选择"><span class="nav-number">6.</span> <span class="nav-text">使用选择</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#参考"><span class="nav-number">7.</span> <span class="nav-text">参考</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-heartbeat" aria-hidden="true"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">小良</span>
+
+  
+</div>
+
+<div class="powered-by">
+<i class="fa fa-user-md"></i><span id="busuanzi_container_site_uv">
+  本站访客数:<span id="busuanzi_value_site_uv"></span>
+</span>
+</div>
+
+
+<!--
+
+-->
+<div class="theme-info">
+  <div class="powered-by"></div>
+  <span class="post-count">博客全站共字</span>
+</div>
+
+
+
+<div class="coding-pages">
+  <p>Hosted by <a href="https://pages.coding.me" style="font-weight: bold">Coding Pages</a></p>
+</div>
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/blog/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/blog/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/blog/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/blog/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/blog/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/blog/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/blog/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/blog/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/blog/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/blog/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/blog/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/blog/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/blog/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/blog/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

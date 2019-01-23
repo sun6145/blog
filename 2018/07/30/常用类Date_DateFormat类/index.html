@@ -1,0 +1,1227 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/blog/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/blog/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/blog/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/blog/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/blog/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/blog/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/blog/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Date,FateFormat,">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="Date 类概述 Date:表示特定的瞬间，精确到毫秒。">
+<meta name="keywords" content="Date,FateFormat">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Date FateFormat类">
+<meta property="og:url" content="https://sun6145.github.io/blog/2018/07/30/常用类Date_DateFormat类/index.html">
+<meta property="og:site_name" content="小良博客">
+<meta property="og:description" content="Date 类概述 Date:表示特定的瞬间，精确到毫秒。">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2019-01-23T16:28:30.201Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Date FateFormat类">
+<meta name="twitter:description" content="Date 类概述 Date:表示特定的瞬间，精确到毫秒。">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/blog/',
+    scheme: 'Gemini',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"hide","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://sun6145.github.io/blog/2018/07/30/常用类Date_DateFormat类/">
+
+
+
+
+
+  <title>Date FateFormat类 | 小良博客</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/blog/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">小良博客</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">小良博客</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/blog/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-writer">
+          <a href="/blog/2018/07/28/目录/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-sitemap"></i> <br>
+            
+            目录
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/blog/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/blog/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/blog/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-messagebook">
+          <a href="/blog/MessageBook" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-book"></i> <br>
+            
+            留言板
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off" placeholder="搜索..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://sun6145.github.io/blog/blog/2018/07/30/常用类Date_DateFormat类/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="小良">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/blog/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="小良博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Date FateFormat类</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-07-30T17:02:26+00:00">
+                2018-07-30
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/blog/categories/Java/" itemprop="url" rel="index">
+                    <span itemprop="name">Java</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  字
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">
+                  分钟
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="Date-类概述"><a href="#Date-类概述" class="headerlink" title="Date 类概述"></a>Date 类概述</h1><blockquote>
+<p>Date:表示特定的瞬间，精确到毫秒。 </p>
+</blockquote>
+<a id="more"></a>
+<h2 id="构造方法"><a href="#构造方法" class="headerlink" title="构造方法"></a>构造方法</h2><p>构造方法：</p>
+<ul>
+<li>Date():根据当前的默认毫秒值创建日期对象</li>
+<li>Date(long date)：根据给定的毫秒值创建日期对象<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">// 创建对象</span><br><span class="line">Date d = new Date();</span><br><span class="line">System.out.println(&quot;d:&quot; + d);	//d:Mon Jul 30 16:21:01 CST 2018</span><br><span class="line"></span><br><span class="line">// 创建对象</span><br><span class="line">// long time = System.currentTimeMillis();</span><br><span class="line">long time = 1000 * 60 * 60; // 1小时</span><br><span class="line">Date d2 = new Date(time);</span><br><span class="line">System.out.println(&quot;d2:&quot; + d2);	//d2:Thu Jan 01 08:00:00 CST 1970</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<blockquote>
+<p>日期类的时间从为什么是从1970年1月1日<br>最初计算机操作系统是32位，而时间也是用32位表示。<br>System.out.println(Integer.MAX_VALUE);<br>2147483647<br>Integer在JAVA内用32位表 示，因此32位能表示的最大值是2147483647。<br>另外1年365天的总秒数是31536000，<br>2147483647/31536000 = 68.1<br>也就是说32位能表示的最长时间是68年，而实际上到2038年01月19日03时14分07<br>秒，便会到达最大时间，过了这个时间点，所有32位操作系统时间便会变为<br>10000000 00000000 00000000 00000000<br>也就是1901年12月13日20时45分52秒，这样便会出现时间回归的现象，很多软件便会运行异常了。</p>
+</blockquote>
+<h2 id="成员方法"><a href="#成员方法" class="headerlink" title="成员方法"></a>成员方法</h2><ul>
+<li>public long getTime():获取时间，以毫秒为单位</li>
+<li>public void setTime(long time):设置时间</li>
+</ul>
+<h2 id="代码测试"><a href="#代码测试" class="headerlink" title="代码测试"></a>代码测试</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">// 创建对象</span><br><span class="line">Date d = new Date();</span><br><span class="line">// 获取时间</span><br><span class="line">long time = d.getTime();		</span><br><span class="line">System.out.println(time);		//1532939861629</span><br><span class="line">// System.out.println(System.currentTimeMillis());	//1532939861630</span><br><span class="line"></span><br><span class="line">System.out.println(&quot;d:&quot; + d);	//d:Mon Jul 30 16:37:41 CST 2018</span><br><span class="line">// 设置时间</span><br><span class="line">d.setTime(1000);</span><br><span class="line">System.out.println(&quot;d:&quot; + d);	d:Thu Jan 01 08:00:01 CST 1970</span><br></pre></td></tr></table></figure>
+<h1 id="DateFormat-类概述"><a href="#DateFormat-类概述" class="headerlink" title="DateFormat 类概述"></a>DateFormat 类概述</h1><blockquote>
+<p>DateFormat针对日期进行格式化和针对字符串进行解析的类，因为是抽象类，所以使用其子类SimpleDateFormat</p>
+</blockquote>
+<h2 id="Date-–-String-格式化"><a href="#Date-–-String-格式化" class="headerlink" title="Date     –     String(格式化)"></a>Date     –     String(格式化)</h2><pre><code>public final String format(Date date)
+</code></pre><h2 id="String-–-Date-解析"><a href="#String-–-Date-解析" class="headerlink" title="String – Date(解析)"></a>String – Date(解析)</h2><pre><code>public Date parse(String source)
+</code></pre><h2 id="SimpleDateFormat的构造方法："><a href="#SimpleDateFormat的构造方法：" class="headerlink" title="SimpleDateFormat的构造方法："></a>SimpleDateFormat的构造方法：</h2><ul>
+<li>SimpleDateFormat():默认模式</li>
+</ul>
+<ul>
+<li>SimpleDateFormat(String pattern):给定的模式构造</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">这个模式字符串该如何写呢?</span><br><span class="line"> * 通过查看API，我们就找到了对应的模式</span><br><span class="line"> * 年 y</span><br><span class="line"> * 月 M	</span><br><span class="line"> * 日 d</span><br><span class="line"> * 时 H</span><br><span class="line"> * 分 m</span><br><span class="line"> * 秒 s</span><br></pre></td></tr></table></figure>
+<h2 id="格式化-Date-–-String"><a href="#格式化-Date-–-String" class="headerlink" title="格式化 Date – String"></a>格式化 Date – String</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">// 创建日期对象</span><br><span class="line">Date d = new Date();</span><br><span class="line">// 创建格式化对象</span><br><span class="line">// SimpleDateFormat sdf = new SimpleDateFormat();	//18-7-30 下午5:09(默认格式)</span><br><span class="line">// 给定模式</span><br><span class="line">SimpleDateFormat sdf = new SimpleDateFormat(&quot;yyyy年MM月dd日 HH:mm:ss&quot;);</span><br><span class="line">// public final String format(Date date)</span><br><span class="line">String s = sdf.format(d);</span><br><span class="line">System.out.println(s);		//2018年07月30日 17:07:17</span><br></pre></td></tr></table></figure>
+<h2 id="解释-String-–-Date"><a href="#解释-String-–-Date" class="headerlink" title="解释 String – Date"></a>解释 String – Date</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">String str = &quot;2008-08-08 12:12:12&quot;;</span><br><span class="line">//在把一个字符串解析为日期的时候，请注意格式必须和给定的字符串格式匹配</span><br><span class="line">SimpleDateFormat sdf2 = new SimpleDateFormat(&quot;yyyy-MM-dd HH:mm:ss&quot;);</span><br><span class="line">Date dd = sdf2.parse(str);</span><br><span class="line">System.out.println(dd);		//Fri Aug 08 12:12:12 CST 2008</span><br></pre></td></tr></table></figure>
+<h2 id="小案例：算一下你来到这个世界多少天"><a href="#小案例：算一下你来到这个世界多少天" class="headerlink" title="小案例：算一下你来到这个世界多少天?"></a>小案例：算一下你来到这个世界多少天?</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">public static void main(String[] args) throws ParseException &#123;</span><br><span class="line">	// 键盘录入你的出生的年月日</span><br><span class="line">	Scanner sc = new Scanner(System.in);</span><br><span class="line">	System.out.println(&quot;请输入你的出生年月日(如：1970-01-01):&quot;);</span><br><span class="line">	String line = sc.nextLine();</span><br><span class="line"></span><br><span class="line">	// 把该字符串转换为一个日期</span><br><span class="line">	Date date = new SimpleDateFormat(&quot;yyyy-MM-dd&quot;).parse(line);</span><br><span class="line"></span><br><span class="line">	// 通过该日期得到一个毫秒值</span><br><span class="line">	long d = date.getTime();</span><br><span class="line"></span><br><span class="line">	// 获取当前时间的毫秒值</span><br><span class="line">	long c = new Date().getTime();</span><br><span class="line"></span><br><span class="line">	// 用c-d得到一个毫秒值</span><br><span class="line">	long e = c - d;</span><br><span class="line"></span><br><span class="line">	// 把E的毫秒值转换为年</span><br><span class="line">	long day = e / 1000 / 60 / 60 / 24;</span><br><span class="line"></span><br><span class="line">	System.out.println(&quot;你来到这个世界：&quot; + day + &quot;天&quot;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h1 id="Calendar类"><a href="#Calendar类" class="headerlink" title="Calendar类:"></a>Calendar类:</h1><blockquote>
+<p>它为特定瞬间与一组诸如 YEAR、MONTH、DAY_OF_MONTH、HOUR 等 日历字段之间的转换提供了一些方法，并为操作日历字段（例如获得下星期的日期）提供了一些方法。</p>
+</blockquote>
+<h2 id="成员方法-1"><a href="#成员方法-1" class="headerlink" title="成员方法"></a>成员方法</h2><ul>
+<li>public <strong>int</strong> <strong>get</strong>(int field):返回给定日历字段的值。日历类中的每个日历字段都是静态的成员变量，并且是int类型。</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">//获取年</span><br><span class="line">public static void main(String[] args) &#123;</span><br><span class="line">		// 其日历字段已由当前日期和时间初始化：</span><br><span class="line">		Calendar rightNow = Calendar.getInstance(); // 子类对象</span><br><span class="line">		// 获取年</span><br><span class="line">		int year = rightNow.get(Calendar.YEAR);</span><br><span class="line">		// 获取月</span><br><span class="line">		int month = rightNow.get(Calendar.MONTH);</span><br><span class="line">		// 获取日</span><br><span class="line">		int date = rightNow.get(Calendar.DATE);</span><br><span class="line"></span><br><span class="line">		System.out.println(year + &quot;年&quot; + (month + 1) + &quot;月&quot; + date + &quot;日&quot;);</span><br><span class="line">	&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>public <strong>void</strong> <strong>add</strong>(int field,int amount):根据给定的日历字段和对应的时间，来对当前的日历进行操作。<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">public static void main(String[] args) &#123;</span><br><span class="line">		// 获取当前的日历时间</span><br><span class="line">		Calendar c = Calendar.getInstance();</span><br><span class="line"></span><br><span class="line">		// 5年后的10天前</span><br><span class="line">		c.add(Calendar.YEAR, 5);</span><br><span class="line">		c.add(Calendar.DATE, -10);</span><br><span class="line"></span><br><span class="line">		// 获取年</span><br><span class="line">		year = c.get(Calendar.YEAR);</span><br><span class="line">		// 获取月</span><br><span class="line">		month = c.get(Calendar.MONTH);</span><br><span class="line">		// 获取日</span><br><span class="line">		date = c.get(Calendar.DATE);</span><br><span class="line">		System.out.println(year + &quot;年&quot; + (month + 1) + &quot;月&quot; + date + &quot;日&quot;);</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<ul>
+<li>public <strong>final</strong> <strong>void</strong> set(int year,int month,int date):设置当前日历的年月日</li>
+<li>月份从0开始</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">Calendar c = Calendar.getInstance();</span><br><span class="line">c.set(1314,05,20);</span><br><span class="line">// 获取年</span><br><span class="line">year = c.get(Calendar.YEAR);</span><br><span class="line">// 获取月</span><br><span class="line">month = c.get(Calendar.MONTH);</span><br><span class="line">// 获取日</span><br><span class="line">date = c.get(Calendar.DATE);</span><br><span class="line">System.out.println(year + &quot;年&quot; + (month + 1) + &quot;月&quot; + date + &quot;日&quot;);	//1314年6月20日</span><br></pre></td></tr></table></figure>
+<h2 id="案例"><a href="#案例" class="headerlink" title="案例"></a>案例</h2><p><em>获取任意一年的二月有多少天</em><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">分析：</span><br><span class="line"> * 		A:键盘录入任意的年份</span><br><span class="line"> * 		B:设置日历对象的年月日</span><br><span class="line"> * 			年就是A输入的数据</span><br><span class="line"> * 			月是2</span><br><span class="line"> * 			日是1</span><br><span class="line"> * 		C:把时间往前推一天，就是2月的最后一天</span><br><span class="line"> * 		D:获取这一天输出即可</span><br><span class="line"></span><br><span class="line">public static void main(String[] args) &#123;</span><br><span class="line">	// 键盘录入任意的年份</span><br><span class="line">	Scanner sc = new Scanner(System.in);</span><br><span class="line">	System.out.println(&quot;请输入年份：&quot;);</span><br><span class="line">	int year = sc.nextInt();</span><br><span class="line"></span><br><span class="line">	// 设置日历对象的年月日</span><br><span class="line">	Calendar c = Calendar.getInstance();</span><br><span class="line">	c.set(year, 2, 1); // 其实是这一年的3月1日</span><br><span class="line">	// 把时间往前推一天，就是2月的最后一天</span><br><span class="line">	c.add(Calendar.DATE, -1);</span><br><span class="line"></span><br><span class="line">	// 获取这一天输出即可</span><br><span class="line">	System.out.println(c.get(Calendar.DATE));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+
+      
+    </div>
+    
+    
+    
+<div>
+
+<div>
+
+    <div style="text-align:center;color: #ccc;font-size:14px;">-------------本文结束<i class="fa fa-paw"></i>感谢您的阅读-------------</div>
+
+</div>
+
+</div>
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/blog/tags/Date/" rel="tag"># Date</a>
+          
+            <a href="/blog/tags/FateFormat/" rel="tag"># FateFormat</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/blog/2018/07/30/Java基础第二天/" rel="next" title="Java基础第二天">
+                <i class="fa fa-chevron-left"></i> Java基础第二天
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/blog/2018/07/31/Java基础第三天/" rel="prev" title="Java基础第三天">
+                Java基础第三天 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+    </div>
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/blog/images/avatar.png" alt="小良">
+            
+              <p class="site-author-name" itemprop="name">小良</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/blog/archives/">
+              
+                  <span class="site-state-item-count">77</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/blog/categories/index.html">
+                  <span class="site-state-item-count">5</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/blog/tags/index.html">
+                  <span class="site-state-item-count">81</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+            <div class="links-of-blogroll motion-element links-of-blogroll-block">
+              <div class="links-of-blogroll-title">
+                <i class="fa  fa-fw fa-link"></i>
+                友情链接
+              </div>
+              <ul class="links-of-blogroll-list">
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://sun__shine.coding.me/blog" title="旧版本" target="_blank">旧版本</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="/sun/2018/07/28/目录/" title="回到目录" target="_blank">回到目录</a>
+                  </li>
+                
+              </ul>
+            </div>
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Date-类概述"><span class="nav-number">1.</span> <span class="nav-text">Date 类概述</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#构造方法"><span class="nav-number">1.1.</span> <span class="nav-text">构造方法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#成员方法"><span class="nav-number">1.2.</span> <span class="nav-text">成员方法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#代码测试"><span class="nav-number">1.3.</span> <span class="nav-text">代码测试</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#DateFormat-类概述"><span class="nav-number">2.</span> <span class="nav-text">DateFormat 类概述</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Date-–-String-格式化"><span class="nav-number">2.1.</span> <span class="nav-text">Date     –     String(格式化)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#String-–-Date-解析"><span class="nav-number">2.2.</span> <span class="nav-text">String – Date(解析)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#SimpleDateFormat的构造方法："><span class="nav-number">2.3.</span> <span class="nav-text">SimpleDateFormat的构造方法：</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#格式化-Date-–-String"><span class="nav-number">2.4.</span> <span class="nav-text">格式化 Date – String</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#解释-String-–-Date"><span class="nav-number">2.5.</span> <span class="nav-text">解释 String – Date</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#小案例：算一下你来到这个世界多少天"><span class="nav-number">2.6.</span> <span class="nav-text">小案例：算一下你来到这个世界多少天?</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Calendar类"><span class="nav-number">3.</span> <span class="nav-text">Calendar类:</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#成员方法-1"><span class="nav-number">3.1.</span> <span class="nav-text">成员方法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#案例"><span class="nav-number">3.2.</span> <span class="nav-text">案例</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-heartbeat" aria-hidden="true"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">小良</span>
+
+  
+</div>
+
+<div class="powered-by">
+<i class="fa fa-user-md"></i><span id="busuanzi_container_site_uv">
+  本站访客数:<span id="busuanzi_value_site_uv"></span>
+</span>
+</div>
+
+
+<!--
+
+-->
+<div class="theme-info">
+  <div class="powered-by"></div>
+  <span class="post-count">博客全站共字</span>
+</div>
+
+
+
+<div class="coding-pages">
+  <p>Hosted by <a href="https://pages.coding.me" style="font-weight: bold">Coding Pages</a></p>
+</div>
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/blog/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/blog/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/blog/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/blog/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/blog/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/blog/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/blog/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/blog/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/blog/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/blog/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/blog/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/blog/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/blog/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/blog/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

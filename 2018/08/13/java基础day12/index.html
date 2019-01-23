@@ -1,0 +1,1321 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/blog/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/blog/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/blog/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/blog/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/blog/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/blog/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/blog/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Lambda表达式,">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="概述函数式接口:接口中只有一个抽象方法 Lambda 只能实现函数式接口">
+<meta name="keywords" content="Lambda表达式">
+<meta property="og:type" content="article">
+<meta property="og:title" content="java基础day12">
+<meta property="og:url" content="https://sun6145.github.io/blog/2018/08/13/java基础day12/index.html">
+<meta property="og:site_name" content="小良博客">
+<meta property="og:description" content="概述函数式接口:接口中只有一个抽象方法 Lambda 只能实现函数式接口">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2019-01-23T16:28:30.197Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="java基础day12">
+<meta name="twitter:description" content="概述函数式接口:接口中只有一个抽象方法 Lambda 只能实现函数式接口">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/blog/',
+    scheme: 'Gemini',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"hide","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://sun6145.github.io/blog/2018/08/13/java基础day12/">
+
+
+
+
+
+  <title>java基础day12 | 小良博客</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/blog/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">小良博客</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">小良博客</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/blog/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-writer">
+          <a href="/blog/2018/07/28/目录/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-sitemap"></i> <br>
+            
+            目录
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/blog/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/blog/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/blog/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-messagebook">
+          <a href="/blog/MessageBook" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-book"></i> <br>
+            
+            留言板
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off" placeholder="搜索..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://sun6145.github.io/blog/blog/2018/08/13/java基础day12/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="小良">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/blog/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="小良博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">java基础day12</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-08-13T09:29:25+00:00">
+                2018-08-13
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/blog/categories/JavaSE/" itemprop="url" rel="index">
+                    <span itemprop="name">JavaSE</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  字
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">
+                  分钟
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h1><p>函数式接口:接口中只有一个抽象方法</p>
+<p>Lambda 只能实现函数式接口</p>
+<a id="more"></a>
+<p>具体用法参考:<a href="/2018/08/10/Lanbda表达式/" title="Lanbda表达式">Lanbda表达式</a></p>
+<h2 id="方法传参"><a href="#方法传参" class="headerlink" title="方法传参"></a>方法传参</h2><ul>
+<li>一个class的方法的形式参数是一个函数式接口,</li>
+<li>这个时候可以传一个lambda 表达式</li>
+<li>返回的对象必须是接口,强转为Object</li>
+<li>Object 0 =(Run) ()-&gt; System.out.println(“Hello.”);</li>
+</ul>
+<h2 id="匿名内部类和-Lambda的区别"><a href="#匿名内部类和-Lambda的区别" class="headerlink" title="匿名内部类和 Lambda的区别"></a>匿名内部类和 Lambda的区别</h2><ol>
+<li><ul>
+<li>Lambda 只能实现函数式接口</li>
+<li>匿名内部类 可以是继承一个父类 或 实现 一个父类接口</li>
+</ul>
+</li>
+<li><ul>
+<li>Lambda 只能针对 函数式接口的抽象方法</li>
+<li>匿名内部类可以调用非抽象方法, 如 默认方法等.</li>
+</ul>
+</li>
+</ol>
+<h1 id="方法引用"><a href="#方法引用" class="headerlink" title="方法引用"></a>方法引用</h1><blockquote>
+<p>前提:Lambda 只有一行代码 ,只调用了一个方法</p>
+</blockquote>
+<h2 id="引用类方法-静态方法"><a href="#引用类方法-静态方法" class="headerlink" title="引用类方法(静态方法)"></a>引用类方法(静态方法)</h2><blockquote>
+<p>类名::类方法</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line">interface La&#123;</span><br><span class="line">	Integer f(String s);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">class Student&#123;</span><br><span class="line">	private String name;</span><br><span class="line">	Student(String name)&#123;</span><br><span class="line">		this.name = name;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line">interface La1&#123;</span><br><span class="line">	Student f(String name);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">=============================================</span><br><span class="line"></span><br><span class="line">	//1.引用 类方法</span><br><span class="line">	//	La la1 = s-&gt;&#123;return Integer.parseInt(s);&#125;;</span><br><span class="line">	La la1 = s -&gt; Integer.parseInt(s);</span><br><span class="line">	La la2 = Integer::parseInt;</span><br><span class="line"></span><br><span class="line">	//2.特定对象 引用 实例方法</span><br><span class="line">	La la3 = s-&gt;&quot;hello&quot;.indexOf(s);</span><br><span class="line">	La la4 = &quot;hello&quot;::indexOf;</span><br><span class="line"></span><br><span class="line">	//3.某类对象 的实例方法</span><br><span class="line">	La la5 = s-&gt;s.length();</span><br><span class="line">	La la6 = String::length;</span><br><span class="line"></span><br><span class="line">	//4.引用构造器</span><br><span class="line">	La1 la7 = s-&gt;new Student(s);</span><br><span class="line">	La1 la8 = Student::new;</span><br></pre></td></tr></table></figure>
+<h2 id="引用实例-1-8下"><a href="#引用实例-1-8下" class="headerlink" title="引用实例(1.8下)"></a>引用实例(1.8下)</h2><h3 id="一元运算"><a href="#一元运算" class="headerlink" title="一元运算"></a>一元运算</h3><blockquote>
+<p><code>static void parallelSetAll(int[] array, IntUnaryOperator generator)</code></p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">//用 索引 替换掉 数组中的元素</span><br><span class="line">int [] arr = &#123;1,2,3,4,5&#125;;</span><br><span class="line">Arrays.parallelSetAll(arr, new IntUnaryOperator() &#123;</span><br><span class="line">	</span><br><span class="line">	@Override</span><br><span class="line">	public int applyAsInt(int operand) &#123;</span><br><span class="line">		// 数组的索引</span><br><span class="line">		return operand;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">//使用引用</span><br><span class="line">Arrays.parallelSetAll(arr,index-&gt;index );</span><br><span class="line"></span><br><span class="line">System.out.println(Arrays.toString(arr)); //[0, 1, 2, 3, 4]</span><br></pre></td></tr></table></figure>
+<h3 id="二元运算"><a href="#二元运算" class="headerlink" title="二元运算"></a>二元运算</h3><blockquote>
+<p><code>static void parallelPrefix(int[] array, IntBinaryOperator op)</code></p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">//用 二元运算的结果 来替换掉数组的每一个元素</span><br><span class="line">Arrays.parallelPrefix(arr, new IntBinaryOperator() &#123;</span><br><span class="line">	//     left -前一个元素     right:当前元素</span><br><span class="line">	@Override</span><br><span class="line">	public int applyAsInt(int left, int right) &#123;</span><br><span class="line">		// 当前元素是第一个元素  ，前一个元素  是1</span><br><span class="line">		return left * right;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">//使用引用</span><br><span class="line">Arrays.parallelPrefix(arr,(n1,n2)-&gt;n1*n2 );</span><br><span class="line">System.out.println(Arrays.toString(arr)); //[1, 2, 6, 24, 120]</span><br></pre></td></tr></table></figure>
+<h3 id="遍历数组-Stream流的方法"><a href="#遍历数组-Stream流的方法" class="headerlink" title="遍历数组 Stream流的方法"></a>遍历数组 Stream流的方法</h3><blockquote>
+<p><code>static IntStream stream(int[] array)</code></p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">Arrays.stream(arr).forEach(new IntConsumer() &#123;</span><br><span class="line">	//value数组元素</span><br><span class="line">	@Override</span><br><span class="line">	public void accept(int value) &#123;</span><br><span class="line">		System.out.println(value);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">//Lambda</span><br><span class="line">Arrays.stream(arr).forEach(num-&gt;System.out.println(num));</span><br><span class="line">//方法引用</span><br><span class="line">Arrays.stream(arr).forEach(System.out::println);</span><br><span class="line">结果:</span><br><span class="line">	1</span><br><span class="line">	2</span><br><span class="line">	3</span><br><span class="line">	4</span><br><span class="line">	5</span><br></pre></td></tr></table></figure>
+<h1 id="异常"><a href="#异常" class="headerlink" title="异常"></a>异常</h1><blockquote>
+<p>显示从开始到调用的位置<br>显示堆栈错误信息</p>
+</blockquote>
+<ul>
+<li>Throwable 异常的父类<ul>
+<li>Error <ul>
+<li><strong>不能通过代码处理</strong></li>
+</ul>
+</li>
+<li>Exception<br>  -<strong> 通过代码可以解决</strong><ol>
+<li>运行时异常 RuntimeException和它的子类<ol>
+<li>它的代码可以不用处理,但是出现异常会中断</li>
+</ol>
+</li>
+<li>非运行时的异常(受检异常):Exception类 和部分子类<ol>
+<li>在源代码中,必须进行异常处理,否则无法编译运行</li>
+</ol>
+</li>
+</ol>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="常见的异常"><a href="#常见的异常" class="headerlink" title="常见的异常:"></a>常见的异常:</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">1.ArithemeticException</span><br><span class="line">	x=5/0;</span><br><span class="line"></span><br><span class="line">2. ArrayIndexOutofBoundsException</span><br><span class="line">	int[] arr = &#123;1,2&#125;;</span><br><span class="line">	arr[2]=5;</span><br><span class="line"></span><br><span class="line">3. NullPointerException</span><br><span class="line">	String s = null;</span><br><span class="line">	System.out.println(s.equals(&quot;abc&quot;));//空指针</span><br><span class="line">	//有些类能处理异常</span><br><span class="line">	System.out.println(Objects.equals(&quot;abc&quot;));//false不会报错</span><br><span class="line">	System.out.println(Objects.hashCode(s));//不会报错</span><br><span class="line"></span><br><span class="line">4. InputMismatchException:欲得到的数据类型与输入不匹配</span><br><span class="line">	Scanner下控制输入不匹配</span><br><span class="line"></span><br><span class="line">5. ClassCastException:对象强制类型转换出错</span><br><span class="line">	Object o = new Object();</span><br><span class="line">	Integer i = (Integer)o;</span><br><span class="line"></span><br><span class="line">6. NumberFormatException: 数字格式化异常</span><br><span class="line">	String s =&quot;123a&quot;;</span><br><span class="line">	int n = Integer.parseInt(s);</span><br><span class="line"></span><br><span class="line">7. ClassNotFoundException: 不能加载所需的类</span><br><span class="line">	ClassLoader.getSystemClassLoader().loadClass(&quot;包名.类名&quot;);</span><br><span class="line">	</span><br><span class="line">8. illegalArgumentException: 方法接收到非法参数</span><br></pre></td></tr></table></figure>
+<h2 id="异常的处理"><a href="#异常的处理" class="headerlink" title="异常的处理"></a>异常的处理</h2><h3 id="try-catch"><a href="#try-catch" class="headerlink" title="try-catch"></a>try-catch</h3><blockquote>
+<p>try 里面放可能会引发异常的代码<br>catch 放引发异常的类型</p>
+</blockquote>
+<ol>
+<li>getMessage();获取异常的消息</li>
+<li>printStackTrace()打印堆栈的错误信息</li>
+</ol>
+<p>格式:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">public void method()&#123;</span><br><span class="line">	try&#123;</span><br><span class="line">		//代码段（此处可能会产生异常_</span><br><span class="line">	）catch(异常类型 ex)&#123;</span><br><span class="line">		//对异常进行处理的代码段</span><br><span class="line">	&#125;</span><br><span class="line">	//代码段</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>结果:</p>
+<ol>
+<li>没有引发异常<ol>
+<li>执行了try ,没有catch</li>
+</ol>
+</li>
+<li>引发了异常类型的匹配<ol>
+<li>执行try ,也执行了catch</li>
+</ol>
+</li>
+<li>出现了异常,但是异常类型不匹配<ol>
+<li>出现了中断</li>
+</ol>
+</li>
+</ol>
+<h3 id="多重catch块"><a href="#多重catch块" class="headerlink" title="多重catch块"></a>多重catch块</h3><blockquote>
+<p>可以对不同类型的异常采取不同的处理方式<br>防止出现不知道的异常,加入父类<br>顺序:由子类到父类,由一般 到 特殊, 由常见 到 不常见</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">public void method()&#123;</span><br><span class="line">	try&#123;</span><br><span class="line">		//代码段（此处可能会产生异常_</span><br><span class="line">	）catch(异常类型 ex)&#123;</span><br><span class="line">		//对异常进行处理的代码段</span><br><span class="line">	&#125;catch(异常类型 ex)&#123;</span><br><span class="line">		//对异常进行处理的代码段</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	....</span><br><span class="line">	</span><br><span class="line">	catch(异常类型 ex)&#123;</span><br><span class="line">		//对异常进行处理的代码段</span><br><span class="line">	&#125;catch(异Exception e)&#123;</span><br><span class="line">		//对异常进行处理的代码段</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>例子:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">public static void main(String[] args) &#123;</span><br><span class="line">	int [] arr = new int[5];</span><br><span class="line">	Scanner input = new Scanner(System.in);</span><br><span class="line">	System.out.println(&quot;赋值;&quot;);</span><br><span class="line">	try &#123;</span><br><span class="line">		for(int i = 0; i &lt; arr.length; i++) &#123;</span><br><span class="line">			arr[i] = input.nextInt();</span><br><span class="line">		&#125;</span><br><span class="line">		Arrays.stream(arr).forEach(System.out::println);</span><br><span class="line">	&#125;catch(ArrayIndexOutOfBoundsException e) &#123;</span><br><span class="line">		System.out.println(&quot;下标越界&quot;);</span><br><span class="line">	&#125;catch(InputMismatchException e) &#123;</span><br><span class="line">		System.out.println(&quot;赋值出错了&quot;);</span><br><span class="line">	&#125;catch(Exception e) &#123;</span><br><span class="line">		System.out.println(e.getMessage());</span><br><span class="line">	&#125;finally &#123;</span><br><span class="line">		System.out.println(&quot;程序运行出错&quot;);</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="出现异常必须执行的代码"><a href="#出现异常必须执行的代码" class="headerlink" title="出现异常必须执行的代码"></a>出现异常必须执行的代码</h4><blockquote>
+<p>放入到finaly 的代码;除非虚拟机退出,否则一定会执行.<br>无论是否触发异常也会执行.<br>通常用来释放资源6</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">public void method()&#123;</span><br><span class="line">	try&#123;</span><br><span class="line">		//代码段（此处可能会产生异常_</span><br><span class="line">	）catch(异常类型 ex)&#123;</span><br><span class="line">		//对异常进行处理的代码段</span><br><span class="line">	&#125; finaly&#123;</span><br><span class="line">		//一定执行的代码段</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="声明抛出throws"><a href="#声明抛出throws" class="headerlink" title="声明抛出throws"></a>声明抛出throws</h3><blockquote>
+<p>声明异常:给调用者处理<br>随调用谁处理</p>
+</blockquote>
+<ul>
+<li>必须处理:Exception是受检异常,必须处理<ul>
+<li>调用者处理: <ul>
+<li>try-catch </li>
+<li>抛给虚拟机(不推荐)</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>灵活处理:throws RuntimeException</li>
+</ul>
+<blockquote>
+<p>抛出受检异常</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">public void f() throws Exception&#123;</span><br><span class="line">	Scanner input = new Scanner(System.in);</span><br><span class="line">	int x = input.nextInt();</span><br><span class="line">	int y = input.nextInt();</span><br><span class="line">	int z = x / y;</span><br><span class="line">	System.out.println(z);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">try &#123;</span><br><span class="line">		new TestException5().f();</span><br><span class="line">	&#125; catch (Exception e) &#123;</span><br><span class="line">		// TODO Auto-generated catch block</span><br><span class="line">		e.printStackTrace();</span><br><span class="line">	&#125;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>抛出运行期异常</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">public void f() throws RuntimeException&#123;</span><br><span class="line">	Scanner input = new Scanner(System.in);</span><br><span class="line">	int x = input.nextInt();</span><br><span class="line">	int y = input.nextInt();</span><br><span class="line">	int z = x / y;</span><br><span class="line">	System.out.println(z);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">//需要手动try-catch</span><br><span class="line">try &#123;</span><br><span class="line">		new TestException5().f();</span><br><span class="line">	&#125; catch (RuntimeException e) &#123;</span><br><span class="line">		// TODO Auto-generated catch block</span><br><span class="line">		e.printStackTrace();</span><br><span class="line">	&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="抛出异常"><a href="#抛出异常" class="headerlink" title="抛出异常"></a>抛出异常</h3><p>自己手动throw 抛出一个异常对象</p>
+<ul>
+<li>抛出一个受检异常 ,方法必须要throws声明一下<ul>
+<li>调用者必须处理.</li>
+</ul>
+</li>
+<li>抛出一个运行时异常, 不需要throws 声明</li>
+</ul>
+<blockquote>
+<p>抛出受检异常</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">public void setAge(int age)throws AgeException &#123;</span><br><span class="line">	if(age &gt;= 0 &amp;&amp; age &lt;= 150) &#123;</span><br><span class="line">		this.age = age;</span><br><span class="line">	&#125;else &#123;</span><br><span class="line">		//抛异常对象</span><br><span class="line">		throw new Exception(&quot;年龄必须在 0 - 150之间&quot;);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">测试:</span><br><span class="line">public static void main(String[] args) &#123;</span><br><span class="line">	</span><br><span class="line">	Person zhangsan = new Person();</span><br><span class="line">	try &#123;</span><br><span class="line">		zhangsan.setAge(250);</span><br><span class="line">	&#125; catch (Exception e) &#123;</span><br><span class="line">		// TODO Auto-generated catch block</span><br><span class="line">		e.printStackTrace();</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="自定义异常"><a href="#自定义异常" class="headerlink" title="自定义异常"></a>自定义异常</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">class AgeException extends Exception&#123;</span><br><span class="line">	/*AgeException(String str)&#123;</span><br><span class="line">		super(str);//调用父类构造传参</span><br><span class="line">	&#125;*/</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">	private String message;</span><br><span class="line">	AgeException(String message)&#123;</span><br><span class="line">		this.message = message;</span><br><span class="line">	&#125;</span><br><span class="line">	@Override</span><br><span class="line">	public String getMessage() &#123;</span><br><span class="line">		// TODO Auto-generated method stub</span><br><span class="line">		return &quot;message:&quot; + message;</span><br><span class="line">	&#125;</span><br><span class="line">	@Override</span><br><span class="line">	public String toString() &#123;</span><br><span class="line">		// TODO Auto-generated method stub</span><br><span class="line">		return &quot;string:&quot; + message;</span><br><span class="line">	&#125;</span><br><span class="line">	@Override</span><br><span class="line">	public void printStackTrace() &#123;</span><br><span class="line">		System.out.println(&quot;stack:&quot; + message);</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line">class Person&#123;</span><br><span class="line">	private int age;</span><br><span class="line"></span><br><span class="line">	public int getAge() &#123;</span><br><span class="line">		return age;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	public void setAge(int age)throws AgeException &#123;</span><br><span class="line">		if(age &gt;= 0 &amp;&amp; age &lt;= 150) &#123;</span><br><span class="line">			this.age = age;</span><br><span class="line">		&#125;else &#123;</span><br><span class="line">			//抛异常对象</span><br><span class="line">			throw new AgeException(&quot;年龄必须在 0 - 150之间&quot;);</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line">/////////////////////////////////////////////</span><br><span class="line">public static void main(String[] args) &#123;</span><br><span class="line">	Person zhangsan = new Person();</span><br><span class="line">	try &#123;</span><br><span class="line">		zhangsan.setAge(222);</span><br><span class="line">	&#125; catch (AgeException e) &#123;</span><br><span class="line">		e.printStackTrace();</span><br><span class="line">		System.out.println(e);</span><br><span class="line">		System.out.println(e.getMessage());</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line">/////////////////////////////////////////////</span><br><span class="line">stack:年龄必须在 0 - 150之间</span><br><span class="line">string:年龄必须在 0 - 150之间</span><br><span class="line">message:年龄必须在 0 - 150之间</span><br></pre></td></tr></table></figure>
+<h2 id="异常处理的原则"><a href="#异常处理的原则" class="headerlink" title="异常处理的原则"></a>异常处理的原则</h2><ol>
+<li>只用于处理非正常的情况；</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">String [] arr = &#123;&quot;hello&quot;,&quot;hello&quot;,&quot;hello&quot;&#125;;</span><br><span class="line">//--正常的写法-------------------------------</span><br><span class="line">for(int i = 0; i &lt; arr.length; i++) &#123;</span><br><span class="line">		System.out.println(arr[i]);</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">//--异常处理的写法---(不推荐)---------------------------	</span><br><span class="line">try &#123;</span><br><span class="line">	for(int i = 0; ; i++) &#123;</span><br><span class="line">		System.out.println(arr[i]);</span><br><span class="line">	&#125;</span><br><span class="line">&#125; catch (Exception e) &#123;</span><br><span class="line">	</span><br><span class="line">&#125;</span><br><span class="line">System.out.println(&quot;其他的代码&quot;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ol start="2">
+<li>避免过大的try</li>
+<li>使用多重catch</li>
+<li>不要忽略catch块儿中的异常</li>
+<li>改正代码</li>
+<li>文档声明</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">/**</span><br><span class="line"> * </span><br><span class="line"> * @param args</span><br><span class="line"> * @throws Exception </span><br><span class="line"> */</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    
+    
+    
+<div>
+
+<div>
+
+    <div style="text-align:center;color: #ccc;font-size:14px;">-------------本文结束<i class="fa fa-paw"></i>感谢您的阅读-------------</div>
+
+</div>
+
+</div>
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/blog/tags/Lambda表达式/" rel="tag"># Lambda表达式</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/blog/2018/08/12/mysql的数据约束/" rel="next" title="mysql的数据约束">
+                <i class="fa fa-chevron-left"></i> mysql的数据约束
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/blog/2018/08/13/Mysql数据库设计/" rel="prev" title="Mysql数据库设计">
+                Mysql数据库设计 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+    </div>
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/blog/images/avatar.png" alt="小良">
+            
+              <p class="site-author-name" itemprop="name">小良</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/blog/archives/">
+              
+                  <span class="site-state-item-count">77</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/blog/categories/index.html">
+                  <span class="site-state-item-count">5</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/blog/tags/index.html">
+                  <span class="site-state-item-count">81</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+            <div class="links-of-blogroll motion-element links-of-blogroll-block">
+              <div class="links-of-blogroll-title">
+                <i class="fa  fa-fw fa-link"></i>
+                友情链接
+              </div>
+              <ul class="links-of-blogroll-list">
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://sun__shine.coding.me/blog" title="旧版本" target="_blank">旧版本</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="/sun/2018/07/28/目录/" title="回到目录" target="_blank">回到目录</a>
+                  </li>
+                
+              </ul>
+            </div>
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#概述"><span class="nav-number">1.</span> <span class="nav-text">概述</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#方法传参"><span class="nav-number">1.1.</span> <span class="nav-text">方法传参</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#匿名内部类和-Lambda的区别"><span class="nav-number">1.2.</span> <span class="nav-text">匿名内部类和 Lambda的区别</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#方法引用"><span class="nav-number">2.</span> <span class="nav-text">方法引用</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#引用类方法-静态方法"><span class="nav-number">2.1.</span> <span class="nav-text">引用类方法(静态方法)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#引用实例-1-8下"><span class="nav-number">2.2.</span> <span class="nav-text">引用实例(1.8下)</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#一元运算"><span class="nav-number">2.2.1.</span> <span class="nav-text">一元运算</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#二元运算"><span class="nav-number">2.2.2.</span> <span class="nav-text">二元运算</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#遍历数组-Stream流的方法"><span class="nav-number">2.2.3.</span> <span class="nav-text">遍历数组 Stream流的方法</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#异常"><span class="nav-number">3.</span> <span class="nav-text">异常</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#常见的异常"><span class="nav-number">3.1.</span> <span class="nav-text">常见的异常:</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#异常的处理"><span class="nav-number">3.2.</span> <span class="nav-text">异常的处理</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#try-catch"><span class="nav-number">3.2.1.</span> <span class="nav-text">try-catch</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#多重catch块"><span class="nav-number">3.2.2.</span> <span class="nav-text">多重catch块</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#出现异常必须执行的代码"><span class="nav-number">3.2.2.1.</span> <span class="nav-text">出现异常必须执行的代码</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#声明抛出throws"><span class="nav-number">3.2.3.</span> <span class="nav-text">声明抛出throws</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#抛出异常"><span class="nav-number">3.2.4.</span> <span class="nav-text">抛出异常</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#自定义异常"><span class="nav-number">3.3.</span> <span class="nav-text">自定义异常</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#异常处理的原则"><span class="nav-number">3.4.</span> <span class="nav-text">异常处理的原则</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-heartbeat" aria-hidden="true"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">小良</span>
+
+  
+</div>
+
+<div class="powered-by">
+<i class="fa fa-user-md"></i><span id="busuanzi_container_site_uv">
+  本站访客数:<span id="busuanzi_value_site_uv"></span>
+</span>
+</div>
+
+
+<!--
+
+-->
+<div class="theme-info">
+  <div class="powered-by"></div>
+  <span class="post-count">博客全站共字</span>
+</div>
+
+
+
+<div class="coding-pages">
+  <p>Hosted by <a href="https://pages.coding.me" style="font-weight: bold">Coding Pages</a></p>
+</div>
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/blog/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/blog/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/blog/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/blog/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/blog/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/blog/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/blog/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/blog/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/blog/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/blog/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/blog/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/blog/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/blog/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/blog/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

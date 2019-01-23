@@ -1,0 +1,1410 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/blog/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/blog/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/blog/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/blog/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/blog/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/blog/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/blog/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Hexo, NexT">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="查询常用的操作 where  group by    order by   having   limit   join   查询语句的写的顺序：​        select ...  from ....join....where ...group by...having...order by...limit..  sql语句的执行顺序：​        from---join--where--g">
+<meta property="og:type" content="article">
+<meta property="og:title" content="hive查询与数据类型">
+<meta property="og:url" content="https://sun6145.github.io/blog/2018/10/29/hive查询语句/index.html">
+<meta property="og:site_name" content="小良博客">
+<meta property="og:description" content="查询常用的操作 where  group by    order by   having   limit   join   查询语句的写的顺序：​        select ...  from ....join....where ...group by...having...order by...limit..  sql语句的执行顺序：​        from---join--where--g">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2019-01-23T16:28:30.197Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="hive查询与数据类型">
+<meta name="twitter:description" content="查询常用的操作 where  group by    order by   having   limit   join   查询语句的写的顺序：​        select ...  from ....join....where ...group by...having...order by...limit..  sql语句的执行顺序：​        from---join--where--g">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/blog/',
+    scheme: 'Gemini',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"hide","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://sun6145.github.io/blog/2018/10/29/hive查询语句/">
+
+
+
+
+
+  <title>hive查询与数据类型 | 小良博客</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/blog/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">小良博客</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">小良博客</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/blog/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-writer">
+          <a href="/blog/2018/07/28/目录/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-sitemap"></i> <br>
+            
+            目录
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/blog/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/blog/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/blog/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-messagebook">
+          <a href="/blog/MessageBook" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-book"></i> <br>
+            
+            留言板
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off" placeholder="搜索..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://sun6145.github.io/blog/blog/2018/10/29/hive查询语句/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="小良">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/blog/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="小良博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">hive查询与数据类型</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-10-29T17:53:30+00:00">
+                2018-10-29
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/blog/categories/HIVE/" itemprop="url" rel="index">
+                    <span itemprop="name">HIVE</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  字
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">
+                  分钟
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="查询常用的操作"><a href="#查询常用的操作" class="headerlink" title="查询常用的操作"></a>查询常用的操作</h1><ul>
+<li><code>where  group by    order by   having   limit   join</code></li>
+</ul>
+<ol>
+<li><p>查询语句的写的顺序：<br>​        <code>select ...  from ....join....where ...group by...having...order by...limit..</code></p>
+</li>
+<li><p>sql语句的执行顺序：<br>​        <code>from---join--where--group by---having---select---order by---limit</code></p>
+</li>
+</ol>
+<h1 id="本地模式"><a href="#本地模式" class="headerlink" title="本地模式"></a>本地模式</h1><p><code>set hive.exec.mode.local.auto=true;</code></p>
+<p><a href="https://blog.csdn.net/qq_23146763/article/details/72961443" target="_blank" rel="noopener">本地模式参考</a></p>
+<a id="more"></a>
+<h1 id="join关联"><a href="#join关联" class="headerlink" title="join关联"></a>join关联</h1><ol>
+<li>hive中连接  只支持等值连接,不支持不等值连接<br><del><code>select .... from a join b on a.id&gt;b.id;</code></del>  不支持 , key值不好确定<ol start="2">
+<li>hive中and连接  不支持or<br><code>select ... from a join b on a.id=b.id and a.pid=b.pid;</code><br><del><code>select ... from a join b on a.id=b.id or a.pid=b.pid;</code></del>  key值不好确定</li>
+</ol>
+</li>
+<li>hive支持多表关联  但是hive中进行关联的时候尽量避免笛卡尔积</li>
+</ol>
+<h2 id="内连接"><a href="#内连接" class="headerlink" title="内连接"></a>内连接</h2><blockquote>
+<p>inner join–inner可以省略<br>取的是两个表的交集</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">select a.id aid,a.name name,b.id bid,b.score score </span><br><span class="line">from test_a a inner join test_b b on a.id=b.id;</span><br><span class="line"></span><br><span class="line">结果：</span><br><span class="line">	1       zs      1       34</span><br><span class="line">	2       ls      2       67</span><br></pre></td></tr></table></figure>
+<h2 id="外链接"><a href="#外链接" class="headerlink" title="外链接"></a>外链接</h2><h3 id="左外连接"><a href="#左外连接" class="headerlink" title="左外连接"></a>左外连接</h3><blockquote>
+<p>left outer join==left join</p>
+<p>以join左侧的表为基础表  </p>
+<p>左侧的表的所有数据都会显示  </p>
+<p>右侧可以关联上的就会补全  <strong>关联不上 null补充</strong></p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">select a.id aid,a.name name,b.id bid,b.score score </span><br><span class="line">from test_a a left join test_b b on a.id=b.id;</span><br><span class="line"></span><br><span class="line">结果：1,2,3</span><br><span class="line">1       zs      1       34</span><br><span class="line">2       ls      2       67</span><br><span class="line">3       ww      NULL    NULL</span><br></pre></td></tr></table></figure>
+<h3 id="右外连接"><a href="#右外连接" class="headerlink" title="右外连接"></a>右外连接</h3><blockquote>
+<p>right outer join=right join<br>以join右侧的表为基础  </p>
+<p>左侧的表可以关联上的就会补全  <strong>关联不上 null补充</strong></p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">select a.id aid,a.name name,b.id bid,b.score score </span><br><span class="line">from test_a a right join test_b b on a.id=b.id;</span><br><span class="line"></span><br><span class="line">结果：</span><br><span class="line">1       zs      1       34</span><br><span class="line">2       ls      2       67</span><br><span class="line">NULL    NULL    4       99</span><br></pre></td></tr></table></figure>
+<h3 id="全外连接"><a href="#全外连接" class="headerlink" title="全外连接"></a>全外连接</h3><blockquote>
+<p>full outer join=full join<br>两个表的并集</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">select a.id aid,a.name name,b.id bid,b.score score </span><br><span class="line">from test_a a full join test_b b on a.id=b.id;</span><br><span class="line">结果：</span><br><span class="line">1       zs      1       34</span><br><span class="line">2       ls      2       67</span><br><span class="line">3       ww      NULL    NULL</span><br><span class="line">NULL    NULL    4       99</span><br></pre></td></tr></table></figure>
+<h2 id="半连接"><a href="#半连接" class="headerlink" title="半连接"></a>半连接</h2><blockquote>
+<p>left semi join</p>
+<p>相当于内连接  取左半表的数据<br>左表中在右表中出现关联上的数据，判断左边在右边里面<br>左表id：1,2,3   右表中的id  ：1,2,4</p>
+<p><strong>hive对in/exists的支持性能很低  出现left semi join</strong></p>
+<p>mysql没有 半连接，有in/exists</p>
+<p>经验：做join   小表放左侧  大表右侧  多个表进行关联的时候  先做较小表的关联 在和大表进行关联</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">select * from test_a a left semi join test_b b on a.id=b.id;</span><br><span class="line"></span><br><span class="line">结果：</span><br><span class="line">1       zs</span><br><span class="line">2       ls</span><br></pre></td></tr></table></figure>
+<h1 id="group-by-分组"><a href="#group-by-分组" class="headerlink" title="group by 分组"></a>group by 分组</h1><blockquote>
+<p>group by执行是在select之前的</p>
+</blockquote>
+<ol>
+<li>select后面的别名, group by中<strong>不能使用</strong>的,只能<strong>使用原生</strong>的字段</li>
+</ol>
+<ol start="2">
+<li>如果有group by   select查询的字段只能有以下两种：<ul>
+<li>group by的字段</li>
+<li>聚合函数</li>
+</ul>
+</li>
+</ol>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> <span class="keyword">class</span>,<span class="keyword">min</span>(score) <span class="keyword">from</span> student <span class="keyword">group</span> <span class="keyword">by</span> <span class="keyword">class</span>;</span><br></pre></td></tr></table></figure>
+<h1 id="order-by-排序"><a href="#order-by-排序" class="headerlink" title="order by  排序"></a>order by  排序</h1><blockquote>
+<p>  <strong>全局排序</strong>  对hive表中的所有的数据进行排序</p>
+</blockquote>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> * <span class="keyword">from</span> stu_test01 <span class="keyword">order</span> <span class="keyword">by</span> age <span class="keyword">asc</span>;</span><br></pre></td></tr></table></figure>
+<h1 id="sort-by-排序"><a href="#sort-by-排序" class="headerlink" title="sort by 排序"></a>sort by 排序</h1><blockquote>
+<p>局部排序  在每一个reducetask中进行排序的<br>当reducetask的个数是一个的时候就相当于全局排序=order by</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line">select * from stu_test01 sort by age asc;</span><br><span class="line"></span><br><span class="line">reducetask=3:</span><br><span class="line">结果</span><br><span class="line">	reducetask0</span><br><span class="line">		95008   李娜    女      18      CS</span><br><span class="line">		95005   刘刚    男      18      MA</span><br><span class="line">		95008   李娜    女      18      CS</span><br><span class="line">		95011   包小柏  男      18      MA</span><br><span class="line">		95004   张立    男      19      IS</span><br><span class="line">		95014   王小丽  女      19      CS</span><br><span class="line">		95019   邢小丽  女      19      IS</span><br><span class="line">		95010   孔小涛  男      19      CS</span><br><span class="line">		95004   张立    男      19      IS</span><br><span class="line">		95019   邢小丽  女      19      IS</span><br><span class="line">		95007   易思玲  女      19      MA</span><br><span class="line">		95001   李勇    男      20      CS</span><br><span class="line">		95012   孙花    女      20      CS</span><br><span class="line">		95020   赵钱    男      21      IS</span><br><span class="line">		95003   王敏    女      22      MA</span><br><span class="line">		</span><br><span class="line">	reducetask1</span><br><span class="line">		95021   周二    男      17      MA</span><br><span class="line">		95015   王君    男      18      MA</span><br><span class="line">		95011   包小柏  男      18      MA</span><br><span class="line">		95017   王风娟  女      18      IS</span><br><span class="line">		95009   梦圆圆  女      18      MA</span><br><span class="line">		95017   王风娟  女      18      IS</span><br><span class="line">		95005   刘刚    男      18      MA</span><br><span class="line">		95018   王一    女      19      IS</span><br><span class="line">		95007   易思玲  女      19      MA</span><br><span class="line">		95010   孔小涛  男      19      CS</span><br><span class="line">		95014   王小丽  女      19      CS</span><br><span class="line">		95018   王一    女      19      IS</span><br><span class="line">		95022   郑明    男      20      MA</span><br><span class="line">		95013   冯伟    男      21      CS</span><br><span class="line">		</span><br><span class="line">	reducetask2</span><br><span class="line">		95021   周二    男      17      MA</span><br><span class="line">		95015   王君    男      18      MA</span><br><span class="line">		95009   梦圆圆  女      18      MA</span><br><span class="line">		95002   刘晨    女      19      IS</span><br><span class="line">		95002   刘晨    女      19      IS</span><br><span class="line">		95006   孙庆    男      23      CS</span><br><span class="line">		</span><br><span class="line">sort by 在进行分每一个reducetask中的数据的时候  是随机选择的字段进行分配的</span><br><span class="line">reducetask0/reducetask0 都有王小丽</span><br></pre></td></tr></table></figure>
+<h1 id="distribute-by"><a href="#distribute-by" class="headerlink" title="distribute by"></a>distribute by</h1><blockquote>
+<p>仅仅相当于分桶的概念</p>
+<p>将数据根据指定的distribute by<strong>字段进行分桶</strong>  桶的个数由<strong>reducetask的个数决定的</strong></p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line">select * from stu_test01 distribute by age;</span><br><span class="line"></span><br><span class="line">reducetask=3;  桶的个数3个  按照age进行分桶的</span><br><span class="line"></span><br><span class="line">	桶1    age%3=0</span><br><span class="line">		95005   刘刚    男      18      MA</span><br><span class="line">		95015   王君    男      18      MA</span><br><span class="line">		95011   包小柏  男      18      MA</span><br><span class="line">		95017   王风娟  女      18      IS</span><br><span class="line">		95008   李娜    女      18      CS</span><br><span class="line">		95009   梦圆圆  女      18      MA</span><br><span class="line">		95015   王君    男      18      MA</span><br><span class="line">		95005   刘刚    男      18      MA</span><br><span class="line">		95011   包小柏  男      18      MA</span><br><span class="line">		95017   王风娟  女      18      IS</span><br><span class="line">		95013   冯伟    男      21      CS</span><br><span class="line">		95020   赵钱    男      21      IS</span><br><span class="line">		95008   李娜    女      18      CS</span><br><span class="line">		95009   梦圆圆  女      18      MA</span><br><span class="line">		</span><br><span class="line">	桶2   age%3=1</span><br><span class="line">		95010   孔小涛  男      19      CS</span><br><span class="line">		95007   易思玲  女      19      MA</span><br><span class="line">		95004   张立    男      19      IS</span><br><span class="line">		95019   邢小丽  女      19      IS</span><br><span class="line">		95014   王小丽  女      19      CS</span><br><span class="line">		95018   王一    女      19      IS</span><br><span class="line">		95002   刘晨    女      19      IS</span><br><span class="line">		95010   孔小涛  男      19      CS</span><br><span class="line">		95007   易思玲  女      19      MA</span><br><span class="line">		95004   张立    男      19      IS</span><br><span class="line">		95003   王敏    女      22      MA</span><br><span class="line">		95019   邢小丽  女      19      IS</span><br><span class="line">		95014   王小丽  女      19      CS</span><br><span class="line">		95018   王一    女      19      IS</span><br><span class="line">		95002   刘晨    女      19      IS</span><br><span class="line">		</span><br><span class="line">	桶3 age%3=2</span><br><span class="line">		95021   周二    男      17      MA</span><br><span class="line">		95012   孙花    女      20      CS</span><br><span class="line">		95022   郑明    男      20      MA</span><br><span class="line">		95001   李勇    男      20      CS</span><br><span class="line">		95021   周二    男      17      MA</span><br><span class="line">		95006   孙庆    男      23      CS</span><br></pre></td></tr></table></figure>
+<h2 id="分桶后局部排序"><a href="#分桶后局部排序" class="headerlink" title="分桶后局部排序"></a>分桶后局部排序</h2><blockquote>
+<p>如果既想按照指定的字段进行分桶 distribute by 又想在每一个桶中进行局部排序 sort by</p>
+<p><strong>distribute by+sort by</strong></p>
+</blockquote>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> * <span class="keyword">from</span> stu_test01 <span class="keyword">distribute</span> <span class="keyword">by</span> age <span class="keyword">sort</span> <span class="keyword">by</span> age;</span><br><span class="line"></span><br><span class="line">	blk-1   age%3=0</span><br><span class="line">		95005   刘刚    男      18      MA</span><br><span class="line">		95015   王君    男      18      MA</span><br><span class="line">		95011   包小柏  男      18      MA</span><br><span class="line">		95017   王风娟  女      18      IS</span><br><span class="line">		95008   李娜    女      18      CS</span><br><span class="line">		95009   梦圆圆  女      18      MA</span><br><span class="line">		95015   王君    男      18      MA</span><br><span class="line">		95005   刘刚    男      18      MA</span><br><span class="line">		95011   包小柏  男      18      MA</span><br><span class="line">		95017   王风娟  女      18      IS</span><br><span class="line">		95008   李娜    女      18      CS</span><br><span class="line">		95009   梦圆圆  女      18      MA</span><br><span class="line">		95013   冯伟    男      21      CS</span><br><span class="line">		95020   赵钱    男      21      IS</span><br><span class="line">		</span><br><span class="line">	blk-2  age%3=1</span><br><span class="line">		95010   孔小涛  男      19      CS</span><br><span class="line">		95007   易思玲  女      19      MA</span><br><span class="line">		95004   张立    男      19      IS</span><br><span class="line">		95019   邢小丽  女      19      IS</span><br><span class="line">		95014   王小丽  女      19      CS</span><br><span class="line">		95018   王一    女      19      IS</span><br><span class="line">		95002   刘晨    女      19      IS</span><br><span class="line">		95010   孔小涛  男      19      CS</span><br><span class="line">		95007   易思玲  女      19      MA</span><br><span class="line">		95004   张立    男      19      IS</span><br><span class="line">		95019   邢小丽  女      19      IS</span><br><span class="line">		95014   王小丽  女      19      CS</span><br><span class="line">		95018   王一    女      19      IS</span><br><span class="line">		95002   刘晨    女      19      IS</span><br><span class="line">		95003   王敏    女      22      MA</span><br><span class="line">		</span><br><span class="line">	blk-3   age%3=2</span><br><span class="line">		95021   周二    男      17      MA</span><br><span class="line">		95021   周二    男      17      MA</span><br><span class="line">		95022   郑明    男      20      MA</span><br><span class="line">		95012   孙花    女      20      CS</span><br><span class="line">		95001   李勇    男      20      CS</span><br><span class="line">		95006   孙庆    男      23      CS</span><br></pre></td></tr></table></figure>
+<h1 id="hive数据类型"><a href="#hive数据类型" class="headerlink" title="hive数据类型"></a>hive数据类型</h1><blockquote>
+<p>hive====java中   string   int   double</p>
+</blockquote>
+<h2 id="基本数据："><a href="#基本数据：" class="headerlink" title="基本数据："></a>基本数据：</h2><ul>
+<li>整型：<code>tinyint</code>  <code>smallint</code> <code>int</code>  <code>bigint</code></li>
+<li>浮点型：<code>double</code> <code>float</code></li>
+<li>字符串类型：<code>string</code></li>
+<li>布尔类型：<code>boolean</code></li>
+<li>时间戳：<code>timestamp</code> </li>
+</ul>
+<h2 id="复杂数据类型"><a href="#复杂数据类型" class="headerlink" title="复杂数据类型"></a>复杂数据类型</h2><blockquote>
+<p>都是由基本数据类型构成的,后面都是多个数据，集合类型</p>
+<p>collection items terminated by ‘,’ 指定集合中的元素的分割符    </p>
+</blockquote>
+<h3 id="array-–-list—collection"><a href="#array-–-list—collection" class="headerlink" title="array – list—collection"></a>array – list—collection</h3><blockquote>
+<p>应用场景：某一个<strong>字段有多个数据</strong> ,数据的<strong>个数不统一</strong>,多个数据<strong>类型统一</strong></p>
+</blockquote>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">family：</span><br><span class="line">name	families</span><br><span class="line">zs		dad,mum,sister</span><br><span class="line">ls		dad,mum</span><br><span class="line">ww		dad,mum,brother,wife,son</span><br><span class="line"></span><br><span class="line">建表：</span><br><span class="line"><span class="keyword">create</span> <span class="keyword">table</span> test_array(<span class="keyword">name</span> <span class="keyword">string</span>,family <span class="built_in">array</span>&lt;<span class="keyword">string</span>&gt;) </span><br><span class="line"><span class="keyword">row</span> <span class="keyword">format</span> <span class="keyword">delimited</span> <span class="keyword">fields</span> <span class="keyword">terminated</span> <span class="keyword">by</span> <span class="string">'\t'</span> </span><br><span class="line">collection items <span class="keyword">terminated</span> <span class="keyword">by</span> <span class="string">','</span> </span><br><span class="line"><span class="keyword">stored</span> <span class="keyword">as</span> textfile;</span><br><span class="line"></span><br><span class="line">加载数据：</span><br><span class="line"><span class="keyword">load</span> <span class="keyword">data</span> <span class="keyword">local</span> inpath <span class="string">'/home/hadoop/datas/family'</span> <span class="keyword">into</span> <span class="keyword">table</span> test_array;</span><br><span class="line"></span><br><span class="line">collection items terminated by ',' 指定集合中的元素的分割符</span><br></pre></td></tr></table></figure>
+<ul>
+<li><p><strong>查询：访问通过下标[]</strong></p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> <span class="keyword">name</span>,family[<span class="number">3</span>] <span class="keyword">from</span> test_array;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h3 id="map—映射-k-v"><a href="#map—映射-k-v" class="headerlink" title="map—映射   k-v"></a>map—映射   k-v</h3><blockquote>
+<p>应用场景：k-v类型</p>
+</blockquote>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">info</span><br><span class="line">name	info</span><br><span class="line">zs		age:28,salary:20000,address:beijing</span><br><span class="line">ls		age:20,address:sh,job:IT</span><br><span class="line">ww		age:36,job:rs</span><br><span class="line"></span><br><span class="line">建表：</span><br><span class="line"><span class="keyword">create</span> <span class="keyword">table</span> test_map(<span class="keyword">name</span> <span class="keyword">string</span>,info <span class="keyword">map</span>&lt;<span class="keyword">string</span>,<span class="keyword">string</span>&gt;) </span><br><span class="line"><span class="keyword">row</span> <span class="keyword">format</span> <span class="keyword">delimited</span> <span class="keyword">fields</span> <span class="keyword">terminated</span> <span class="keyword">by</span> <span class="string">'\t'</span> </span><br><span class="line">collection items <span class="keyword">terminated</span> <span class="keyword">by</span> <span class="string">","</span> </span><br><span class="line"><span class="keyword">map</span> <span class="keyword">keys</span> <span class="keyword">terminated</span> <span class="keyword">by</span> <span class="string">':'</span>;</span><br><span class="line"></span><br><span class="line">数据加载：</span><br><span class="line"><span class="keyword">load</span> <span class="keyword">data</span> <span class="keyword">local</span> inpath <span class="string">'/home/hadoop/datas/info'</span> <span class="keyword">into</span> <span class="keyword">table</span> test_map;</span><br><span class="line"></span><br><span class="line">指定多个分割符的时候  从外向内</span><br><span class="line">age:36,job:rs  先字段的分割,后k-v的分割</span><br><span class="line">map keys terminated by ':'   map的key和value的分割符</span><br></pre></td></tr></table></figure>
+<ul>
+<li><p>查询：根据key—访问value</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> <span class="keyword">name</span>,info[<span class="string">"salary"</span>] <span class="keyword">from</span> test_map;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h3 id="struct"><a href="#struct" class="headerlink" title="struct"></a>struct</h3><blockquote>
+<p>java中的对象类型</p>
+<p>应用场景：每一条数据都是具有严格的<strong>统一的个数</strong>  数据的每一个<strong>字段都是统一的类型：类类型</strong></p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">Student&#123;</span><br><span class="line">    string name;</span><br><span class="line">    int age;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">stu_info</span><br><span class="line">name	info</span><br><span class="line">zss		26,123456,shanghai,695</span><br><span class="line">xh		27,234556,shenzhen,700</span><br><span class="line">xl		25,678894,beijing,570</span><br><span class="line"></span><br><span class="line">建表：</span><br><span class="line">create table test_struct</span><br><span class="line">(name string,info struct&lt;age:int,xuehao:int,address:string,score:int&gt;) </span><br><span class="line">row format delimited fields terminated by &apos;\t&apos; </span><br><span class="line">collection items terminated by &quot;,&quot;;</span><br><span class="line"></span><br><span class="line">加载数据：</span><br><span class="line">load data local inpath &apos;/home/hadoop/datas/stu_info&apos; into table test_struct;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>数据查询:通过<code>字段名.属性</code></li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select name,info.age from test_struct;</span><br></pre></td></tr></table></figure>
+<h1 id="hive视图"><a href="#hive视图" class="headerlink" title="hive视图"></a>hive视图</h1><h2 id="特点"><a href="#特点" class="headerlink" title="特点"></a>特点</h2><ol>
+<li><p>hive中的视图仅仅相当于一个<strong>sql语句的快捷方式</strong></p>
+</li>
+<li><p>hive中的视图<strong>只有逻辑视图  没有物化视图</strong></p>
+</li>
+<li><p>hive中的视图<strong>不支持</strong><code>insert</code> <code>delete</code> <code>update</code>的操作,<strong>只支持查询</strong></p>
+</li>
+<li><p>hive中的视图在查询视图的时候才会真正的执行<br> <code>select * from age_20_view;</code>才开始执行的</p>
+</li>
+<li><p>hive的视图<strong>保存在元数据库TBLS表</strong>中，<strong>保存的就是视图代表的sql语句</strong>不是sql的查询结果</p>
+</li>
+<li><p>提高hql语句的可读性 ，在很多的子查询的</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">select * </span><br><span class="line">from age_20_view    提高hql语句的可读性 </span><br><span class="line">where id &gt;95001;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">-----------</span><br><span class="line"></span><br><span class="line">select * </span><br><span class="line">from (select * from stu_test01 where age&gt;20)</span><br><span class="line">where id&gt;95001;</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<h2 id="操作"><a href="#操作" class="headerlink" title="操作"></a>操作</h2><ol>
+<li><p>创建视图</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">reate view view_name as select....</span><br><span class="line">create view age_20_view as select * from stu_test01 where age&gt;20;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>查看视图列表</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">how tables;   既有视图  又有表</span><br><span class="line">show views;  只能查看视图</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>查看视图的详细描述信息</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">desc age_20_view;</span><br><span class="line">desc extended age_20_view;</span><br><span class="line">desc formatted age_20_view;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>删除视图</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">drop view age_20_view;  可行</span><br><span class="line">drop table age_20_view;  不可行</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<h1 id="hive的函数"><a href="#hive的函数" class="headerlink" title="hive的函数"></a>hive的函数</h1><h2 id="函数分类"><a href="#函数分类" class="headerlink" title="函数分类"></a>函数分类</h2><ul>
+<li><p>UDF  user define function</p>
+<blockquote>
+<p>一路进一路出  处理一条数据 获取一条数据</p>
+</blockquote>
+</li>
+<li><p>UDTF user define table function </p>
+<blockquote>
+<p>一路进多路出  处理一条数据 返回多条数据 </p>
+<p>  explode</p>
+</blockquote>
+</li>
+<li><p>UDAF user define aggregate funvtion   </p>
+<blockquote>
+<p>进多路出一路  处理多条数  返回一条数据 </p>
+<p> sum  count avg max min</p>
+</blockquote>
+</li>
+</ul>
+<h2 id="内置函数"><a href="#内置函数" class="headerlink" title="内置函数"></a>内置函数</h2><h3 id="内置函数操作"><a href="#内置函数操作" class="headerlink" title="内置函数操作"></a>内置函数操作</h3><ol>
+<li>查看所有内置函数<br> <code>show functions;</code> 271个内置函数</li>
+<li>查看内置函数的用法<br> <code>desc function funname;</code></li>
+<li>查看函数的详细描述信息~<br><code>desc function extended funname;</code></li>
+</ol>
+<h3 id="常用内置函数"><a href="#常用内置函数" class="headerlink" title="常用内置函数"></a>常用内置函数</h3><ol>
+<li><p>集合函数  生成集合的函数<br> <code>array</code>  数组生成函数<br> <code>array_contains</code>   判断数组中是否包含元素的<br> <code>map</code>  生成map集合的  参数偶数个  奇数-key 偶数–value<br> <code>map_keys</code>  map的key<br> <code>map_values</code>  map的value</p>
+</li>
+<li><p>数值函数<br> <code>round(x[, d])</code>  参数1：浮点数  参数2：需要保留几位小数  参数2不传  四舍五入<br> <code>ceil</code>:大于参数的最小整数。<code>ceil(4.5)---5</code><br> <code>floor</code>：小于参数的最大整数<code>floor(4.5)---4</code></p>
+</li>
+<li><p>字符串</p>
+   <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line"># 字符串截取</span><br><span class="line">    1. substr(需要截取的字符串, 截取位置[, 长度])</span><br><span class="line">        字符串  从1开始</span><br><span class="line">    2. substring</span><br><span class="line"></span><br><span class="line"># 字符串查找：</span><br><span class="line">    1. instr(原始字符串, 需要查找的字符串)</span><br><span class="line">        有  返回子字符所在的第一个字符的下标</span><br><span class="line">        没有 返回 0</span><br><span class="line"></span><br><span class="line"># 字符串切分：</span><br><span class="line">    1. split(原始字符串, 分割的表达式)</span><br><span class="line">        返回的是切分完的数组</span><br><span class="line"></span><br><span class="line"># 字符串的拼接：</span><br><span class="line">    1. concat(str1, str2, ... strN)</span><br><span class="line">        多个字符串拼接为一个字符串</span><br><span class="line">    2. concat_ws(各个子字符串的分隔符, [string | array(string)])</span><br><span class="line">        concat_ws(&quot;-&quot;,&quot;aa&quot;,&quot;bb&quot;,array(&quot;ss&quot;,&quot;jj&quot;))---&gt; aa-bb-ss-jj</span><br><span class="line"># 大小写转换</span><br><span class="line">    1. lcase  小写</span><br><span class="line">    2. ucase   大写</span><br><span class="line">    3. lower  小写</span><br><span class="line">    4. upper   大写</span><br><span class="line"></span><br><span class="line"># 字符串判断：  处理null</span><br><span class="line">    1. nvl(查询的字段,默认值)  </span><br><span class="line">        参数1为null则返回参数2  </span><br><span class="line">        参数1不为null  返回参数1</span><br><span class="line">        select name,nvl(family[2],&quot;self&quot;) from test_array;</span><br><span class="line"></span><br><span class="line">    2. if（表达式，返回值1，返回值2）</span><br><span class="line">        表达式？返回值1：返回值2</span><br><span class="line">        select if(family[2] is null,&quot;self&quot;,family[2]) from test_array;</span><br><span class="line"></span><br><span class="line">    3. is null 判断是否为null  </span><br><span class="line">        是  true  </span><br><span class="line">        不是false</span><br><span class="line"></span><br><span class="line"># 去除空格</span><br><span class="line">    1. trim 去二端空格</span><br><span class="line">    2. ltrim 去左端空格</span><br><span class="line">    3. rtrim 去右端空格</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>日期操作</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">1. unix_timestamp(date, [pattern])</span><br><span class="line">	将给定日期转换为时间戳</span><br><span class="line">    select unix_timestamp();  返回的当前系统的时间戳</span><br><span class="line">    select unix_timestamp(&quot;2018-10-20&quot;,&quot;yyyy-MM-dd&quot;);返回给定日期的时间戳</span><br><span class="line"> </span><br><span class="line"> 2. from_unixtime(系统时间戳, 需要转换的日期格式)</span><br><span class="line">    将时间戳--&gt;日期的</span><br><span class="line">    </span><br><span class="line">    year  返回日期或时间戳所在年份					</span><br><span class="line">    month  获取月份的</span><br><span class="line">    day   获取天的</span><br><span class="line">    hour</span><br><span class="line">    minute</span><br><span class="line">    second</span><br><span class="line">    weekofyear(date)  返回的是一年中的第几周</span><br><span class="line">    datediff(date1, date2)  返回的是(date1 大  date2小)之间相差的天数</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>表生成函数</p>
+<blockquote>
+<p>应用场景:细分</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">explode（数组/map集合）  炸裂函数   进一条数据出来多条数据</span><br><span class="line">    参数：数组/map集合</span><br><span class="line">    将数组或map炸裂为多行  一个元素一行</span><br><span class="line"></span><br><span class="line">语法上不支持explode和普通字段一起查询</span><br><span class="line">select name,explode(family) from test_array;---&gt;不支持</span><br><span class="line"></span><br><span class="line">解决方案：</span><br><span class="line"></span><br><span class="line">select name,fs.*</span><br><span class="line">from test_array </span><br><span class="line">lateral view explode(family) fs;</span><br><span class="line"></span><br><span class="line">[1,2,3,4]----4行</span><br><span class="line">    1</span><br><span class="line">    2</span><br><span class="line">    3</span><br><span class="line">    4</span><br><span class="line"></span><br><span class="line">[1:2,3:4]----2行</span><br><span class="line">    key	value</span><br><span class="line">    1  2</span><br><span class="line">    3  4</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">应用场景：</span><br><span class="line">数据</span><br><span class="line">		电影名		电影类型：</span><br><span class="line">		分手大师   		喜剧</span><br><span class="line">		分手大师		爱情</span><br><span class="line">		一出好戏	喜剧/悬疑/惊悚/爱情</span><br><span class="line">获取电影名 电影类型（一个）</span><br><span class="line"></span><br><span class="line">select name,fs.family_mem </span><br><span class="line">from test_array </span><br><span class="line">lateral view explode(family) fs as family_mem;</span><br><span class="line">	fs 未炸裂之前的字段别名</span><br><span class="line">	family_mem 炸裂之后的字段</span><br><span class="line"></span><br><span class="line">select name,stuin.sk,stuin.sv </span><br><span class="line">from test_map </span><br><span class="line">lateral view explode(info) stuin as sk,sv;</span><br><span class="line">	stuin 未炸裂之前的字段别名</span><br><span class="line">	sk,sv map炸裂之后的字段k-v</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<h2 id="自定义函数"><a href="#自定义函数" class="headerlink" title="自定义函数"></a>自定义函数</h2><p>开发步骤：</p>
+<ol>
+<li><p>创建一类继承hive的UDF类</p>
+</li>
+<li><p>实现一个方法 名字必须叫<code>evaluate</code></p>
+<blockquote>
+<p>返回值: 函数调用的返回值<br>  参数:  函数调用的时候的参数 </p>
+</blockquote>
+</li>
+<li><p>将上面的程序进行打jar包 传到linux本地</p>
+</li>
+<li><p>将jar包放在hive的classpath下</p>
+<blockquote>
+<p><code>add jar path</code>;  将本地jar添加到hive的classpath下<br>  ad d jar /home/hadoop/myudf.jar;</p>
+</blockquote>
+<blockquote>
+<p> 验证：<code>list jars;</code>  <code>list jar;</code><br>  当前添加的jar包的作用域：当前客户端   </p>
+</blockquote>
+<blockquote>
+<p> 如果当前客户端退出 jar包失效 下次进入的时候重新添加</p>
+</blockquote>
+</li>
+<li><p>创建一个临时函数 注册函数 关联自定义的函数类</p>
+<blockquote>
+<p><code>create temporary function myfun as &#39;com.ghgj.cn.test01.MyUDF&#39;;</code></p>
+<p>as 后面必须是全限定名</p>
+<p><code>show functions;</code><br>  临时函数只对当前的客户端生效  客户端退出  临时函数失效</p>
+</blockquote>
+</li>
+<li><p>使用函数</p>
+<blockquote>
+<p>通过函数名—》com.ghgj.cn.test01.MyUDF—》evaluate(int a,int b,int c) evaluate(String ip)<br>调用的时候传入不同的参数调用不同的evaluate方法<br>​    select myfun(1,2,3);<br>​    select myfun(“1.23.4.220”);</p>
+</blockquote>
+</li>
+</ol>
+<h1 id="json解析"><a href="#json解析" class="headerlink" title="json解析"></a>json解析</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">Stu&#123;</span><br><span class="line">    id int;</span><br><span class="line">    name string;</span><br><span class="line">    age int;</span><br><span class="line">    score int[];</span><br><span class="line">&#125;</span><br><span class="line">json数据：&#123;id:1,name:&quot;zs&quot;,age:35,score:[12,34,1]&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="需要解析json数据："><a href="#需要解析json数据：" class="headerlink" title="需要解析json数据："></a>需要解析json数据：</h2><ol>
+<li><p>自定义函数</p>
+<ol start="2">
+<li>使用内置函数</li>
+</ol>
+<ul>
+<li><p><code>get_json_object(json_txt, path)</code><br>参数1：json格式的字符串<br>参数2：需要解析的属性的路径</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">#  $   : Root object</span><br><span class="line">  json串的根目录  最外层的目录</span><br><span class="line">#  .   : Child operator</span><br><span class="line">  用来取子节点   key-value格式的子节点</span><br><span class="line">#  []  : Subscript operator for array</span><br><span class="line">  用来取数组的元素  用下标进行取的</span><br><span class="line">#  *   : Wildcard for []</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+</ol>
+<h2 id="案例"><a href="#案例" class="headerlink" title="案例"></a>案例</h2><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">数据：</span><br><span class="line">[&#123;<span class="attr">"movie"</span>:<span class="string">"914"</span>,<span class="attr">"rate"</span>:<span class="string">"3"</span>,<span class="attr">"timeStamp"</span>:<span class="string">"978301968"</span>,<span class="attr">"uid"</span>:<span class="string">"1"</span>&#125;]</span><br><span class="line">1. $ ----&gt; []</span><br><span class="line">2. $[0].movie----&gt;914</span><br><span class="line"></span><br><span class="line">建表：</span><br><span class="line">    movie	rate	timeStamp	uid</span><br><span class="line">    <span class="number">914</span>		<span class="number">3</span>		<span class="number">978301968</span>	<span class="number">1</span></span><br><span class="line">		</span><br><span class="line">select </span><br><span class="line">get_json_object('&#123;"movie":"914","rate":"3","timeStamp":"978301968","uid":"1"&#125;',</span><br><span class="line">'$.movie');</span><br></pre></td></tr></table></figure>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">var data = [&#123;</span><br><span class="line">    "id": 1,</span><br><span class="line">    "startTime": "2017-12-12 10:36:50",</span><br><span class="line">    "endTime": "2018-02-02 00:00:00",</span><br><span class="line">    "value": "0.26",</span><br><span class="line">    "jobCode": "zd_test_02_171212103650",</span><br><span class="line">    "status": "正常",</span><br><span class="line">    "machCode": 1</span><br><span class="line">&#125;,</span><br><span class="line">&#123;</span><br><span class="line">    <span class="attr">"id"</span>: <span class="number">2</span>,</span><br><span class="line">    <span class="attr">"startTime"</span>: <span class="string">"2018-01-03 00:00:00"</span>,</span><br><span class="line">    <span class="attr">"endTime"</span>: <span class="string">"2018-01-12 00:00:00"</span>,</span><br><span class="line">    <span class="attr">"value"</span>: <span class="string">"0.66"</span>,</span><br><span class="line">    <span class="attr">"jobCode"</span>: <span class="string">"close_test_05_171212103622"</span>,</span><br><span class="line">    <span class="attr">"status"</span>: <span class="string">"调机"</span>,</span><br><span class="line">    <span class="attr">"machCode"</span>: <span class="number">3</span></span><br><span class="line">&#125;];</span><br><span class="line">$[1]===&#123;</span><br><span class="line">    "id": 2,</span><br><span class="line">    "startTime": "2018-01-03 00:00:00",</span><br><span class="line">    "endTime": "2018-01-12 00:00:00",</span><br><span class="line">    "value": "0.66",</span><br><span class="line">    "jobCode": "close_test_05_171212103622",</span><br><span class="line">    "status": "调机",</span><br><span class="line">    "machCode": 3</span><br><span class="line">&#125;]</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">$[1].jobCode=="close_test_05_171212103622"</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    
+    
+    
+<div>
+
+<div>
+
+    <div style="text-align:center;color: #ccc;font-size:14px;">-------------本文结束<i class="fa fa-paw"></i>感谢您的阅读-------------</div>
+
+</div>
+
+</div>
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/blog/2018/10/29/hive的ddl/" rel="next" title="hive的操作">
+                <i class="fa fa-chevron-left"></i> hive的操作
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/blog/2018/10/30/beelineday16/" rel="prev" title="beeline day16">
+                beeline day16 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+    </div>
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/blog/images/avatar.png" alt="小良">
+            
+              <p class="site-author-name" itemprop="name">小良</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/blog/archives/">
+              
+                  <span class="site-state-item-count">77</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/blog/categories/index.html">
+                  <span class="site-state-item-count">5</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/blog/tags/index.html">
+                  <span class="site-state-item-count">81</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+            <div class="links-of-blogroll motion-element links-of-blogroll-block">
+              <div class="links-of-blogroll-title">
+                <i class="fa  fa-fw fa-link"></i>
+                友情链接
+              </div>
+              <ul class="links-of-blogroll-list">
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://sun__shine.coding.me/blog" title="旧版本" target="_blank">旧版本</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="/sun/2018/07/28/目录/" title="回到目录" target="_blank">回到目录</a>
+                  </li>
+                
+              </ul>
+            </div>
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#查询常用的操作"><span class="nav-number">1.</span> <span class="nav-text">查询常用的操作</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#本地模式"><span class="nav-number">2.</span> <span class="nav-text">本地模式</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#join关联"><span class="nav-number">3.</span> <span class="nav-text">join关联</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#内连接"><span class="nav-number">3.1.</span> <span class="nav-text">内连接</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#外链接"><span class="nav-number">3.2.</span> <span class="nav-text">外链接</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#左外连接"><span class="nav-number">3.2.1.</span> <span class="nav-text">左外连接</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#右外连接"><span class="nav-number">3.2.2.</span> <span class="nav-text">右外连接</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#全外连接"><span class="nav-number">3.2.3.</span> <span class="nav-text">全外连接</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#半连接"><span class="nav-number">3.3.</span> <span class="nav-text">半连接</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#group-by-分组"><span class="nav-number">4.</span> <span class="nav-text">group by 分组</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#order-by-排序"><span class="nav-number">5.</span> <span class="nav-text">order by  排序</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#sort-by-排序"><span class="nav-number">6.</span> <span class="nav-text">sort by 排序</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#distribute-by"><span class="nav-number">7.</span> <span class="nav-text">distribute by</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#分桶后局部排序"><span class="nav-number">7.1.</span> <span class="nav-text">分桶后局部排序</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#hive数据类型"><span class="nav-number">8.</span> <span class="nav-text">hive数据类型</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#基本数据："><span class="nav-number">8.1.</span> <span class="nav-text">基本数据：</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#复杂数据类型"><span class="nav-number">8.2.</span> <span class="nav-text">复杂数据类型</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#array-–-list—collection"><span class="nav-number">8.2.1.</span> <span class="nav-text">array – list—collection</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#map—映射-k-v"><span class="nav-number">8.2.2.</span> <span class="nav-text">map—映射   k-v</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#struct"><span class="nav-number">8.2.3.</span> <span class="nav-text">struct</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#hive视图"><span class="nav-number">9.</span> <span class="nav-text">hive视图</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#特点"><span class="nav-number">9.1.</span> <span class="nav-text">特点</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#操作"><span class="nav-number">9.2.</span> <span class="nav-text">操作</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#hive的函数"><span class="nav-number">10.</span> <span class="nav-text">hive的函数</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#函数分类"><span class="nav-number">10.1.</span> <span class="nav-text">函数分类</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#内置函数"><span class="nav-number">10.2.</span> <span class="nav-text">内置函数</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#内置函数操作"><span class="nav-number">10.2.1.</span> <span class="nav-text">内置函数操作</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#常用内置函数"><span class="nav-number">10.2.2.</span> <span class="nav-text">常用内置函数</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#自定义函数"><span class="nav-number">10.3.</span> <span class="nav-text">自定义函数</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#json解析"><span class="nav-number">11.</span> <span class="nav-text">json解析</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#需要解析json数据："><span class="nav-number">11.1.</span> <span class="nav-text">需要解析json数据：</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#案例"><span class="nav-number">11.2.</span> <span class="nav-text">案例</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-heartbeat" aria-hidden="true"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">小良</span>
+
+  
+</div>
+
+<div class="powered-by">
+<i class="fa fa-user-md"></i><span id="busuanzi_container_site_uv">
+  本站访客数:<span id="busuanzi_value_site_uv"></span>
+</span>
+</div>
+
+
+<!--
+
+-->
+<div class="theme-info">
+  <div class="powered-by"></div>
+  <span class="post-count">博客全站共字</span>
+</div>
+
+
+
+<div class="coding-pages">
+  <p>Hosted by <a href="https://pages.coding.me" style="font-weight: bold">Coding Pages</a></p>
+</div>
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/blog/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/blog/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/blog/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/blog/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/blog/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/blog/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/blog/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/blog/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/blog/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/blog/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/blog/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/blog/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/blog/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/blog/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

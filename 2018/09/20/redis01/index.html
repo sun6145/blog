@@ -1,0 +1,1595 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/blog/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/blog/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/blog/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/blog/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/blog/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/blog/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/blog/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Hexo, NexT">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="nosql not only sql:解决海量数据和大型集群产生的高并发,高可用,高性能问题数据库解决方案, 非关系型数据库,不能替代关系型数据库,作为关系型数据库的一个良好补充(补充关系型数据库性能的瓶颈)">
+<meta property="og:type" content="article">
+<meta property="og:title" content="redis01">
+<meta property="og:url" content="https://sun6145.github.io/blog/2018/09/20/redis01/index.html">
+<meta property="og:site_name" content="小良博客">
+<meta property="og:description" content="nosql not only sql:解决海量数据和大型集群产生的高并发,高可用,高性能问题数据库解决方案, 非关系型数据库,不能替代关系型数据库,作为关系型数据库的一个良好补充(补充关系型数据库性能的瓶颈)">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2019-01-23T16:28:30.197Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="redis01">
+<meta name="twitter:description" content="nosql not only sql:解决海量数据和大型集群产生的高并发,高可用,高性能问题数据库解决方案, 非关系型数据库,不能替代关系型数据库,作为关系型数据库的一个良好补充(补充关系型数据库性能的瓶颈)">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/blog/',
+    scheme: 'Gemini',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"hide","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://sun6145.github.io/blog/2018/09/20/redis01/">
+
+
+
+
+
+  <title>redis01 | 小良博客</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/blog/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">小良博客</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">小良博客</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/blog/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-writer">
+          <a href="/blog/2018/07/28/目录/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-sitemap"></i> <br>
+            
+            目录
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/blog/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/blog/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/blog/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-messagebook">
+          <a href="/blog/MessageBook" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-book"></i> <br>
+            
+            留言板
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off" placeholder="搜索..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://sun6145.github.io/blog/blog/2018/09/20/redis01/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="小良">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/blog/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="小良博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">redis01</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-09-20T09:24:16+00:00">
+                2018-09-20
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  字
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">
+                  分钟
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="nosql"><a href="#nosql" class="headerlink" title="nosql"></a>nosql</h1><blockquote>
+<p>not only sql:解决海量数据和大型集群产生的高并发,高可用,高性能问题数据库解决方案,</p>
+<p>非关系型数据库,不能替代关系型数据库,作为关系型数据库的一个良好补充(补充关系型数据库性能的瓶颈)</p>
+</blockquote>
+<a id="more"></a>
+<h1 id="数据分类"><a href="#数据分类" class="headerlink" title="数据分类"></a>数据分类</h1><ul>
+<li><p>结构化数据</p>
+<blockquote>
+<p>数据的结构一样,使用同一的规范(格式)进行处理和维护(存储和管理)(RDBMS)</p>
+</blockquote>
+</li>
+<li><p>半结构化数据</p>
+<blockquote>
+<p>介于二者之间的数据如xml</p>
+</blockquote>
+</li>
+<li><p>非结构化数据</p>
+<blockquote>
+<p>无法通过统一格式进行存储管理,如文本,音频,视频等(nosql)</p>
+</blockquote>
+</li>
+</ul>
+<h1 id="nosql的分类"><a href="#nosql的分类" class="headerlink" title="nosql的分类"></a>nosql的分类</h1><ol>
+<li><p>键值存储数据库</p>
+<p>产品: <strong>Redis</strong>,Voldemont,BERKEKEY DB’</p>
+<p>典型应用:内容缓存,主要用于处理大量数据的高访问负债</p>
+<p>数据模型: 一系列键值对</p>
+<p>​        json:{“key”:”value”, “key2”:”value2”}</p>
+<p>优势:快速查询</p>
+<p>劣势: 存储的数据缺少结构化</p>
+</li>
+</ol>
+<blockquote>
+<p>和memcache:的区别</p>
+<p>memcache: 数据类型少,做缓存</p>
+<p>redis:缓存数据,可以持久化,支持事务;数据类型多</p>
+</blockquote>
+<ol start="2">
+<li><p>列存储数据库</p>
+<p>相关产品：Cassandra,<strong>HBase</strong>,Riak</p>
+<p>典型应用：分布式的文件系统</p>
+<p>数据模型：以列簇式存储，将同一列数据存在一起</p>
+<p>优势：查找速度快，可扩展性强，更容易进行分布式扩展</p>
+<p>劣势：功能相对局限</p>
+</li>
+<li><p>文档型数据库</p>
+<p>相关产品：CouchDB、<strong>MongoDB</strong></p>
+<p>典型应用：Web应用（与Key-Value类似，Value是结构化的）</p>
+<p>数据模型：一系列键值对</p>
+<p>优势：数据结构要求不严格</p>
+<p>愣势：查询性能不高，而且缺乏统一的查询语法</p>
+</li>
+<li><p>图形（Graph)数据库</p>
+<p>相关数据库：<strong>Neo4j</strong>、InfoGrid、Infinite Graph</p>
+<p>典型应用：社交网络</p>
+<p>数据模型：图结构</p>
+<p>优势：利用图结构相关算法。</p>
+<p>劣势：需要对整个图做计算才能得出结果，不容易做分布式的集群方案。</p>
+</li>
+</ol>
+<h1 id="Redis"><a href="#Redis" class="headerlink" title="Redis"></a>Redis</h1><blockquote>
+<p>是使用c语言开发的一个高性能键值数据库。Redis 可以通过一些键值类型来存储数据。也可以实现持久化支持事务操作</p>
+</blockquote>
+<p>常用键值类型：</p>
+<p>String 字符类型</p>
+<p>map 散列类型</p>
+<p>list 列表类型</p>
+<p>set 集合类型</p>
+<p>sortedset 有序集合类型(zset)</p>
+<h2 id="redis的应用场景"><a href="#redis的应用场景" class="headerlink" title="redis的应用场景"></a>redis的应用场景</h2><p>缓存（数据查询、短连接、新闻内容、商品内容等等）。（最多使用）</p>
+<p>分布式集群架构中的 session分离。</p>
+<p>聊天室的在线好友列表。</p>
+<p>任务队列。（秒杀、抢购、12306等等）</p>
+<p>应用排行榜。</p>
+<p>网站访问统计。</p>
+<p>数据过期处理（可以精确到毫秒）</p>
+<h2 id="redis的安装"><a href="#redis的安装" class="headerlink" title="redis的安装"></a>redis的安装</h2><ul>
+<li><p><a href="http://www.redis.cn/" target="_blank" rel="noopener">下载</a></p>
+</li>
+<li><p>安装:</p>
+<ol>
+<li><p>准备gcc环境 yum -y install gcc-c++</p>
+</li>
+<li><p>make命令: yum -y install make</p>
+</li>
+<li><p>上传</p>
+</li>
+<li><p>解压:<code>tar -zxvf redis-4.0.10.tar.gz -C /opt/</code></p>
+</li>
+<li><p>进入:<code>cd /opt/redis-4.0.10/</code></p>
+</li>
+<li><p>编译:<code>make</code>  / <code>make distclean</code>(清理之前的编译)</p>
+<blockquote>
+<p>….&gt;&gt;/dev/null (黑洞) ,删掉的意思</p>
+</blockquote>
+</li>
+<li><p>make test():测试(安装tcl)</p>
+</li>
+<li><p>安装 make install(默认安装<code>/usr/local/bin</code>)</p>
+<p>手动修改安装路径:<code>make install PREFIX=/usr/local/redis</code></p>
+</li>
+<li><p><code>cd /usr/local/redis/bin</code>存放可执行的文件</p>
+</li>
+<li><p>赋值配置文件到etc目录下:<code>cp /opt/redis-4.0.10/redis.conf /etc/</code></p>
+</li>
+<li><p>环境变量</p>
+<blockquote>
+<p><code>export REDIS_HOME=/usr/local/redis
+export PATH=$PATH:$JAVA_HOME/bin:$REDIS_HOME/bin;</code></p>
+</blockquote>
+</li>
+</ol>
+</li>
+</ul>
+<h2 id="redis启动-服务器端-客户端"><a href="#redis启动-服务器端-客户端" class="headerlink" title="redis启动(服务器端+客户端)"></a>redis启动(服务器端+客户端)</h2><h3 id="前端启动"><a href="#前端启动" class="headerlink" title="前端启动"></a>前端启动</h3><blockquote>
+<p> 不推荐,(占用一个窗口),</p>
+</blockquote>
+<blockquote>
+<p>在目录下<code>cd /usr/local/redis/bin</code></p>
+</blockquote>
+<ul>
+<li>启动服务端:<code>redis-server</code><ul>
+<li>port:6379</li>
+</ul>
+</li>
+<li>关闭:<ol>
+<li>强制关闭:ctrl +C</li>
+<li>客户端发送:./redis-cli发送 <code>shutdown</code>(推荐)</li>
+</ol>
+</li>
+<li>启动客户端 redis-cli <ul>
+<li>发送ping  响应PONG</li>
+</ul>
+</li>
+</ul>
+<h3 id="后端启动"><a href="#后端启动" class="headerlink" title="后端启动"></a>后端启动</h3><blockquote>
+<p>修改配置文件<code>vim /etc/redis.conf</code></p>
+</blockquote>
+<ol>
+<li><p>修改绑定的ip(69行)</p>
+<blockquote>
+<p><code>bind 192.168.2.101</code></p>
+</blockquote>
+</li>
+<li><p>修改为台守护进程运行(136行)</p>
+<blockquote>
+<p> <code>daemonize yes</code></p>
+</blockquote>
+</li>
+<li><p>databases 16: 分了16数据库</p>
+<p>​    下标默认(0-15)</p>
+</li>
+<li><p>启动</p>
+<blockquote>
+<p><code>redis-server /etc/redis.conf</code></p>
+</blockquote>
+</li>
+<li><p>查看</p>
+<ol>
+<li><code>ps -aux|grep redis</code></li>
+<li><code>netstat -nltp</code></li>
+</ol>
+</li>
+<li><p>关闭服务端</p>
+<ol>
+<li>kill -9 6379</li>
+<li>redis-cli shutdown(推荐)</li>
+</ol>
+</li>
+<li><p>自带客户端连接 </p>
+<blockquote>
+<p>redis-cli -h ip地址 -p 端口</p>
+<p>redis-cli -h 192.168.2.101 -p 6379</p>
+</blockquote>
+</li>
+<li><p>图形客户端</p>
+<blockquote>
+<p>需要注意防火墙</p>
+</blockquote>
+</li>
+</ol>
+<h1 id="jedis客户端"><a href="#jedis客户端" class="headerlink" title="jedis客户端"></a>jedis客户端</h1><h1 id="Redis-数据类型"><a href="#Redis-数据类型" class="headerlink" title="Redis 数据类型"></a>Redis 数据类型</h1><h2 id="字符串String"><a href="#字符串String" class="headerlink" title="字符串String"></a>字符串String</h2><h3 id="命令"><a href="#命令" class="headerlink" title="命令"></a>命令</h3><ol>
+<li><p>赋值和取值</p>
+<blockquote>
+<p>set key value</p>
+<p>setget key value: 取值并赋值</p>
+</blockquote>
+</li>
+<li><p>删除</p>
+<blockquote>
+<p>del key</p>
+</blockquote>
+</li>
+<li><p>数值增减</p>
+<blockquote>
+<p>incr key  :增量1</p>
+<p>incrby key  n: 增量n</p>
+<p>decr: key :减少1</p>
+<p>decrby key n: 减少n</p>
+</blockquote>
+</li>
+<li><p>其他命令</p>
+<ol>
+<li>append key value : 追加值</li>
+<li>stlen key  :获取值得长度</li>
+</ol>
+</li>
+</ol>
+<h3 id="应用-自增主键"><a href="#应用-自增主键" class="headerlink" title="应用:自增主键"></a>应用:自增主键</h3><blockquote>
+<p>商品编号,订单号采用string的递增数值特性生成</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">定义商品: key items:id</span><br><span class="line">&gt; incr items:id</span><br><span class="line">(integer)2</span><br><span class="line">&gt; incr items:id</span><br><span class="line">(integer)3</span><br></pre></td></tr></table></figure>
+<h2 id="hash类型"><a href="#hash类型" class="headerlink" title="hash类型"></a>hash类型</h2><blockquote>
+<p>散列类型:支持扩展key,提供字段属性,字段,字段值之间的映射</p>
+<p>字段值只支持字符串</p>
+<p>键  字段名 字段值</p>
+</blockquote>
+<h3 id="赋值"><a href="#赋值" class="headerlink" title="赋值"></a>赋值</h3><ul>
+<li>hset:一次只能设置一个字段</li>
+<li>hmset :一次可以设置多个字段值</li>
+<li>hsetnx:有该key则不赋值,没有则赋值相当于hset</li>
+</ul>
+<blockquote>
+<p>hset不区分插入和更新,0代表更新,1代表插入</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">192.168.2.101:6379&gt; hset user:001 name zs</span><br><span class="line">(integer) 1</span><br><span class="line">192.168.2.101:6379&gt; hset user:001 name ls</span><br><span class="line">(integer) 0</span><br><span class="line">192.168.2.101:6379&gt; hmset user age 20 username lisi </span><br><span class="line">OK</span><br></pre></td></tr></table></figure>
+<h3 id="取值"><a href="#取值" class="headerlink" title="取值"></a>取值</h3><ul>
+<li>hget: 一次只能取一个字段值</li>
+<li>HMGET key field [field …] : 一次可以获取多个字段值</li>
+<li>hgetall key:  </li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">192.168.2.101:6379&gt; hget user:001 name</span><br><span class="line">&quot;zs&quot;</span><br><span class="line"></span><br><span class="line"> hmget user:sun name age</span><br><span class="line">1) &quot;sun&quot;</span><br><span class="line">2) &quot;21&quot;</span><br><span class="line"></span><br><span class="line">192.168.2.101:6379&gt; HGETALL user:001</span><br><span class="line">1) &quot;name&quot;</span><br><span class="line">2) &quot;zs&quot;</span><br><span class="line">3) &quot;sex&quot;</span><br><span class="line">4) &quot;0&quot;</span><br></pre></td></tr></table></figure>
+<h3 id="删除字段"><a href="#删除字段" class="headerlink" title="删除字段"></a>删除字段</h3><ul>
+<li>hdel :删除字段</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">192.168.2.101:6379&gt; hedl user:001 sex</span><br><span class="line">(error) ERR unknown command &apos;hedl&apos;</span><br><span class="line">192.168.2.101:6379&gt; hdel user:001 sex</span><br><span class="line">(integer) 1</span><br><span class="line">192.168.2.101:6379&gt; HGETALL user:001</span><br><span class="line">1) &quot;name&quot;</span><br><span class="line">2) &quot;zs&quot;</span><br></pre></td></tr></table></figure>
+<h3 id="增加数字"><a href="#增加数字" class="headerlink" title="增加数字"></a>增加数字</h3><ul>
+<li>hincrby</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">192.168.2.101:6379&gt; hset user:001 age 15</span><br><span class="line">(integer) 1</span><br><span class="line"></span><br><span class="line">192.168.2.101:6379&gt; hgetall user:001</span><br><span class="line">1) &quot;name&quot;</span><br><span class="line">2) &quot;zs&quot;</span><br><span class="line">3) &quot;age&quot;</span><br><span class="line">4) &quot;15&quot;</span><br><span class="line"></span><br><span class="line">192.168.2.101:6379&gt; hincrby user:001 age 3</span><br><span class="line">(integer) 18</span><br><span class="line">192.168.2.101:6379&gt; hgetall user:001</span><br><span class="line">1) &quot;name&quot;</span><br><span class="line">2) &quot;zs&quot;</span><br><span class="line">3) &quot;age&quot;</span><br><span class="line">4) &quot;18&quot;</span><br></pre></td></tr></table></figure>
+<h3 id="其他命令"><a href="#其他命令" class="headerlink" title="其他命令"></a>其他命令</h3><h4 id="判断字段是否存在"><a href="#判断字段是否存在" class="headerlink" title="判断字段是否存在"></a>判断字段是否存在</h4><blockquote>
+<p> haexists key 字段名 :1存在 ,0不存在</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">192.168.2.101:6379&gt; HEXISTS user:001 sex</span><br><span class="line">(integer) 0</span><br><span class="line">192.168.2.101:6379&gt; HEXISTS user:001 age</span><br><span class="line">(integer) 1</span><br></pre></td></tr></table></figure>
+<h4 id="获取字段名或字段值"><a href="#获取字段名或字段值" class="headerlink" title="获取字段名或字段值"></a>获取字段名或字段值</h4><blockquote>
+<p>语法:</p>
+<p>​    hkeys key</p>
+<p>​    hvals key</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">192.168.2.101:6379&gt; hkeys user:sun</span><br><span class="line">1) &quot;name&quot;</span><br><span class="line">2) &quot;age&quot;</span><br><span class="line"></span><br><span class="line">192.168.2.101:6379&gt; hvals user:sun</span><br><span class="line">1) &quot;sun&quot;</span><br><span class="line">2) &quot;21&quot;</span><br></pre></td></tr></table></figure>
+<h4 id="获取字段的数量"><a href="#获取字段的数量" class="headerlink" title="获取字段的数量"></a>获取字段的数量</h4><ul>
+<li><p>hlen key</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">192.168.2.101:6379&gt; HLEN user:001</span><br><span class="line">(integer) 2</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h4 id="应用"><a href="#应用" class="headerlink" title="应用"></a>应用</h4><ul>
+<li><p>存储商品信息</p>
+<ul>
+<li><p>商品字段</p>
+<blockquote>
+<p>【商品id、商品名称、商品描述、商品库存、商品好评】</p>
+</blockquote>
+</li>
+</ul>
+</li>
+<li><p>定义商品信息的key</p>
+<blockquote>
+<p>商品1001的信息在 Redis中的key为：[items:1001]</p>
+</blockquote>
+</li>
+<li><p>存储商品信息</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">192.168.101.3:7003&gt; HMSET items:1001 id 3 name apple price 999.9</span><br><span class="line">OK</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>获取商品信息</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">192.168.101.3:7003&gt; HGET items:1001 id</span><br><span class="line">&quot;3&quot;</span><br><span class="line">192.168.101.3:7003&gt; HGETALL items:1001</span><br><span class="line">1) &quot;id&quot;</span><br><span class="line">2) &quot;3&quot;</span><br><span class="line">3) &quot;name&quot;</span><br><span class="line">4) &quot;apple&quot;</span><br><span class="line">5) &quot;price&quot;</span><br><span class="line">6) &quot;999.9&quot;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h2 id="list列表类型"><a href="#list列表类型" class="headerlink" title="list列表类型"></a>list列表类型</h2><h3 id="arraylist-和linkedlsit的区别"><a href="#arraylist-和linkedlsit的区别" class="headerlink" title="arraylist 和linkedlsit的区别"></a>arraylist 和linkedlsit的区别</h3><ol>
+<li>arraylist 是使用数组来存储数,特点:增删慢,查询快(连续空间)</li>
+<li>linkedlist: 是使用双向链表存储数据,特定:增删快,查询慢,但是查询链表二端的数据也很快</li>
+<li>redis的list采用链表来存储的数据,操作从二端操作</li>
+</ol>
+<h3 id="向列表二端添加元素"><a href="#向列表二端添加元素" class="headerlink" title="向列表二端添加元素"></a>向列表二端添加元素</h3><p>添加元素</p>
+<ul>
+<li><p>lpush key  value  : 向列表的左边增加元素</p>
+</li>
+<li><p>rpush key  value: 向列表的右边增加元素</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">192.168.2.101:6379&gt; lpush list1 a b c</span><br><span class="line">(integer) 3</span><br><span class="line">192.168.2.101:6379&gt; rpush list1 d e f</span><br><span class="line">(integer) 6</span><br><span class="line">192.168.2.101:6379&gt; LRANGE list1 0 -1</span><br><span class="line">1) &quot;c&quot;</span><br><span class="line">2) &quot;b&quot;</span><br><span class="line">3) &quot;a&quot;</span><br><span class="line">4) &quot;d&quot;</span><br><span class="line">5) &quot;e&quot;</span><br><span class="line">6) &quot;f&quot;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h3 id="从列表二端弹出元素"><a href="#从列表二端弹出元素" class="headerlink" title="从列表二端弹出元素"></a>从列表二端弹出元素</h3><ul>
+<li><p><code>lpop key</code></p>
+<blockquote>
+<p>LPOP命令从列表左边弹出一个元素，会分两步完成：</p>
+<p>第一步是将列表左边的元素从列表中移除</p>
+<p>第二步是返回被移除的元素值。</p>
+</blockquote>
+</li>
+<li><p><code>rpop key</code></p>
+</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">192.168.2.101:6379&gt; LPOP list1</span><br><span class="line">&quot;c&quot;</span><br><span class="line">192.168.2.101:6379&gt; rpop list1</span><br><span class="line">&quot;f&quot;</span><br></pre></td></tr></table></figure>
+<h3 id="查看列表"><a href="#查看列表" class="headerlink" title="查看列表"></a>查看列表</h3><blockquote>
+<p> <strong>lrange命令</strong>,获取列表中的某一片段，将返回start、stop之间的所有元素（包含两端的元素），索引从0开始。索引可以是负数，如：“-1”代表最后边的一个元素。</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">192.168.2.101:6379&gt; lrange list1 0 2</span><br><span class="line">1) &quot;b&quot;</span><br><span class="line">2) &quot;a&quot;</span><br><span class="line">3) &quot;d&quot;</span><br><span class="line">192.168.2.101:6379&gt; </span><br><span class="line"></span><br><span class="line">192.168.2.101:6379&gt; lrange list1 0 -1</span><br><span class="line">1) &quot;b&quot;</span><br><span class="line">2) &quot;a&quot;</span><br><span class="line">3) &quot;d&quot;</span><br><span class="line">4) &quot;e&quot;</span><br></pre></td></tr></table></figure>
+<h3 id="获取列表中元素的个数"><a href="#获取列表中元素的个数" class="headerlink" title="获取列表中元素的个数"></a>获取列表中元素的个数</h3><p>语法:<code>llen key</code></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">127.0.0.1:6379&gt; llen list:1</span><br><span class="line">(integer) 2</span><br></pre></td></tr></table></figure>
+<h3 id="其他命令-1"><a href="#其他命令-1" class="headerlink" title="其他命令"></a>其他命令</h3><h4 id="删除列表中指定的值"><a href="#删除列表中指定的值" class="headerlink" title="删除列表中指定的值"></a>删除列表中指定的值</h4><blockquote>
+<p>LREM命令会<strong>删除列表中前count个值为value的元素</strong>，返回实际删除的元素个数。根据count值的不同，该命令的执行方式会有所不同： </p>
+<p>当count&gt;0时， LREM会从列表左边开始删除。 </p>
+<p>当count&lt;0时， LREM会从列表后边开始删除。 </p>
+<p>当count=0时， LREM删除所有值为value的元素。 </p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br></pre></td><td class="code"><pre><span class="line">192.168.2.101:6379&gt; LRANGE list1 0 -1</span><br><span class="line"> 1) &quot;e&quot;</span><br><span class="line"> 2) &quot;d&quot;</span><br><span class="line"> 3) &quot;b&quot;</span><br><span class="line"> 4) &quot;b&quot;</span><br><span class="line"> 5) &quot;a&quot;</span><br><span class="line"> 6) &quot;e&quot;</span><br><span class="line"> 7) &quot;d&quot;</span><br><span class="line"> 8) &quot;b&quot;</span><br><span class="line"> 9) &quot;b&quot;</span><br><span class="line">10) &quot;a&quot;</span><br><span class="line">11) &quot;b&quot;</span><br><span class="line">12) &quot;a&quot;</span><br><span class="line">13) &quot;d&quot;</span><br><span class="line">14) &quot;e&quot;</span><br><span class="line"></span><br><span class="line">192.168.2.101:6379&gt; LREM list1 3 a</span><br><span class="line">(integer) 3</span><br><span class="line"></span><br><span class="line">192.168.2.101:6379&gt; LRANGE list1 0 -1</span><br><span class="line"> 1) &quot;e&quot;</span><br><span class="line"> 2) &quot;d&quot;</span><br><span class="line"> 3) &quot;b&quot;</span><br><span class="line"> 4) &quot;b&quot;</span><br><span class="line"> 5) &quot;e&quot;</span><br><span class="line"> 6) &quot;d&quot;</span><br><span class="line"> 7) &quot;b&quot;</span><br><span class="line"> 8) &quot;b&quot;</span><br><span class="line"> 9) &quot;b&quot;</span><br><span class="line">10) &quot;d&quot;</span><br><span class="line">11) &quot;e&quot;</span><br><span class="line">192.168.2.101:6379&gt; LREM list1 0 b</span><br><span class="line">(integer) 5</span><br><span class="line">------------------------------------------------</span><br><span class="line"></span><br><span class="line">192.168.2.101:6379&gt; LRANGE list1 0 -1</span><br><span class="line">1) &quot;e&quot;</span><br><span class="line">2) &quot;d&quot;</span><br><span class="line">3) &quot;e&quot;</span><br><span class="line">4) &quot;d&quot;</span><br><span class="line">5) &quot;d&quot;</span><br><span class="line">6) &quot;e&quot;</span><br><span class="line">------------------------------------------------</span><br><span class="line">192.168.2.101:6379&gt; LREM list1 -2 d</span><br><span class="line">(integer) 2</span><br><span class="line">192.168.2.101:6379&gt; LRANGE list1 0 -1</span><br><span class="line">1) &quot;e&quot;</span><br><span class="line">2) &quot;d&quot;</span><br><span class="line">3) &quot;e&quot;</span><br><span class="line">4) &quot;e&quot;</span><br><span class="line">192.168.2.101:6379&gt;</span><br></pre></td></tr></table></figure>
+<h4 id="获取-设置指定索引的元素值"><a href="#获取-设置指定索引的元素值" class="headerlink" title="获取/设置指定索引的元素值"></a>获取/设置指定索引的元素值</h4><p>语法:<code>lindex key  index</code></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">192.168.2.101:6379&gt; LRANGE list1 0 -1</span><br><span class="line">1) &quot;e&quot;</span><br><span class="line">2) &quot;d&quot;</span><br><span class="line">3) &quot;e&quot;</span><br><span class="line">4) &quot;e&quot;</span><br><span class="line">192.168.2.101:6379&gt; LINDEX list1 0</span><br><span class="line">&quot;e&quot;</span><br><span class="line">192.168.2.101:6379&gt; LINDEX list1 -3</span><br><span class="line">&quot;d&quot;</span><br></pre></td></tr></table></figure>
+<h4 id="保留片段"><a href="#保留片段" class="headerlink" title="保留片段"></a>保留片段</h4><p>语法:<code>ltrim key start stop</code></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">127.0.0.1:6379&gt; lrange l:list 0 -1</span><br><span class="line">1) &quot;6&quot;</span><br><span class="line">2) &quot;5&quot;</span><br><span class="line">3) &quot;0&quot;</span><br><span class="line">4) &quot;2&quot;</span><br><span class="line">127.0.0.1:6379&gt; ltrim l:list 0 2</span><br><span class="line">OK</span><br><span class="line">127.0.0.1:6379&gt; lrange l:list 0 -1</span><br><span class="line">1) &quot;6&quot;</span><br><span class="line">2) &quot;5&quot;</span><br><span class="line">3) &quot;0&quot;</span><br></pre></td></tr></table></figure>
+<h4 id="插入某个元素的前后位置"><a href="#插入某个元素的前后位置" class="headerlink" title="插入某个元素的前后位置"></a>插入某个元素的前后位置</h4><p>语法:<code>linsert  key before|after pivot value</code></p>
+<blockquote>
+<p>该命令首先会在列表中从左到右查找值为pivot的元素，然后根据第二个参数是BEFORE还是AFTER来决定将value插入到该元素的前面还是后面。 </p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">127.0.0.1:6379&gt; lrange list 0 -1</span><br><span class="line">1) &quot;3&quot;</span><br><span class="line">2) &quot;2&quot;</span><br><span class="line">3) &quot;1&quot;</span><br><span class="line"></span><br><span class="line">127.0.0.1:6379&gt; linsert list after 3 4</span><br><span class="line">(integer) 4</span><br><span class="line"></span><br><span class="line">127.0.0.1:6379&gt; lrange list 0 -1</span><br><span class="line">1) &quot;3&quot;</span><br><span class="line">2) &quot;4&quot;</span><br><span class="line">3) &quot;2&quot;</span><br><span class="line">4) &quot;1&quot;</span><br></pre></td></tr></table></figure>
+<h4 id="将元素从一个列表转移到另一个列表"><a href="#将元素从一个列表转移到另一个列表" class="headerlink" title="将元素从一个列表转移到另一个列表"></a>将元素从一个列表转移到另一个列表</h4><p>语法:<code>rpoplpush source destionation</code></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">127.0.0.1:6379&gt; rpoplpush list newlist </span><br><span class="line">&quot;1&quot;</span><br><span class="line">127.0.0.1:6379&gt; lrange newlist 0 -1</span><br><span class="line">1) &quot;1&quot;</span><br><span class="line">127.0.0.1:6379&gt; lrange list 0 -1</span><br><span class="line">1) &quot;3&quot;</span><br><span class="line">2) &quot;4&quot;</span><br><span class="line">3) &quot;2&quot;</span><br></pre></td></tr></table></figure>
+<h3 id="应用-1"><a href="#应用-1" class="headerlink" title="应用"></a>应用</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">商品评论列表</span><br><span class="line">思路：</span><br><span class="line">在Redis中创建商品评论列表</span><br><span class="line">用户发布商品评论，将评论信息转成json存储到list中。</span><br><span class="line">用户在页面查询评论列表，从redis中取出json数据展示到页面。</span><br><span class="line"></span><br><span class="line">定义商品评论列表key：</span><br><span class="line">商品编号为1001的商品评论key【items: comment:1001】</span><br><span class="line">192.168.101.3:7001&gt; LPUSH items:comment:1001 &apos;&#123;&quot;id&quot;:1,&quot;name&quot;:&quot;商品不错，很好！！&quot;,&quot;date&quot;:1430295077289&#125;&apos;</span><br></pre></td></tr></table></figure>
+<h2 id="set集合类型"><a href="#set集合类型" class="headerlink" title="set集合类型"></a>set集合类型</h2><blockquote>
+<p>集合类型</p>
+<p>集合类型：无序、不可重复</p>
+<p>列表类型：有序、可重复</p>
+</blockquote>
+<h3 id="sadd-添加和删除"><a href="#sadd-添加和删除" class="headerlink" title="sadd 添加和删除"></a>sadd 添加和删除</h3><p>语法:<code>SADD key member [member ...]</code></p>
+<p>语法:<code>SREM key member [member ...]</code></p>
+<h3 id="获得集合中的所有元素"><a href="#获得集合中的所有元素" class="headerlink" title="获得集合中的所有元素"></a>获得集合中的所有元素</h3><p>语法:<code>smembers key</code></p>
+<ul>
+<li><p>sismember key  member 判断是否在其中</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">192.168.2.101:6379&gt; sadd set1 a b c d</span><br><span class="line">(integer) 4</span><br><span class="line"></span><br><span class="line">192.168.2.101:6379&gt; SREM set1 a</span><br><span class="line">(integer) 1</span><br><span class="line">192.168.2.101:6379&gt; SMEMBERS set1</span><br><span class="line">1) &quot;c&quot;</span><br><span class="line">2) &quot;b&quot;</span><br><span class="line">3) &quot;d&quot;</span><br><span class="line"></span><br><span class="line">192.168.2.101:6379&gt; SISMEMBER set1 c</span><br><span class="line">(integer) 1</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h3 id="判断元素是否在集合中"><a href="#判断元素是否在集合中" class="headerlink" title="判断元素是否在集合中"></a>判断元素是否在集合中</h3><p>语法:<code>sismemner key member</code></p>
+<h3 id="运算命令"><a href="#运算命令" class="headerlink" title="运算命令"></a>运算命令</h3><h4 id="并集"><a href="#并集" class="headerlink" title="并集"></a>并集</h4><ul>
+<li>sunion key1 key2</li>
+</ul>
+<h4 id="交集"><a href="#交集" class="headerlink" title="交集"></a>交集</h4><ul>
+<li>sinter key1 key2</li>
+</ul>
+<h4 id="差集"><a href="#差集" class="headerlink" title="差集"></a>差集</h4><ul>
+<li>sdiff key1 key2</li>
+</ul>
+<h3 id="其他命令-2"><a href="#其他命令-2" class="headerlink" title="其他命令"></a>其他命令</h3><h4 id="获得集合中的元素个数"><a href="#获得集合中的元素个数" class="headerlink" title="获得集合中的元素个数"></a>获得集合中的元素个数</h4><ul>
+<li>语法:<code>scard key</code></li>
+</ul>
+<h4 id="从集合中弹出一个元素"><a href="#从集合中弹出一个元素" class="headerlink" title="从集合中弹出一个元素"></a>从集合中弹出一个元素</h4><blockquote>
+<p>注意：由于集合是无序的，所有SPOP命令会从集合中随机选择一个元素弹出 </p>
+</blockquote>
+<ul>
+<li><p>语法:<code>spop key</code></p>
+</li>
+<li><p>spop:弹出: 无序,随便弹(相当于删除一个元素)</p>
+</li>
+</ul>
+<h2 id="sortedset"><a href="#sortedset" class="headerlink" title="sortedset"></a>sortedset</h2><blockquote>
+<p>Sortedset 又叫zset</p>
+<p>是有序集合,可排序,但是唯一</p>
+<p>Sortedset和set的不同之处，是会给set中的元素添加一个分数，然后通过这个分数进行排序。</p>
+</blockquote>
+<h3 id="添加元素"><a href="#添加元素" class="headerlink" title="添加元素"></a>添加元素</h3><blockquote>
+<p>向有序集合中加入一个元素和该元素的分数，如果该元素已经存在则会用新的分数替换原有的分数。返回值是新加入到集合中的元素个数，不包含之前已经存在的元素。 </p>
+</blockquote>
+<blockquote>
+<p>添加元素和分数,如果元素存在则修改分数并返回0 ,不存在返回1</p>
+</blockquote>
+<p>语法:<code>ZADD key score member [score member ...]</code></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">192.168.2.101:6379&gt; ZADD zset1 80 zs 90 ls 100 ww</span><br><span class="line">(integer) 3</span><br><span class="line">192.168.2.101:6379&gt; ZADD zset1 85 zs</span><br><span class="line">(integer) 0</span><br><span class="line">192.168.2.101:6379&gt; ZADD zset1 75 zl</span><br><span class="line">(integer) 1</span><br></pre></td></tr></table></figure>
+<h3 id="删除元素"><a href="#删除元素" class="headerlink" title="删除元素"></a>删除元素</h3><blockquote>
+<p>移除有序集key中的一个或多个成员，不存在的成员将被忽略。</p>
+<p>当key存在但不是有序集类型时，返回一个错误。</p>
+</blockquote>
+<ul>
+<li><code>ZREM key member [member ...]</code></li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">192.168.2.101:6379&gt; zrem zset1 zs</span><br><span class="line">(integer) 1</span><br></pre></td></tr></table></figure>
+<h3 id="查看元素的分数"><a href="#查看元素的分数" class="headerlink" title="查看元素的分数"></a>查看元素的分数</h3><ul>
+<li><code>zscore key member</code></li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">192.168.2.101:6379&gt; ZSCORE zset1 zs</span><br><span class="line">&quot;85&quot;</span><br></pre></td></tr></table></figure>
+<h3 id="获取元素的排名"><a href="#获取元素的排名" class="headerlink" title="获取元素的排名"></a>获取元素的排名</h3><ul>
+<li>从小到大: 语法<code>zrank key member</code></li>
+<li>从大到小:语法<code>zrevrank key member</code></li>
+</ul>
+<h3 id="获取范围内的元素列表"><a href="#获取范围内的元素列表" class="headerlink" title="获取范围内的元素列表"></a>获取范围内的元素列表</h3><p>语法:<code>zrange key  start stop [withscores]</code></p>
+<blockquote>
+<p>按照元素分数<strong>从大到小</strong>的顺序返回索引从start到stop之间的所有元素（包含两端的元素）</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">192.168.2.101:6379&gt; ZRANGE zset1 0 -1</span><br><span class="line">1) &quot;zl&quot;</span><br><span class="line">2) &quot;ls&quot;</span><br><span class="line">3) &quot;ww&quot;</span><br><span class="line"></span><br><span class="line">192.168.2.101:6379&gt; ZRANGE zset1 0 -1 withscores</span><br><span class="line">1) &quot;zl&quot;</span><br><span class="line">2) &quot;75&quot;</span><br><span class="line">3) &quot;ls&quot;</span><br><span class="line">4) &quot;90&quot;</span><br><span class="line">5) &quot;ww&quot;</span><br><span class="line">6) &quot;100&quot;</span><br></pre></td></tr></table></figure>
+<ul>
+<li><p>倒序输出</p>
+<ul>
+<li><code>zrevrange key start stop [withscores]</code></li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">192.168.2.101:6379&gt; ZREVRANGE zset1 0 -1</span><br><span class="line">1) &quot;ww&quot;</span><br><span class="line">2) &quot;ls&quot;</span><br><span class="line">3) &quot;zl&quot;</span><br><span class="line">192.168.2.101:6379&gt; ZREVRANGE zset1 0 -1 withscores</span><br><span class="line">1) &quot;ww&quot;</span><br><span class="line">2) &quot;100&quot;</span><br><span class="line">3) &quot;ls&quot;</span><br><span class="line">4) &quot;90&quot;</span><br><span class="line">5) &quot;zl&quot;</span><br><span class="line">6) &quot;75&quot;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h3 id="其他命令-3"><a href="#其他命令-3" class="headerlink" title="其他命令"></a>其他命令</h3><h4 id="获取指定分数范围内的元素"><a href="#获取指定分数范围内的元素" class="headerlink" title="获取指定分数范围内的元素"></a>获取指定分数范围内的元素</h4><p>语法:<code>zrangebyscore key min max [withscires] limit offset count</code></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">127.0.0.1:6379&gt; ZRANGEBYSCORE scoreboard 90 97 WITHSCORES</span><br><span class="line">1) &quot;wangwu&quot;</span><br><span class="line">2) &quot;94&quot;</span><br><span class="line">3) &quot;lisi&quot;</span><br><span class="line">4) &quot;97&quot;</span><br><span class="line">127.0.0.1:6379&gt; ZRANGEBYSCORE scoreboard 70 100 limit 1 2</span><br><span class="line">1) &quot;wangwu&quot;</span><br><span class="line">2) &quot;lisi&quot;</span><br></pre></td></tr></table></figure>
+<h4 id="增加某个元素的分数"><a href="#增加某个元素的分数" class="headerlink" title="增加某个元素的分数"></a>增加某个元素的分数</h4><blockquote>
+<p>返回值是更改后的分数</p>
+</blockquote>
+<p>语法: <code>zincrby key increment member</code></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">127.0.0.1:6379&gt; ZINCRBY scoreboard 4 lisi </span><br><span class="line">&quot;101“</span><br></pre></td></tr></table></figure>
+<h4 id="获取集合中元素的数量"><a href="#获取集合中元素的数量" class="headerlink" title="获取集合中元素的数量"></a>获取集合中元素的数量</h4><p>语法:<code>zcard key</code></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">127.0.0.1:6379&gt; ZCARD scoreboard</span><br><span class="line">(integer) 3</span><br></pre></td></tr></table></figure>
+<h4 id="获取指定分数范围内的元素个数"><a href="#获取指定分数范围内的元素个数" class="headerlink" title="获取指定分数范围内的元素个数"></a>获取指定分数范围内的元素个数</h4><p>语法:<code>zcount key min max</code></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">127.0.0.1:6379&gt; ZCOUNT scoreboard 80 90</span><br><span class="line">(integer) 1</span><br></pre></td></tr></table></figure>
+<h4 id="按照排名范围删除元素"><a href="#按照排名范围删除元素" class="headerlink" title="按照排名范围删除元素"></a>按照排名范围删除元素</h4><p>语法:<code>zremrangebyrank key start stop</code></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">127.0.0.1:6379&gt; ZREMRANGEBYRANK scoreboard 0 1</span><br><span class="line">(integer) 2 </span><br><span class="line">127.0.0.1:6379&gt; ZRANGE scoreboard 0 -1</span><br><span class="line">1) &quot;lisi&quot;</span><br></pre></td></tr></table></figure>
+<h4 id="按照分数范围删除元素"><a href="#按照分数范围删除元素" class="headerlink" title="按照分数范围删除元素"></a>按照分数范围删除元素</h4><p>语法:<code>zremrangebyscore key min max</code></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">127.0.0.1:6379&gt; zadd scoreboard 84 zhangsan	</span><br><span class="line">(integer) 1</span><br><span class="line">127.0.0.1:6379&gt; ZREMRANGEBYSCORE scoreboard 80 100</span><br><span class="line">(integer) 1</span><br></pre></td></tr></table></figure>
+<h3 id="应用-2"><a href="#应用-2" class="headerlink" title="应用"></a>应用</h3><h4 id="商品销售排行榜"><a href="#商品销售排行榜" class="headerlink" title="商品销售排行榜"></a>商品销售排行榜</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">需求：根据商品销售量对商品进行排行显示</span><br><span class="line">思路：定义商品销售排行榜（sorted set集合），Key为items:sellsort，分数为商品销售量。</span><br><span class="line"></span><br><span class="line">写入商品销售量：</span><br><span class="line">商品编号1001的销量是9，商品编号1002的销量是10</span><br><span class="line">192.168.101.3:7007&gt; ZADD items:sellsort 9 1001 10 1002</span><br><span class="line"></span><br><span class="line">商品编号1001的销量加1</span><br><span class="line">192.168.101.3:7001&gt; ZINCRBY items:sellsort 1 1001</span><br><span class="line"></span><br><span class="line">商品销量前10名：</span><br><span class="line">192.168.101.3:7001&gt; ZRANGE items:sellsort 0 9 withscores</span><br></pre></td></tr></table></figure>
+<p>###</p>
+<p>##</p>
+<h1 id="KEYS命令"><a href="#KEYS命令" class="headerlink" title="KEYS命令"></a>KEYS命令</h1><h2 id="常用命令"><a href="#常用命令" class="headerlink" title="常用命令"></a>常用命令</h2><h3 id="keys"><a href="#keys" class="headerlink" title="keys"></a>keys</h3><p>语法:<code>keys parttern</code></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">返回满足给定pattern 的所有key</span><br><span class="line">redis 127.0.0.1:6379&gt; keys mylist*</span><br><span class="line">1) &quot;mylist&quot;</span><br><span class="line">2) &quot;mylist5&quot;</span><br><span class="line">3) &quot;mylist6&quot;</span><br><span class="line">4) &quot;mylist7&quot;</span><br><span class="line">5) &quot;mylist8&quot;</span><br></pre></td></tr></table></figure>
+<h3 id="exists"><a href="#exists" class="headerlink" title="exists"></a>exists</h3><blockquote>
+<p>判断key是否存在,0不存在,1存在</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">redis 127.0.0.1:6379&gt; exists HongWan</span><br><span class="line">(integer) 0</span><br><span class="line">redis 127.0.0.1:6379&gt; exists age</span><br><span class="line">(integer) 1</span><br><span class="line">redis 127.0.0.1:6379&gt;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">从结果来看，数据库中不存在HongWan 这个key，但是age 这个key 是存在的</span><br></pre></td></tr></table></figure>
+<h3 id="del"><a href="#del" class="headerlink" title="del"></a>del</h3><blockquote>
+<p>删除一个key</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">redis 127.0.0.1:6379&gt; del age</span><br><span class="line">(integer) 1</span><br><span class="line">redis 127.0.0.1:6379&gt; exists age</span><br><span class="line">(integer) 0</span><br></pre></td></tr></table></figure>
+<h3 id="rename"><a href="#rename" class="headerlink" title="rename"></a>rename</h3><blockquote>
+<p>重命名key</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">age 成功的被我们改名为age_new</span><br><span class="line">redis 127.0.0.1:6379[1]&gt; keys *</span><br><span class="line">1) &quot;age&quot;</span><br><span class="line">redis 127.0.0.1:6379[1]&gt; rename age age_new</span><br><span class="line">OK</span><br><span class="line">redis 127.0.0.1:6379[1]&gt; keys *</span><br><span class="line">1) &quot;age_new&quot;</span><br><span class="line">redis 127.0.0.1:6379[1]&gt;</span><br></pre></td></tr></table></figure>
+<h3 id="type"><a href="#type" class="headerlink" title="type"></a>type</h3><blockquote>
+<p>返回值的类型</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">redis 127.0.0.1:6379&gt; type addr</span><br><span class="line">string</span><br><span class="line">redis 127.0.0.1:6379&gt; type myzset2</span><br><span class="line">zset</span><br><span class="line">redis 127.0.0.1:6379&gt; type mylist</span><br><span class="line">list</span><br><span class="line">redis 127.0.0.1:6379&gt;</span><br></pre></td></tr></table></figure>
+<h2 id="设置key的生存时间"><a href="#设置key的生存时间" class="headerlink" title="设置key的生存时间"></a>设置key的生存时间</h2><blockquote>
+<p>缓存的数据一般都是需要设置生存时间,到期后数据笑话</p>
+</blockquote>
+<ul>
+<li>expire key seconds 设置key秒之后销毁</li>
+<li>ttl key 查看key的生存时间:默认-1 ,销毁后为-2</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">EXPIRE key seconds			 设置key的生存时间（单位：秒）key在多少秒后会自动删除</span><br><span class="line">TTL key 					查看key生于的生存时间</span><br><span class="line">PERSIST key				清除生存时间 </span><br><span class="line">PEXPIRE key milliseconds	生存时间设置单位为：毫秒</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">192.168.101.3:7002&gt; set test 1		设置test的值为1</span><br><span class="line">OK</span><br><span class="line">192.168.101.3:7002&gt; get test			获取test的值</span><br><span class="line">&quot;1&quot;</span><br><span class="line">192.168.101.3:7002&gt; EXPIRE test 5	设置test的生存时间为5秒</span><br><span class="line">(integer) 1</span><br><span class="line">192.168.101.3:7002&gt; TTL test			查看test的生于生成时间还有1秒删除</span><br><span class="line">(integer) 1</span><br><span class="line">192.168.101.3:7002&gt; TTL test</span><br><span class="line">(integer) -2</span><br><span class="line">192.168.101.3:7002&gt; get test			获取test的值，已经删除</span><br><span class="line">(nil)</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    
+    
+    
+<div>
+
+<div>
+
+    <div style="text-align:center;color: #ccc;font-size:14px;">-------------本文结束<i class="fa fa-paw"></i>感谢您的阅读-------------</div>
+
+</div>
+
+</div>
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/blog/2018/09/19/linuxday05Shell操作实用技巧/" rel="next" title="linuxday05">
+                <i class="fa fa-chevron-left"></i> linuxday05
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/blog/2018/09/21/redis02/" rel="prev" title="redis02">
+                redis02 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+    </div>
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/blog/images/avatar.png" alt="小良">
+            
+              <p class="site-author-name" itemprop="name">小良</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/blog/archives/">
+              
+                  <span class="site-state-item-count">77</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/blog/categories/index.html">
+                  <span class="site-state-item-count">5</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/blog/tags/index.html">
+                  <span class="site-state-item-count">81</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+            <div class="links-of-blogroll motion-element links-of-blogroll-block">
+              <div class="links-of-blogroll-title">
+                <i class="fa  fa-fw fa-link"></i>
+                友情链接
+              </div>
+              <ul class="links-of-blogroll-list">
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://sun__shine.coding.me/blog" title="旧版本" target="_blank">旧版本</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="/sun/2018/07/28/目录/" title="回到目录" target="_blank">回到目录</a>
+                  </li>
+                
+              </ul>
+            </div>
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#nosql"><span class="nav-number">1.</span> <span class="nav-text">nosql</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#数据分类"><span class="nav-number">2.</span> <span class="nav-text">数据分类</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#nosql的分类"><span class="nav-number">3.</span> <span class="nav-text">nosql的分类</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Redis"><span class="nav-number">4.</span> <span class="nav-text">Redis</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#redis的应用场景"><span class="nav-number">4.1.</span> <span class="nav-text">redis的应用场景</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#redis的安装"><span class="nav-number">4.2.</span> <span class="nav-text">redis的安装</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#redis启动-服务器端-客户端"><span class="nav-number">4.3.</span> <span class="nav-text">redis启动(服务器端+客户端)</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#前端启动"><span class="nav-number">4.3.1.</span> <span class="nav-text">前端启动</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#后端启动"><span class="nav-number">4.3.2.</span> <span class="nav-text">后端启动</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#jedis客户端"><span class="nav-number">5.</span> <span class="nav-text">jedis客户端</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Redis-数据类型"><span class="nav-number">6.</span> <span class="nav-text">Redis 数据类型</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#字符串String"><span class="nav-number">6.1.</span> <span class="nav-text">字符串String</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#命令"><span class="nav-number">6.1.1.</span> <span class="nav-text">命令</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#应用-自增主键"><span class="nav-number">6.1.2.</span> <span class="nav-text">应用:自增主键</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#hash类型"><span class="nav-number">6.2.</span> <span class="nav-text">hash类型</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#赋值"><span class="nav-number">6.2.1.</span> <span class="nav-text">赋值</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#取值"><span class="nav-number">6.2.2.</span> <span class="nav-text">取值</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#删除字段"><span class="nav-number">6.2.3.</span> <span class="nav-text">删除字段</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#增加数字"><span class="nav-number">6.2.4.</span> <span class="nav-text">增加数字</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#其他命令"><span class="nav-number">6.2.5.</span> <span class="nav-text">其他命令</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#判断字段是否存在"><span class="nav-number">6.2.5.1.</span> <span class="nav-text">判断字段是否存在</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#获取字段名或字段值"><span class="nav-number">6.2.5.2.</span> <span class="nav-text">获取字段名或字段值</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#获取字段的数量"><span class="nav-number">6.2.5.3.</span> <span class="nav-text">获取字段的数量</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#应用"><span class="nav-number">6.2.5.4.</span> <span class="nav-text">应用</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#list列表类型"><span class="nav-number">6.3.</span> <span class="nav-text">list列表类型</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#arraylist-和linkedlsit的区别"><span class="nav-number">6.3.1.</span> <span class="nav-text">arraylist 和linkedlsit的区别</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#向列表二端添加元素"><span class="nav-number">6.3.2.</span> <span class="nav-text">向列表二端添加元素</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#从列表二端弹出元素"><span class="nav-number">6.3.3.</span> <span class="nav-text">从列表二端弹出元素</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#查看列表"><span class="nav-number">6.3.4.</span> <span class="nav-text">查看列表</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#获取列表中元素的个数"><span class="nav-number">6.3.5.</span> <span class="nav-text">获取列表中元素的个数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#其他命令-1"><span class="nav-number">6.3.6.</span> <span class="nav-text">其他命令</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#删除列表中指定的值"><span class="nav-number">6.3.6.1.</span> <span class="nav-text">删除列表中指定的值</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#获取-设置指定索引的元素值"><span class="nav-number">6.3.6.2.</span> <span class="nav-text">获取/设置指定索引的元素值</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#保留片段"><span class="nav-number">6.3.6.3.</span> <span class="nav-text">保留片段</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#插入某个元素的前后位置"><span class="nav-number">6.3.6.4.</span> <span class="nav-text">插入某个元素的前后位置</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#将元素从一个列表转移到另一个列表"><span class="nav-number">6.3.6.5.</span> <span class="nav-text">将元素从一个列表转移到另一个列表</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#应用-1"><span class="nav-number">6.3.7.</span> <span class="nav-text">应用</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#set集合类型"><span class="nav-number">6.4.</span> <span class="nav-text">set集合类型</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#sadd-添加和删除"><span class="nav-number">6.4.1.</span> <span class="nav-text">sadd 添加和删除</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#获得集合中的所有元素"><span class="nav-number">6.4.2.</span> <span class="nav-text">获得集合中的所有元素</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#判断元素是否在集合中"><span class="nav-number">6.4.3.</span> <span class="nav-text">判断元素是否在集合中</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#运算命令"><span class="nav-number">6.4.4.</span> <span class="nav-text">运算命令</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#并集"><span class="nav-number">6.4.4.1.</span> <span class="nav-text">并集</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#交集"><span class="nav-number">6.4.4.2.</span> <span class="nav-text">交集</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#差集"><span class="nav-number">6.4.4.3.</span> <span class="nav-text">差集</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#其他命令-2"><span class="nav-number">6.4.5.</span> <span class="nav-text">其他命令</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#获得集合中的元素个数"><span class="nav-number">6.4.5.1.</span> <span class="nav-text">获得集合中的元素个数</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#从集合中弹出一个元素"><span class="nav-number">6.4.5.2.</span> <span class="nav-text">从集合中弹出一个元素</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#sortedset"><span class="nav-number">6.5.</span> <span class="nav-text">sortedset</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#添加元素"><span class="nav-number">6.5.1.</span> <span class="nav-text">添加元素</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#删除元素"><span class="nav-number">6.5.2.</span> <span class="nav-text">删除元素</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#查看元素的分数"><span class="nav-number">6.5.3.</span> <span class="nav-text">查看元素的分数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#获取元素的排名"><span class="nav-number">6.5.4.</span> <span class="nav-text">获取元素的排名</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#获取范围内的元素列表"><span class="nav-number">6.5.5.</span> <span class="nav-text">获取范围内的元素列表</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#其他命令-3"><span class="nav-number">6.5.6.</span> <span class="nav-text">其他命令</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#获取指定分数范围内的元素"><span class="nav-number">6.5.6.1.</span> <span class="nav-text">获取指定分数范围内的元素</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#增加某个元素的分数"><span class="nav-number">6.5.6.2.</span> <span class="nav-text">增加某个元素的分数</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#获取集合中元素的数量"><span class="nav-number">6.5.6.3.</span> <span class="nav-text">获取集合中元素的数量</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#获取指定分数范围内的元素个数"><span class="nav-number">6.5.6.4.</span> <span class="nav-text">获取指定分数范围内的元素个数</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#按照排名范围删除元素"><span class="nav-number">6.5.6.5.</span> <span class="nav-text">按照排名范围删除元素</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#按照分数范围删除元素"><span class="nav-number">6.5.6.6.</span> <span class="nav-text">按照分数范围删除元素</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#应用-2"><span class="nav-number">6.5.7.</span> <span class="nav-text">应用</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#商品销售排行榜"><span class="nav-number">6.5.7.1.</span> <span class="nav-text">商品销售排行榜</span></a></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#KEYS命令"><span class="nav-number">7.</span> <span class="nav-text">KEYS命令</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#常用命令"><span class="nav-number">7.1.</span> <span class="nav-text">常用命令</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#keys"><span class="nav-number">7.1.1.</span> <span class="nav-text">keys</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#exists"><span class="nav-number">7.1.2.</span> <span class="nav-text">exists</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#del"><span class="nav-number">7.1.3.</span> <span class="nav-text">del</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#rename"><span class="nav-number">7.1.4.</span> <span class="nav-text">rename</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#type"><span class="nav-number">7.1.5.</span> <span class="nav-text">type</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#设置key的生存时间"><span class="nav-number">7.2.</span> <span class="nav-text">设置key的生存时间</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-heartbeat" aria-hidden="true"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">小良</span>
+
+  
+</div>
+
+<div class="powered-by">
+<i class="fa fa-user-md"></i><span id="busuanzi_container_site_uv">
+  本站访客数:<span id="busuanzi_value_site_uv"></span>
+</span>
+</div>
+
+
+<!--
+
+-->
+<div class="theme-info">
+  <div class="powered-by"></div>
+  <span class="post-count">博客全站共字</span>
+</div>
+
+
+
+<div class="coding-pages">
+  <p>Hosted by <a href="https://pages.coding.me" style="font-weight: bold">Coding Pages</a></p>
+</div>
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/blog/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/blog/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/blog/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/blog/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/blog/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/blog/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/blog/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/blog/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/blog/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/blog/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/blog/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/blog/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/blog/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/blog/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

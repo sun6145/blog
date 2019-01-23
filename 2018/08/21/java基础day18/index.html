@@ -1,0 +1,1319 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/blog/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/blog/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/blog/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/blog/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/blog/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/blog/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/blog/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="锁,类的生命周期,类加载器,反射,">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="锁类加载反射基本注解">
+<meta name="keywords" content="锁,类的生命周期,类加载器,反射">
+<meta property="og:type" content="article">
+<meta property="og:title" content="java基础day18">
+<meta property="og:url" content="https://sun6145.github.io/blog/2018/08/21/java基础day18/index.html">
+<meta property="og:site_name" content="小良博客">
+<meta property="og:description" content="锁类加载反射基本注解">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2019-01-23T16:28:30.197Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="java基础day18">
+<meta name="twitter:description" content="锁类加载反射基本注解">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/blog/',
+    scheme: 'Gemini',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"hide","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://sun6145.github.io/blog/2018/08/21/java基础day18/">
+
+
+
+
+
+  <title>java基础day18 | 小良博客</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/blog/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">小良博客</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">小良博客</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/blog/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-writer">
+          <a href="/blog/2018/07/28/目录/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-sitemap"></i> <br>
+            
+            目录
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/blog/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/blog/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/blog/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-messagebook">
+          <a href="/blog/MessageBook" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-book"></i> <br>
+            
+            留言板
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off" placeholder="搜索..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://sun6145.github.io/blog/blog/2018/08/21/java基础day18/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="小良">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/blog/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="小良博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">java基础day18</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-08-21T09:02:59+00:00">
+                2018-08-21
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  字
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">
+                  分钟
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>锁<br>类加载<br>反射<br>基本注解<br><a id="more"></a></p>
+<h1 id="ReentrantLock锁"><a href="#ReentrantLock锁" class="headerlink" title="ReentrantLock锁"></a>ReentrantLock锁</h1><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">try</span>&#123;</span><br><span class="line">    加锁lock;</span><br><span class="line">&#125;<span class="keyword">finally</span>&#123;</span><br><span class="line">    释放锁unlock</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>释放锁应该写在finally{}中,除非虚拟机退出,否则一定会释放,如果不写在finally中,当方法return后,锁便不能释放.</p>
+<h2 id="构造方法"><a href="#构造方法" class="headerlink" title="构造方法:"></a>构造方法:</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 创建锁对象</span></span><br><span class="line">ReentrantLock lock = <span class="keyword">new</span> ReentrantLock();</span><br><span class="line"></span><br><span class="line"><span class="comment">// 创建公平锁对象</span></span><br><span class="line"><span class="comment">// 会将锁给等待时间长的对象</span></span><br><span class="line">ReentrantLock lock = <span class="keyword">new</span> ReentrantLock(<span class="keyword">true</span>);</span><br></pre></td></tr></table></figure>
+<p>卖票:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Ticket</span> <span class="keyword">implements</span> <span class="title">Runnable</span></span>&#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span> ticketCount = <span class="number">20</span>;</span><br><span class="line">    <span class="comment">//创建锁</span></span><br><span class="line">    ReentrantLock lock = <span class="keyword">new</span> ReentrantLock();</span><br><span class="line">    <span class="keyword">try</span>&#123;</span><br><span class="line">        <span class="comment">//上锁</span></span><br><span class="line">        lock.lock();</span><br><span class="line">        <span class="keyword">this</span>.ticketCount-=<span class="number">1</span>;</span><br><span class="line">        System.out.println(Thread.currentThread().getName()+<span class="string">"卖了1张,剩余:"</span>+<span class="keyword">this</span>.ticketCount);</span><br><span class="line">    &#125;<span class="keyword">catch</span>(Exception e)&#123;</span><br><span class="line">        e.printStackTrace();</span><br><span class="line">    &#125;fianlly&#123;</span><br><span class="line">        <span class="comment">//释放锁</span></span><br><span class="line">        lock.unlock();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">TestSubThread2</span></span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span></span>&#123;</span><br><span class="line">        Ticket ticket = <span class="keyword">new</span> Ticket();</span><br><span class="line">        Thread win1 = <span class="keyword">new</span> Thread(ticket,<span class="string">"win1"</span>);</span><br><span class="line">        Thread win2 = <span class="keyword">new</span> Thread(ticket,<span class="string">"win2"</span>);</span><br><span class="line">        win1.start();</span><br><span class="line">        win2.start();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="释放锁"><a href="#释放锁" class="headerlink" title="释放锁"></a>释放锁</h2><h3 id="sleep和wait"><a href="#sleep和wait" class="headerlink" title="sleep和wait()"></a>sleep和wait()</h3><p>sleep(毫秒值):放弃cpu的执行权,但是不释放锁</p>
+<p>wait(可选毫秒值):放弃cpu和锁</p>
+<p>notify():唤醒等待池中的一个线程</p>
+<p>notifyAll():唤醒等待池中的所有线程</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">NumberDemo</span> <span class="keyword">implements</span> <span class="title">Runnable</span> </span>&#123;</span><br><span class="line">    <span class="keyword">int</span> i = <span class="number">10</span>;<span class="comment">//</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">synchronized</span> <span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">for</span> (; i &gt;= <span class="number">0</span>; i--) &#123;</span><br><span class="line">            <span class="keyword">if</span> (i == <span class="number">5</span> &amp;&amp; Thread.currentThread().getName().equals(<span class="string">"t1"</span>)) &#123;</span><br><span class="line">                <span class="keyword">try</span> &#123;</span><br><span class="line">                    <span class="comment">// Thread.sleep(1000);</span></span><br><span class="line">                    wait();</span><br><span class="line">                &#125; <span class="keyword">catch</span> (InterruptedException e) &#123;</span><br><span class="line">                    e.printStackTrace();</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">if</span> (i == <span class="number">0</span>) &#123;</span><br><span class="line">                notify();</span><br><span class="line">                System.out.println(<span class="string">"醒了"</span>);</span><br><span class="line">            &#125;</span><br><span class="line">            System.out.println(Thread.currentThread().getName() + <span class="string">":"</span> + i);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">TestSubThread5</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        NumberDemo demo = <span class="keyword">new</span> NumberDemo();</span><br><span class="line">        Thread t1 = <span class="keyword">new</span> Thread(demo, <span class="string">"t1"</span>);</span><br><span class="line">        Thread t2 = <span class="keyword">new</span> Thread(demo, <span class="string">"t2"</span>);</span><br><span class="line">        t1.start();</span><br><span class="line">        t2.start();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//---wait----------------------</span></span><br><span class="line">t1:<span class="number">10</span></span><br><span class="line">t1:<span class="number">9</span></span><br><span class="line">t1:<span class="number">8</span></span><br><span class="line">t1:<span class="number">7</span></span><br><span class="line">t1:<span class="number">6</span></span><br><span class="line">t2:<span class="number">5</span></span><br><span class="line">t2:<span class="number">4</span></span><br><span class="line">t2:<span class="number">3</span></span><br><span class="line">t2:<span class="number">2</span></span><br><span class="line">t2:<span class="number">1</span></span><br><span class="line">醒了</span><br><span class="line">t2:<span class="number">0</span></span><br><span class="line">t1:-<span class="number">1</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//----sleep-----------------------</span></span><br><span class="line">    t1:<span class="number">10</span></span><br><span class="line">t1:<span class="number">9</span></span><br><span class="line">t1:<span class="number">8</span></span><br><span class="line">t1:<span class="number">7</span></span><br><span class="line">t1:<span class="number">6</span></span><br><span class="line">(等<span class="number">1</span>s)</span><br><span class="line">t1:<span class="number">5</span></span><br><span class="line">t1:<span class="number">4</span></span><br><span class="line">t1:<span class="number">3</span></span><br><span class="line">t1:<span class="number">2</span></span><br><span class="line">t1:<span class="number">1</span></span><br><span class="line">醒了</span><br><span class="line">t1:<span class="number">0</span></span><br></pre></td></tr></table></figure>
+<h2 id="死锁问题"><a href="#死锁问题" class="headerlink" title="死锁问题"></a>死锁问题</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Zhangsan</span></span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">say</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">"你给我书，我就给你画"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">get</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">"张三获得了书"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Lisi</span></span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">say</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">"你给我画，我就给你书"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">get</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">"李四获得了画"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">ThreadDemo</span> <span class="keyword">implements</span> <span class="title">Runnable</span></span>&#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> Zhangsan zhangsan = <span class="keyword">new</span> Zhangsan();</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span>  Lisi lisi = <span class="keyword">new</span> Lisi();</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">boolean</span> tag = <span class="keyword">false</span>;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(tag) &#123;</span><br><span class="line">            <span class="keyword">synchronized</span> (zhangsan) &#123;</span><br><span class="line">                zhangsan.say();</span><br><span class="line">                <span class="keyword">try</span> &#123;</span><br><span class="line">                    Thread.sleep(<span class="number">1000</span>);</span><br><span class="line">                &#125; <span class="keyword">catch</span> (InterruptedException e) &#123;</span><br><span class="line">                    e.printStackTrace();</span><br><span class="line">                &#125;</span><br><span class="line">                <span class="keyword">synchronized</span> (lisi) &#123;</span><br><span class="line">                    zhangsan.get();</span><br><span class="line">                &#125;</span><br><span class="line"></span><br><span class="line">            &#125;</span><br><span class="line">        &#125;<span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="keyword">synchronized</span> (lisi) &#123;</span><br><span class="line">                lisi.say();</span><br><span class="line">                <span class="keyword">try</span> &#123;</span><br><span class="line">                    Thread.sleep(<span class="number">1000</span>);</span><br><span class="line">                &#125; <span class="keyword">catch</span> (InterruptedException e) &#123;</span><br><span class="line">                    e.printStackTrace();</span><br><span class="line">                &#125;</span><br><span class="line">                <span class="keyword">synchronized</span> (zhangsan) &#123;</span><br><span class="line">                    lisi.get();</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">TestSubThread4</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        ThreadDemo demo1 = <span class="keyword">new</span> ThreadDemo();</span><br><span class="line">        demo1.tag = <span class="keyword">true</span>;</span><br><span class="line">        ThreadDemo demo2 = <span class="keyword">new</span> ThreadDemo();</span><br><span class="line">        demo2.tag = <span class="keyword">false</span>;</span><br><span class="line">        Thread t1 = <span class="keyword">new</span> Thread(demo1);</span><br><span class="line">        Thread t2 = <span class="keyword">new</span> Thread(demo2);</span><br><span class="line">        t1.start();</span><br><span class="line">        t2.start();</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="生产消费"><a href="#生产消费" class="headerlink" title="生产消费"></a>生产消费</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Qingfeng</span></span>&#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span> count ;</span><br><span class="line">    <span class="keyword">boolean</span> tag = <span class="keyword">false</span>;</span><br><span class="line">    <span class="comment">//产包子</span></span><br><span class="line">    <span class="function"><span class="keyword">synchronized</span> <span class="keyword">public</span> <span class="keyword">void</span> <span class="title">put</span><span class="params">(<span class="keyword">int</span> count)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(tag) &#123;<span class="comment">//if(true)</span></span><br><span class="line">            <span class="keyword">try</span> &#123;</span><br><span class="line">                wait();</span><br><span class="line">            &#125; <span class="keyword">catch</span> (InterruptedException e) &#123;</span><br><span class="line">                e.printStackTrace();</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">//false</span></span><br><span class="line">        <span class="keyword">this</span>.count = count;</span><br><span class="line">        System.out.println(<span class="string">"生产了："</span> + <span class="keyword">this</span>.count);</span><br><span class="line">        tag = <span class="keyword">true</span>;<span class="comment">//有</span></span><br><span class="line">        notify();<span class="comment">//唤醒销售人员</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//卖包子</span></span><br><span class="line">    <span class="function"><span class="keyword">synchronized</span> <span class="keyword">public</span> <span class="keyword">void</span> <span class="title">get</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(tag == <span class="keyword">false</span>) &#123;</span><br><span class="line">            <span class="keyword">try</span> &#123;</span><br><span class="line">                wait();</span><br><span class="line">            &#125; <span class="keyword">catch</span> (InterruptedException e) &#123;</span><br><span class="line">                e.printStackTrace();</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">//true</span></span><br><span class="line">        System.out.println(<span class="string">"卖了 ："</span> + <span class="keyword">this</span>.count);</span><br><span class="line">        tag = <span class="keyword">false</span>;<span class="comment">//卖，没了</span></span><br><span class="line">        notify();<span class="comment">//唤醒厨师</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//生产</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Producer</span> <span class="keyword">implements</span> <span class="title">Runnable</span></span>&#123;</span><br><span class="line">    Qingfeng qingfeng;</span><br><span class="line">    Producer(Qingfeng qingfeng)&#123;</span><br><span class="line">        <span class="keyword">this</span>.qingfeng = qingfeng;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">1</span>; i &lt;= <span class="number">5</span>; i++) &#123;</span><br><span class="line">            qingfeng.put(i);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//销售</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Cosumer</span> <span class="keyword">implements</span> <span class="title">Runnable</span></span>&#123;</span><br><span class="line">    Qingfeng qingfeng;</span><br><span class="line">    Cosumer(Qingfeng qingfeng)&#123;</span><br><span class="line">        <span class="keyword">this</span>.qingfeng = qingfeng;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">1</span>; i &lt;= <span class="number">5</span>; i++) &#123;</span><br><span class="line">            qingfeng.get();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h1 id="java应用程序"><a href="#java应用程序" class="headerlink" title="java应用程序"></a>java应用程序</h1><p>一个java程序只有一个main方法,下面中的TestA1和TestA2有二个main方法,实际上互相不干扰.结果都是6.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> day18.loader;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">A</span> </span>&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">int</span> a = <span class="number">5</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> day18.loader;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">TestA1</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">		A.a ++;</span><br><span class="line">		System.out.println(A.a);<span class="comment">//6</span></span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> day18.loader;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">TestA2</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">		A.a ++;</span><br><span class="line">		System.out.println(A.a);<span class="comment">//6</span></span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="类的生命周期"><a href="#类的生命周期" class="headerlink" title="类的生命周期"></a>类的生命周期</h2><ol>
+<li>加载: 把字节码文件.class 加载到方法区的内存中,创建一个对应的对象,堆中(Class),通过Class对象可以获得字节码中的所有信息</li>
+<li>连接<ol>
+<li>验证:对字节码文件.class进行验证,保证虚拟机的安全</li>
+<li>准备: 为静态变量分配空间,进行默认初始化</li>
+<li>解析:把符号引用替换为直接引用(如把方法用指针替换)</li>
+</ol>
+</li>
+<li>初始化:对静态变量声明处或静态块初始化</li>
+<li>使用:</li>
+<li>卸载</li>
+</ol>
+<h2 id="类的初始化"><a href="#类的初始化" class="headerlink" title="类的初始化"></a>类的初始化</h2><p>当一个类被主动使用时：</p>
+<blockquote>
+<p>当创建某个类的<strong>新实例时</strong></p>
+</blockquote>
+<blockquote>
+<p>当调用某个类的静态成员；</p>
+</blockquote>
+<blockquote>
+<p>当初始化某个子类时，该子类的所有父类都会被初始化。</p>
+</blockquote>
+<blockquote>
+<p>当使用反射方法强制创建某个类或接口的对象时</p>
+</blockquote>
+<blockquote>
+<p>当虚拟机java命令运行启动类</p>
+</blockquote>
+<p>注意：static final类型的不能导致初始化的情况</p>
+<p>​    静态常量在编译期就<strong>能确定值</strong>的情况<strong>不会引起初始化</strong></p>
+<blockquote>
+<p>下面程序中,</p>
+<p>​    访问n的时候,会引起类的初始化</p>
+<p>​    访问num,不会引起类的初始化,在编译期期间就能确定了值是33.</p>
+<p>​    访问sn2,也不会引起类的初始化,值为88.</p>
+<p>​    访问sn的时候,虽然是final static修饰,但是值不能确定,会引起类的初始化</p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> day18.loader;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Demo</span></span>&#123;</span><br><span class="line">    <span class="keyword">static</span> <span class="keyword">int</span> n = <span class="number">55</span>;</span><br><span class="line">    <span class="keyword">final</span> <span class="keyword">static</span> <span class="keyword">int</span> num=<span class="number">33</span>;</span><br><span class="line">    <span class="keyword">final</span> <span class="keyword">static</span> <span class="keyword">int</span> sn = <span class="number">33</span> + n;</span><br><span class="line">    <span class="keyword">final</span> <span class="keyword">static</span> <span class="keyword">int</span> sn2 =<span class="number">33</span>+<span class="number">55</span>;</span><br><span class="line">    <span class="keyword">static</span> &#123;</span><br><span class="line">        System.out.println(<span class="string">"static 初始化"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">SubDemo</span> <span class="keyword">extends</span> <span class="title">Demo</span></span>&#123;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">TestDemo1</span> </span>&#123;</span><br><span class="line">    <span class="comment">/*static int sn = 45;</span></span><br><span class="line"><span class="comment">	static&#123;</span></span><br><span class="line"><span class="comment">		sn = 55;</span></span><br><span class="line"><span class="comment">	&#125;</span></span><br><span class="line"><span class="comment">	static &#123;</span></span><br><span class="line"><span class="comment">		System.out.println("static !");</span></span><br><span class="line"><span class="comment">	&#125;*/</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> ClassNotFoundException </span>&#123;</span><br><span class="line">        <span class="comment">//		Demo demo = new Demo();</span></span><br><span class="line">        System.out.println(Demo.sn);</span><br><span class="line">        <span class="comment">//		SubDemo demo = new SubDemo();</span></span><br><span class="line">        <span class="comment">//		Class.forName("day18.loader.Demo");</span></span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="类加载器"><a href="#类加载器" class="headerlink" title="类加载器"></a>类加载器</h2><ol>
+<li><p>根类加载器:加载<code>\jre\lib</code>下的核心类库</p>
+<p>Bootstrap ClassLoader</p>
+</li>
+<li><p>扩展类加载器:加载路径<code>\jre\lib\ext</code>的文件</p>
+<p>Extension ClassLoader</p>
+</li>
+<li><p>系统(应用)类加载器: 加载classPath路径下的文件(默认当前路径)</p>
+<p>App ClassLoader</p>
+<p>System ClassLoader</p>
+</li>
+<li><p>自定义类加载器</p>
+<ol>
+<li>加载自定义位置的文件</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">st=&gt;start: 用户自定义类加载器</span><br><span class="line">op=&gt;operation: 系统类加载器</span><br><span class="line">op2=&gt;operation: 扩展类加载器</span><br><span class="line">op3=&gt;operation: 根类加载器</span><br><span class="line">op4=&gt;input: aaa</span><br><span class="line">st-&gt;op-&gt;op2-&gt;op3</span><br></pre></td></tr></table></figure>
+<h2 id="加载器的顺序"><a href="#加载器的顺序" class="headerlink" title="加载器的顺序"></a>加载器的顺序</h2><p>系统类加载器-&gt;扩展类加载器-&gt;根类加载器-&gt;</p>
+<p><strong>如果根类加载器不能加载,看扩展类加载器,不能给系统类加载器,给用户自定义类加载器</strong></p>
+</li>
+</ol>
+<p>   <strong>双亲委派模型</strong></p>
+<p>   工作过程为：如果一个类加载器收到了类加载的请求，它首先不会自己去尝试加载这个类，而是把这个请求委派给父类加载器去完成，每一个层次的加载器都是如此，因此所有的类加载请求都会传给顶层的启动类加载器，只有当父加载器反馈自己无法完成该加载请求（该加载器的搜索范围中没有找到对应的类）时，子加载器才会尝试自己去加载。</p>
+<blockquote>
+<p>好处是Java类随着它的类加载器一起具备了一种带有优先级的层次关系。 </p>
+<p>例如java.lang.Object类，无论哪个类加载器去加载该类，最终都是由启动类加载器进行加载，因此Object类在程序的各种类加载器环境中都是同一个类。 </p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">TestDemo2</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        <span class="comment">//系统类（应用类）加载器</span></span><br><span class="line">        ClassLoader loader = TestDemo2.class.getClassLoader();</span><br><span class="line">        System.out.println(loader);</span><br><span class="line">        <span class="comment">//父扩展</span></span><br><span class="line">        System.out.println(loader.getParent());</span><br><span class="line">        <span class="comment">//父根</span></span><br><span class="line">        System.out.println(loader.getParent().getParent());</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//结果---------</span></span><br><span class="line">sun.misc.Launcher$AppClassLoader@<span class="number">73</span>d16e93</span><br><span class="line">sun.misc.Launcher$ExtClassLoader@<span class="number">15</span>db9742</span><br><span class="line"><span class="keyword">null</span>(根类加载器是由C语言写的)</span><br></pre></td></tr></table></figure>
+<h2 id="加载类"><a href="#加载类" class="headerlink" title="加载类"></a>加载类</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> ClassNotFoundException </span>&#123;</span><br><span class="line">    <span class="comment">//加载类  完全限定命名</span></span><br><span class="line">    ClassLoader.getSystemClassLoader().loadClass(<span class="string">"day18.Demo1"</span>);</span><br><span class="line">    <span class="comment">//加载类 ，并初始化,Class.forNmae(加载类,初始化 true,系统类加载器 )</span></span><br><span class="line">    Class.forName(<span class="string">"day18.Demo1"</span>,<span class="keyword">true</span>,ClassLoader.getSystemClassLoader());</span><br><span class="line">    <span class="comment">//简写</span></span><br><span class="line">    Class.forName(<span class="string">"day18.Demo1"</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="自定义类加载器"><a href="#自定义类加载器" class="headerlink" title="自定义类加载器"></a>自定义类加载器</h2><blockquote>
+<p>由于是双清委派,在项目外建立一个类C.java,编译得到C.Class</p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//自定义类加载器</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">MyLoader</span> <span class="keyword">extends</span> <span class="title">ClassLoader</span></span>&#123;</span><br><span class="line">    String path;</span><br><span class="line">    MyLoader(String path)&#123;</span><br><span class="line">        <span class="keyword">this</span>.path = path;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// 包名.类名</span></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">protected</span> Class&lt;?&gt; findClass(String name) <span class="keyword">throws</span> ClassNotFoundException &#123;</span><br><span class="line">        Class&lt;?&gt;  c = <span class="keyword">null</span>;</span><br><span class="line">        <span class="comment">//     "d:/data/" + "C" + ".class" -&gt;"d:/data/C.class"</span></span><br><span class="line">        <span class="comment">//带包情况下,用.替换</span></span><br><span class="line">        <span class="comment">//		path = path + name.replace(".", "/").concat(".class");</span></span><br><span class="line">        path = path + name.concat(<span class="string">".class"</span>);</span><br><span class="line"></span><br><span class="line">        FileInputStream fin = <span class="keyword">null</span>;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            fin = <span class="keyword">new</span> FileInputStream(path);</span><br><span class="line">            <span class="keyword">byte</span> [] b = <span class="keyword">new</span> <span class="keyword">byte</span>[fin.available()];</span><br><span class="line">            <span class="keyword">int</span> len = fin.read(b);</span><br><span class="line">            c = <span class="keyword">this</span>.defineClass(name, b, <span class="number">0</span>, len);			</span><br><span class="line">        &#125; <span class="keyword">catch</span> (FileNotFoundException e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125; <span class="keyword">catch</span> (IOException e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">            <span class="keyword">if</span>(fin != <span class="keyword">null</span>) &#123;</span><br><span class="line">                <span class="keyword">try</span> &#123;</span><br><span class="line">                    fin.close();</span><br><span class="line">                &#125; <span class="keyword">catch</span> (IOException e) &#123;</span><br><span class="line">                    <span class="comment">// TODO Auto-generated catch block</span></span><br><span class="line">                    e.printStackTrace();</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> c;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">TestDemo4</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> ClassNotFoundException </span>&#123;</span><br><span class="line">        <span class="comment">// 自定义类加载器 加载类 C .class</span></span><br><span class="line">        MyLoader my = <span class="keyword">new</span> MyLoader(<span class="string">"d:/data/"</span>);</span><br><span class="line">        Class c = Class.forName(<span class="string">"C"</span>,<span class="keyword">true</span>,my);</span><br><span class="line">        System.out.println(c.getClassLoader());</span><br><span class="line">        c = <span class="keyword">null</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="安全管理器"><a href="#安全管理器" class="headerlink" title="安全管理器"></a>安全管理器</h2><p>SecurityManager</p>
+<blockquote>
+<p>在Java应用中，安全管理器是由System类中的方法setSecurityManager设置的。要获得当前的安全管理器，可以使用方法getSecurityManager。 </p>
+</blockquote>
+<h2 id="自定义安全管理器"><a href="#自定义安全管理器" class="headerlink" title="自定义安全管理器"></a>自定义安全管理器</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//自定义的安全管理器</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">MySecurityManager</span> <span class="keyword">extends</span> <span class="title">SecurityManager</span></span>&#123;</span><br><span class="line">	<span class="meta">@Override</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">checkRead</span><span class="params">(String file)</span> </span>&#123;</span><br><span class="line">		<span class="keyword">if</span>(file.endsWith(<span class="string">".txt"</span>)) &#123;</span><br><span class="line">			<span class="keyword">throw</span> <span class="keyword">new</span> SecurityException(<span class="string">"不能读取 txt文件"</span>);</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">TestDemo5</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> IOException </span>&#123;</span><br><span class="line"><span class="comment">//		System.setSecurityManager(new MySecurityManager());</span></span><br><span class="line">		File f = <span class="keyword">new</span> File(<span class="string">"d:/data/a.txt"</span>);</span><br><span class="line">		FileInputStream fin = <span class="keyword">new</span> FileInputStream(f);</span><br><span class="line">		System.out.println(fin.read());</span><br><span class="line">		fin.close();</span><br><span class="line">		</span><br><span class="line">		Object obj = <span class="keyword">new</span> String();</span><br><span class="line">		</span><br><span class="line">		</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h1 id="反射"><a href="#反射" class="headerlink" title="反射"></a>反射</h1><p>获得运行时<strong>类的信息</strong>的一种技术.</p>
+<p>JAVA反射机制是在运行状态中，</p>
+<p>对于任意一个类，都能够知道这个类的所有属性和方法；</p>
+<p>对于任意一个对象，都能够调用它的任意一个方法和属性；</p>
+<p>反射就是把java类中的各种成分映射成一个个的Java对象 </p>
+<p>这种动态获取的信息以及动态调用对象的方法的功能称为java语言的反射机制。 </p>
+<blockquote>
+<p><strong>使用的前提条件：必须先得到代表的字节码的Class，Class类用于表示.class文件（字节码</strong> </p>
+</blockquote>
+<p>从字节码文件中获得信息</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 获取对象的类型</span></span><br><span class="line">Object s = <span class="keyword">new</span> String();</span><br><span class="line">System.out.println(s.getClass().getName());<span class="comment">// java.lang.String</span></span><br></pre></td></tr></table></figure>
+<h2 id="获得字节码文件对象"><a href="#获得字节码文件对象" class="headerlink" title="获得字节码文件对象"></a>获得字节码文件对象</h2><ol>
+<li><code>Class&lt;Person&gt; c = Person.class;</code></li>
+<li><code>Class&lt;? extends Person&gt; c = new Person().getClass();</code></li>
+<li><code>Class&lt;?&gt; c  = Class.forNmae(&quot;完全命名包名.类名&quot;)</code></li>
+</ol>
+<h2 id="方法"><a href="#方法" class="headerlink" title="方法"></a>方法</h2><ol>
+<li>getDeclaredFileds();获得所有的属性(包含私有的)</li>
+<li>getDeclaredMethods(）获得所有方法</li>
+<li>getDeclaredConstructors();  获得所有构造方法</li>
+<li>newInstance():获得一个实例</li>
+</ol>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Person</span></span>&#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span> no;</span><br><span class="line">    <span class="keyword">public</span> String name;</span><br><span class="line">    Person()&#123;</span><br><span class="line">        System.out.println(<span class="string">"无参构造"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    Person(<span class="keyword">int</span> no,String name)&#123;</span><br><span class="line">        <span class="keyword">this</span>.no= no ;</span><br><span class="line">        <span class="keyword">this</span>.name = name;</span><br><span class="line">        System.out.println(<span class="string">"带参数的构造："</span>+ <span class="keyword">this</span>.no + <span class="string">":"</span> + <span class="keyword">this</span>.name);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">f</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">"无参 f"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">sf</span><span class="params">(String str , <span class="keyword">int</span> num)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="string">"字符串:"</span> + str + num;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">    <span class="comment">//从 Person.class中获得信息： 反射</span></span><br><span class="line">    <span class="comment">//获得 字节码文件 对应的对象</span></span><br><span class="line">    <span class="comment">//1.</span></span><br><span class="line">    <span class="comment">// Class&lt;Person&gt; c = Person.class;</span></span><br><span class="line">    <span class="comment">//2.</span></span><br><span class="line">    <span class="comment">// Class&lt;? extends Person&gt; c = new Person().getClass();</span></span><br><span class="line">    <span class="comment">//3 获得 字节码文件 对应的对象</span></span><br><span class="line">    Class&lt;?&gt; c = Class.forName(<span class="string">"day18.loader.Person"</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="获得字节码文件的属性-Field"><a href="#获得字节码文件的属性-Field" class="headerlink" title="获得字节码文件的属性(Field)"></a>获得字节码文件的属性(Field)</h2><blockquote>
+<p>getDeclaredFileds();获得所有的属性(包含私有的)</p>
+</blockquote>
+<h3 id="常用方法"><a href="#常用方法" class="headerlink" title="常用方法:"></a>常用方法:</h3><ol>
+<li>getName():  名字</li>
+<li>getType():  类型</li>
+<li>getModifiers():  访问权限</li>
+<li>属性.get(实例),—–实例.属性</li>
+</ol>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//----------获得所有的属性-------------------</span></span><br><span class="line"><span class="comment">//		Field [] fs = c.getFields();//公共的</span></span><br><span class="line">		Field [] fs = c.getDeclaredFields();</span><br><span class="line">		<span class="keyword">for</span>(Field f :fs) &#123;</span><br><span class="line">			System.out.println(f.getName());<span class="comment">//名</span></span><br><span class="line">			System.out.println(f.getType());<span class="comment">//数据类型</span></span><br><span class="line">			System.out.println(Modifier.toString(f.getModifiers()));<span class="comment">// 访问权限</span></span><br><span class="line">		&#125;</span><br><span class="line">		Field f = c.getDeclaredField(<span class="string">"no"</span>);</span><br><span class="line"><span class="comment">//		System.setSecurityManager(new SecurityManager());</span></span><br><span class="line">		f.setAccessible(<span class="keyword">true</span>);<span class="comment">//</span></span><br><span class="line">		Object obj = c.newInstance();<span class="comment">//获得一个实例对象</span></span><br><span class="line">		f.set(obj, <span class="number">22</span>);</span><br><span class="line">		System.out.println(f.get(obj));</span><br></pre></td></tr></table></figure>
+<h2 id="获得方法-Method"><a href="#获得方法-Method" class="headerlink" title="获得方法(Method)"></a>获得方法(Method)</h2><blockquote>
+<p>getDeclaredMethods();  获取所有方法</p>
+</blockquote>
+<h3 id="常用方法-1"><a href="#常用方法-1" class="headerlink" title="常用方法"></a>常用方法</h3><ol>
+<li>getReturnType():    获取返回值得类型</li>
+<li>getParameterTyoes(): 获得参数列表,数组[]</li>
+<li>方法.invoke(实例,[参数])——–实例.方法()</li>
+</ol>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//---------------方法------------------</span></span><br><span class="line">Method [] ms = c.getDeclaredMethods();</span><br><span class="line"><span class="keyword">for</span>(Method m : ms) &#123;</span><br><span class="line">    System.out.println(m.getName());</span><br><span class="line">    System.out.println(Modifier.toString(m.getModifiers()));</span><br><span class="line">    System.out.println(m.getReturnType());<span class="comment">//返回值类型</span></span><br><span class="line">    System.out.println(Arrays.toString(m.getParameterTypes()));<span class="comment">//获得 参数列表</span></span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//访问单个方法</span></span><br><span class="line">Method m1 = c.getDeclaredMethod(<span class="string">"f"</span> );</span><br><span class="line">Object obj = c.newInstance();<span class="comment">//创建一个实例</span></span><br><span class="line">m1.invoke(obj);<span class="comment">//调用方法</span></span><br><span class="line"><span class="comment">//</span></span><br><span class="line">Method m2 = c.getDeclaredMethod(<span class="string">"sf"</span>, String.class,<span class="keyword">int</span>.class);</span><br><span class="line">String s = (String)m2.invoke(obj, <span class="string">"hello"</span>,<span class="number">345</span>);</span><br><span class="line">System.out.println(s);</span><br></pre></td></tr></table></figure>
+<h2 id="获得构造方法"><a href="#获得构造方法" class="headerlink" title="获得构造方法"></a>获得构造方法</h2><blockquote>
+<p>getDeclaredConstructors();  获得所有构造方法</p>
+</blockquote>
+<h3 id="方法-1"><a href="#方法-1" class="headerlink" title="方法"></a>方法</h3><ol>
+<li>getParameterTypes();获取参数类型</li>
+<li>newInstance([参数…]):调用构造</li>
+</ol>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//---------构造---------------</span></span><br><span class="line"></span><br><span class="line">Constructor [] crs = c.getDeclaredConstructors();</span><br><span class="line"><span class="keyword">for</span>(Constructor cr : crs ) &#123;</span><br><span class="line">    System.out.println(Arrays.toString(cr.getParameterTypes()));</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//单个构造</span></span><br><span class="line">Constructor cr1 = c.getDeclaredConstructor();</span><br><span class="line">cr1.newInstance();</span><br><span class="line">Constructor cr2 = c.getDeclaredConstructor(<span class="keyword">int</span>.class,String.class);</span><br><span class="line">cr2.newInstance(<span class="number">111</span>,<span class="string">"abc"</span>);</span><br></pre></td></tr></table></figure>
+<h1 id="基本注解"><a href="#基本注解" class="headerlink" title="基本注解"></a>基本注解</h1><ol>
+<li>@override</li>
+<li>@Depercated:说此方法已过时 </li>
+<li>@SupperessWarnings:镇压警告:不出现黄色警告线,遇到错误照样报错<ol>
+<li>all:所有的</li>
+<li>unused:变量声明没有使用</li>
+<li>rawtypes:原生类型</li>
+<li>unchecked: 类型检查</li>
+<li>serial: 版本号(序列化的类最好添加版本号)</li>
+</ol>
+</li>
+<li>@FunctionalInterface:函数式接口</li>
+</ol>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//                版本号</span></span><br><span class="line"><span class="comment">//@SuppressWarnings("serial")</span></span><br><span class="line"><span class="comment">//               所有的</span></span><br><span class="line"><span class="meta">@SuppressWarnings</span>(<span class="string">"all"</span>)</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">DemoNew</span> <span class="keyword">implements</span> <span class="title">Serializable</span></span>&#123;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Base</span></span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">af</span><span class="params">()</span> </span>&#123;&#125;</span><br><span class="line">    <span class="comment">//已过时</span></span><br><span class="line">    <span class="meta">@Deprecated</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">f</span><span class="params">()</span> </span>&#123;&#125;</span><br><span class="line">    <span class="comment">//  类型检查</span></span><br><span class="line">    <span class="meta">@SuppressWarnings</span>(<span class="string">"unchecked"</span>)</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">sf</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="comment">//镇压警告</span></span><br><span class="line">        <span class="comment">//                 变量声明了 没有使用</span></span><br><span class="line">        <span class="meta">@SuppressWarnings</span>(<span class="string">"unused"</span>)</span><br><span class="line">        <span class="keyword">int</span> n ;</span><br><span class="line">        <span class="comment">//                      原生类型</span></span><br><span class="line">        <span class="meta">@SuppressWarnings</span>(&#123; <span class="string">"rawtypes"</span>, <span class="string">"unused"</span> &#125;)</span><br><span class="line">        List list = <span class="keyword">new</span> ArrayList();</span><br><span class="line">        list.add(<span class="string">"abc"</span>);</span><br><span class="line">        list.add(<span class="number">111</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Sub</span> <span class="keyword">extends</span> <span class="title">Base</span></span>&#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">af</span><span class="params">()</span> </span>&#123;&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">@FunctionalInterface</span></span><br><span class="line"><span class="class"><span class="keyword">interface</span> <span class="title">Info</span></span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">af</span><span class="params">()</span></span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">TestDemo7</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        Base base = <span class="keyword">new</span> Base();</span><br><span class="line">        base.f();</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    
+    
+    
+<div>
+
+<div>
+
+    <div style="text-align:center;color: #ccc;font-size:14px;">-------------本文结束<i class="fa fa-paw"></i>感谢您的阅读-------------</div>
+
+</div>
+
+</div>
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/blog/tags/锁/" rel="tag"># 锁</a>
+          
+            <a href="/blog/tags/类的生命周期/" rel="tag"># 类的生命周期</a>
+          
+            <a href="/blog/tags/类加载器/" rel="tag"># 类加载器</a>
+          
+            <a href="/blog/tags/反射/" rel="tag"># 反射</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/blog/2018/08/20/jdbc基础/" rel="next" title="jdbc基础">
+                <i class="fa fa-chevron-left"></i> jdbc基础
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/blog/2018/08/22/java基础day19/" rel="prev" title="java基础day19">
+                java基础day19 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+    </div>
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/blog/images/avatar.png" alt="小良">
+            
+              <p class="site-author-name" itemprop="name">小良</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/blog/archives/">
+              
+                  <span class="site-state-item-count">77</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/blog/categories/index.html">
+                  <span class="site-state-item-count">5</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/blog/tags/index.html">
+                  <span class="site-state-item-count">81</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+            <div class="links-of-blogroll motion-element links-of-blogroll-block">
+              <div class="links-of-blogroll-title">
+                <i class="fa  fa-fw fa-link"></i>
+                友情链接
+              </div>
+              <ul class="links-of-blogroll-list">
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://sun__shine.coding.me/blog" title="旧版本" target="_blank">旧版本</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="/sun/2018/07/28/目录/" title="回到目录" target="_blank">回到目录</a>
+                  </li>
+                
+              </ul>
+            </div>
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#ReentrantLock锁"><span class="nav-number">1.</span> <span class="nav-text">ReentrantLock锁</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#构造方法"><span class="nav-number">1.1.</span> <span class="nav-text">构造方法:</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#释放锁"><span class="nav-number">1.2.</span> <span class="nav-text">释放锁</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#sleep和wait"><span class="nav-number">1.2.1.</span> <span class="nav-text">sleep和wait()</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#死锁问题"><span class="nav-number">1.3.</span> <span class="nav-text">死锁问题</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#生产消费"><span class="nav-number">1.4.</span> <span class="nav-text">生产消费</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#java应用程序"><span class="nav-number">2.</span> <span class="nav-text">java应用程序</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#类的生命周期"><span class="nav-number">2.1.</span> <span class="nav-text">类的生命周期</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#类的初始化"><span class="nav-number">2.2.</span> <span class="nav-text">类的初始化</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#类加载器"><span class="nav-number">2.3.</span> <span class="nav-text">类加载器</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#加载器的顺序"><span class="nav-number">2.4.</span> <span class="nav-text">加载器的顺序</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#加载类"><span class="nav-number">2.5.</span> <span class="nav-text">加载类</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#自定义类加载器"><span class="nav-number">2.6.</span> <span class="nav-text">自定义类加载器</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#安全管理器"><span class="nav-number">2.7.</span> <span class="nav-text">安全管理器</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#自定义安全管理器"><span class="nav-number">2.8.</span> <span class="nav-text">自定义安全管理器</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#反射"><span class="nav-number">3.</span> <span class="nav-text">反射</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#获得字节码文件对象"><span class="nav-number">3.1.</span> <span class="nav-text">获得字节码文件对象</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#方法"><span class="nav-number">3.2.</span> <span class="nav-text">方法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#获得字节码文件的属性-Field"><span class="nav-number">3.3.</span> <span class="nav-text">获得字节码文件的属性(Field)</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#常用方法"><span class="nav-number">3.3.1.</span> <span class="nav-text">常用方法:</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#获得方法-Method"><span class="nav-number">3.4.</span> <span class="nav-text">获得方法(Method)</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#常用方法-1"><span class="nav-number">3.4.1.</span> <span class="nav-text">常用方法</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#获得构造方法"><span class="nav-number">3.5.</span> <span class="nav-text">获得构造方法</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#方法-1"><span class="nav-number">3.5.1.</span> <span class="nav-text">方法</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#基本注解"><span class="nav-number">4.</span> <span class="nav-text">基本注解</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-heartbeat" aria-hidden="true"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">小良</span>
+
+  
+</div>
+
+<div class="powered-by">
+<i class="fa fa-user-md"></i><span id="busuanzi_container_site_uv">
+  本站访客数:<span id="busuanzi_value_site_uv"></span>
+</span>
+</div>
+
+
+<!--
+
+-->
+<div class="theme-info">
+  <div class="powered-by"></div>
+  <span class="post-count">博客全站共字</span>
+</div>
+
+
+
+<div class="coding-pages">
+  <p>Hosted by <a href="https://pages.coding.me" style="font-weight: bold">Coding Pages</a></p>
+</div>
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/blog/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/blog/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/blog/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/blog/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/blog/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/blog/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/blog/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/blog/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/blog/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/blog/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/blog/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/blog/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/blog/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/blog/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
